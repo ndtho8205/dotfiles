@@ -27,8 +27,6 @@ load_configs() {
 
 load_configs "${DOTFILES_DIR}/zsh/configs"
 
-
-
 # Local config
 # [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
