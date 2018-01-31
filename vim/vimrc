@@ -1,47 +1,159 @@
-set nu
-"set cursorline
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" enable filetype plugins
+filetype plugin indent on
+
+"" set to auto read when a file is changed from the outside
 set autoread
+
+"" automatically :write before running commands
 set autowrite
 
-if has('mouse')
-  set mouse=a
-endif
-
+"" turn off backup, swap files
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 set backupdir=~/tmp,/tmp
 set backupcopy=yes
 set backupskip=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
 set directory=/tmp
 
-set clipboard=unnamedplus
-set undolevels=1000
+"" encoding
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
 
-set encoding=utf-8 nobomb
+"" fix backspace indent
+set backspace=indent,eol,start
 
-syntax on
-set syntax=whitespace
-
-filetype plugin indent on
+"" tabs
+set autoindent
+set smartindent
 set tabstop=2
-set softtabstop=2
 set shiftwidth=2
 set expandtab
-
 autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
+"" map leader to ,
+let mapleader=','
+let g:mapleader = ","
 
-" ayu-vim
-set termguicolors     " enable true colors support
-"let ayucolor="light"  " for light version of theme
-let ayucolor="mirage" " for mirage version of theme
-" let ayucolor="dark"   " for dark version of theme
+"" enable hidden buffers
+set hidden
+
+"" searching
+set hlsearch
+
+"" do incremental searching
+set incsearch
+set ignorecase
+set smartcase
+
+"" encoding
+set bomb
+set binary
+set ttyfast
+
+set fileformats=unix,dos,mac
+
+"" display incomplete commands
+set showcmd
+set shell=/bin/sh
+
+"" mouse
+if has('mouse')
+  set mouse=a
+endif
+
+" session management
+let g:session_directory = "~/.vim/session"
+let g:session_autoload = "no"
+let g:session_autosave = "no"
+let g:session_command_aliases = 1
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Visual Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax on
+
+"" Show the cursor position all the time
+set ruler
+
+"" Show line number
+set number
+
+set mousemodel=popup
+
+"" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+"" Show matching brackets
+set showmatch
+set mat=2
+
+"" Extra margin to the left_alt_sep
+set foldcolumn=1
+
+"" Disable the blinking cursor.
+set gcr=a:blinkon0
+set scrolloff=3
+
+"" Use modeline overrides
+set modeline
+set modelines=10
+
+set title
+set titleold="Terminal"
+set titlestring=%F
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Mapping
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inore jk <ESC>
+inore kj <ESC>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Packages
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" ayu-vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" enable true colors support
+set termguicolors
+
+"" [light, mirage, dark] version of theme
+let ayucolor="mirage"
+
 colorscheme ayu
 
-" lightlinie
+"" indentline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:indentLine_enabled = 1
+let g:indentLine_faster = 1
+let g:indentLine_char = '▏'
+let g:indentLine_first_char = '▏'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
+
+"" conceal - automatically hides stretches of text based on syntax highlighting
+"" let g:indentLine_concealcursor = 'inc'
+"" let g:indentLine_conceallevel = 2
+"" keep your setting:
+"" let g:indentLine_concealcursor = 0
+
+
+"" lightline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2
 set noshowmode
 if !has('gui_running')
@@ -69,9 +181,8 @@ function! LightLineFilename()
   return expand('%')
 endfunction
 
-
-
-" ale
+"" ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ale_sign_column_always = 1
 function! LinterStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
@@ -91,11 +202,38 @@ let g:ale_linters = {
 \   'python': ['pycodestyle'],
 \}
 
+"" vim-go
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"" map
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
 
-" IndentLine {{
-" let g:indentLine_char = ''
-" let g:indentLine_first_char = ''
-" let g:indentLine_showFirstIndentLevel = 1
-" let g:indentLine_setColors = 0
-" }}
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+
+au FileType go nmap <Leader>e <Plug>(go-rename)
+"" syntax-gighlight for functions, methods and structs
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+"" enable goimports to automatically insert import paths instead of gofmt
+let g:go_fmt_command = "goimports"
+"" disable show errors for the fmt command
+let g:go_fmt_fail_silently = 1
+"" disable suto fmt on save
+let g:go_fmt_autosave = 0
+"" fix lagging while using both vim-go and syntastic
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_list_type = "quickfix"
