@@ -83,6 +83,16 @@ let g:session_command_aliases = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on
 
+"" fix colors when run in tmux
+if exists('$TMUX')
+  " Colors in tmux
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+"" enable true colors support
+set termguicolors
+
 "" Show the cursor position all the time
 set ruler
 
@@ -126,9 +136,6 @@ inore kj <ESC>
 
 "" ayu-vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"" enable true colors support
-set termguicolors
 
 "" [light, mirage, dark] version of theme
 let ayucolor="mirage"
