@@ -1,0 +1,262 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" enable filetype plugins
+filetype plugin indent on
+
+"" set to auto read when a file is changed from the outside
+set autoread
+
+"" automatically :write before running commands
+set autowrite
+
+"" turn off backup, swap files
+set nobackup
+set nowritebackup
+set noswapfile
+set backupdir=~/tmp,/tmp
+set backupcopy=yes
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
+set directory=/tmp
+
+"" encoding
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
+
+"" fix backspace indent
+set backspace=indent,eol,start
+
+"" tabs
+set autoindent
+set smartindent
+set tabstop=2
+set shiftwidth=2
+set expandtab
+autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+
+"" map leader to ,
+let mapleader=','
+let g:mapleader = ","
+
+"" enable hidden buffers
+set hidden
+
+"" searching
+set hlsearch
+
+"" do incremental searching
+set incsearch
+set ignorecase
+set smartcase
+
+"" encoding
+set bomb
+set binary
+set ttyfast
+
+set fileformats=unix,dos,mac
+
+"" display incomplete commands
+set showcmd
+set shell=/bin/sh
+
+"" mouse
+if has('mouse')
+  set mouse=a
+endif
+
+" session management
+let g:session_directory = "~/.vim/session"
+let g:session_autoload = "no"
+let g:session_autosave = "no"
+let g:session_command_aliases = 1
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Visual Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax on
+
+"" fix colors when run in tmux
+if exists('$TMUX')
+  " Colors in tmux
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+"" enable true colors support
+set termguicolors
+
+"" Show the cursor position all the time
+set ruler
+
+"" Show line number
+set number
+
+set mousemodel=popup
+
+"" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+"" Show matching brackets
+set showmatch
+set mat=2
+
+"" Extra margin to the left_alt_sep
+set foldcolumn=1
+
+"" Disable the blinking cursor.
+set gcr=a:blinkon0
+set scrolloff=3
+
+"" Use modeline overrides
+set modeline
+set modelines=10
+
+set title
+set titleold="Terminal"
+set titlestring=%F
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Mapping
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inore jk <ESC>
+inore kj <ESC>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Packages
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" ayu-vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" [light, mirage, dark] version of theme
+let ayucolor="mirage"
+
+colorscheme ayu
+
+"" indentline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:indentLine_enabled = 1
+let g:indentLine_faster = 1
+let g:indentLine_char = '▏'
+let g:indentLine_first_char = '▏'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
+
+"" conceal - automatically hides stretches of text based on syntax highlighting
+"" let g:indentLine_concealcursor = 'inc'
+"" let g:indentLine_conceallevel = 2
+"" keep your setting:
+"" let g:indentLine_concealcursor = 0
+
+
+"" lightline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set laststatus=2
+set noshowmode
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:lightline = {
+      \ 'active': {
+      \   'left': [
+      \               [ 'mode', 'paste' ],
+      \               [ 'gitbranch', 'filename', 'readonly', 'modified' ]
+      \           ],
+      \   'right': [
+      \               [ 'linting', 'fileencoding', 'filetype'],
+      \            ],
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name',
+      \   'filename': 'LightLineFilename',
+      \   'linting': 'LinterStatus',
+      \ },
+      \ }
+
+function! LightLineFilename()
+  return expand('%')
+endfunction
+
+"" NERDTree
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.DS_Store', '\~$', '\.swp', '\.git', 'node_modules', 'venv']
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeAutoDeleteBuffer = 1
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+map <leader>s :NERDTree<CR>
+map <leader>f :NERDTreeFind<CR>
+map <leader>r :source ~/.vim/vimrc<CR>
+nmap <leader>t :NERDTreeToggle<CR>
+
+"" ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_sign_column_always = 1
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'python': ['pycodestyle'],
+\}
+
+"" vim-go
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" map
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+
+au FileType go nmap <Leader>e <Plug>(go-rename)
+"" syntax-gighlight for functions, methods and structs
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+"" enable goimports to automatically insert import paths instead of gofmt
+let g:go_fmt_command = "goimports"
+"" disable show errors for the fmt command
+let g:go_fmt_fail_silently = 1
+"" disable suto fmt on save
+let g:go_fmt_autosave = 0
+"" fix lagging while using both vim-go and syntastic
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_list_type = "quickfix"

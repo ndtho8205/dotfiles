@@ -2,13 +2,56 @@
 
 ## Requirements
 
+### zsh
+
 Set `zsh` as your login shell:
 
 ```shell
 chsh -s $(which zsh)
 ```
 
+### vim
+
 Install VIM 8.
+
+### tmux
+
+Steps to install Tmux from source
+
+- Remove existing tmux install
+
+```shell
+sudo apt remove -y --purge tmux
+```
+
+- Install build dependencies:
+
+```shell
+sudo apt install -y automake build-essential cmake pkg-config
+sudo apt install -y exuberant-ctags libevent-dev libncurses5-dev
+```
+
+- Download from GitHub and cd to src dir
+
+```shell
+git clone https://github.com/tmux/tmux.git
+cd tmux
+git checkout 2.6
+```
+
+- Configure, make, and make install
+
+```shell
+sh autogen.sh
+./configure && make -j"$(nproc)"
+sudo make install
+```
+
+- Check version of tmux
+
+```shell
+tmux -V
+```
 
 ## Install
 
@@ -23,6 +66,7 @@ cd dotfiles
 ## zsh Configurations
 
 TODO:
+
 - [ ] Config zsh
   - [x] aliases
   - [x] completion
@@ -42,6 +86,7 @@ TODO:
 ## vim Configurations
 
 TODO:
+
 - [ ] Config vim
 - [ ] Install plugins
   - [x] ayu-vim
@@ -68,6 +113,7 @@ TODO:
 ## tmux
 
 TODO:
+
 - [ ] Config tmux
 - [ ] Install plugin(s)
 - [ ] Config plugin(s)
