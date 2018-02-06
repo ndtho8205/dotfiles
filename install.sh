@@ -81,6 +81,8 @@ make_link () {
 
       if [ "$currentSrc" == "$src" ]
       then
+        skip=true;
+      else
         ask "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 action
@@ -138,10 +140,7 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  if [ ! -f "$HOME/.dotfiles" -o -d "$HOME/.dotfiles" -o -L "$HOME/.dotfiles" ]
-  then
-    make_link $DOTFILES_DIR $HOME/.dotfiles
-  fi
+  make_link $DOTFILES_DIR $HOME/.dotfiles
 
   for src in $(find -H "$DOTFILES_DIR" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
@@ -150,10 +149,12 @@ install_dotfiles () {
   done
 
   make_link $DOTFILES_DIR/zsh/prezto $HOME/.zprezto
+  make_link $DOTFILES_DIR/vim $HOME/.vim
 }
 
 # setup_gitconfig
 install_dotfiles
+unset FILES_TO_SYMLINK
 
 echo ''
 echo '  All installed!'
