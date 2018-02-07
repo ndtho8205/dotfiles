@@ -18,20 +18,20 @@ Install VIM 8.
 
 Steps to install Tmux from source
 
-- Remove existing tmux install
+* Remove existing tmux install
 
 ```shell
 sudo apt remove -y --purge tmux
 ```
 
-- Install build dependencies:
+* Install build dependencies:
 
 ```shell
 sudo apt install -y automake build-essential cmake pkg-config
 sudo apt install -y exuberant-ctags libevent-dev libncurses5-dev
 ```
 
-- Download from GitHub and cd to src dir
+* Download from GitHub and cd to src dir
 
 ```shell
 git clone https://github.com/tmux/tmux.git
@@ -39,7 +39,7 @@ cd tmux
 git checkout 2.6
 ```
 
-- Configure, make, and make install
+* Configure, make, and make install
 
 ```shell
 sh autogen.sh
@@ -47,7 +47,7 @@ sh autogen.sh
 sudo make install
 ```
 
-- Check version of tmux
+* Check version of tmux
 
 ```shell
 tmux -V
@@ -67,56 +67,56 @@ cd dotfiles
 
 TODO:
 
-- [ ] Config zsh
-  - [x] aliases
-  - [x] completion
-  - [x] exports
-  - [x] history
-  - [x] keybindings
-  - ... (???)
-- [ ] Install plugin(s)
-  - [x] prezto
-  - ... (???)
-- [ ] Config plugin(s)
-  - [ ] prezto
-- [ ] Update `install.sh`
-- [ ] Test
-- [ ] Write docs
+* [ ] Config zsh
+  * [x] aliases
+  * [x] completion
+  * [x] exports
+  * [x] history
+  * [x] keybindings
+  * ... (???)
+* [ ] Install plugin(s)
+  * [x] prezto
+  * ... (???)
+* [ ] Config plugin(s)
+  * [ ] prezto
+* [ ] Update `install.sh`
+* [ ] Test
+* [ ] Write docs
 
 ## vim Configurations
 
 TODO:
 
-- [ ] Config vim
-- [ ] Install plugins
-  - [x] ayu-vim
-  - [x] indentLine
-  - [x] lightline.vim
-  - [x] ale
-  - [x] lightline-ale
-  - [x] nerdtree
-  - [x] vim-gitbranch
-  - ... (???)
-- [ ] Config plugins
-  - [ ] ayu-vim
-  - [ ] indentLine
-  - [ ] lightline.vim
-  - [ ] ale
-  - [ ] lightline-ale
-  - [ ] nerdtree
-  - [ ] vim-gitbranch
-  - ... (???)
-- [ ] Update `install.sh`
-- [ ] Test
-- [ ] Write docs
+* [ ] Config vim
+* [ ] Install plugins
+  * [x] ayu-vim
+  * [x] indentLine
+  * [x] lightline.vim
+  * [x] ale
+  * [x] lightline-ale
+  * [x] nerdtree
+  * [x] vim-gitbranch
+  * ... (???)
+* [ ] Config plugins
+  * [x] ayu-vim
+  * [x] indentLine
+  * [x] lightline.vim
+  * [x] ale
+  * [x] lightline-ale
+  * [ ] nerdtree
+  * [x] vim-gitbranch
+  * ... (???)
+* [ ] Update `install.sh`
+* [ ] Test
+* [ ] Write docs
 
 ## tmux
 
 TODO:
 
-- [ ] Config tmux
-- [ ] Install plugin(s)
-- [ ] Config plugin(s)
-- [ ] Test
-- [ ] Update `install.sh`
-- [ ] Write docs
+* [ ] Config tmux
+* [ ] Install plugin(s)
+* [ ] Config plugin(s)
+* [ ] Test
+* [ ] Update `install.sh`
+* [ ] Write docs

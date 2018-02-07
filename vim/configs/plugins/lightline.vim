@@ -14,16 +14,49 @@ let g:lightline = {
       \               [ 'gitbranch', 'filename', 'readonly', 'modified' ]
       \           ],
       \   'right': [
-      \               [ 'linting', 'fileencoding', 'filetype'],
+      \               [ 'lineinfo' ],
+      \               [ 'percent' ],
+      \               [ 'fileformat', 'filetype'],
+      \               [ 'linter_errors', 'linter_warnings', 'linter_ok' ]
       \            ],
       \ },
       \ 'component_function': {
       \   'gitbranch': 'gitbranch#name',
-      \   'filename': 'LightLineFilename',
-      \   'linting': 'LinterStatus',
+      \   'filename': 'LightlineFilename',
+      \   'fileformat': 'LightlineFileformat',
       \ },
       \ }
 
-function! LightLineFilename()
-  return expand('%')
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
 endfunction
+
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+
+"" lightline-ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" register the components
+let g:lightline.component_expand = {
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+
+"" set color to the components
+let g:lightline.component_type = {
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left',
+      \ }
+
+"" using icons as indicators
+let g:lightline#ale#indicator_warnings = "⚠"
+let g:lightline#ale#indicator_errors = "✖"
+let g:lightline#ale#indicator_ok = "⬥"
+
+
