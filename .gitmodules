@@ -22,3 +22,12 @@
 [submodule "vim/pack/plugins/start/indentLine"]
 	path = vim/pack/plugins/start/indentLine
 	url = https://github.com/Yggdroot/indentLine.git
+[submodule "vim/pack/plugins/start/vim-javascript"]
+	path = vim/pack/plugins/start/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vim/pack/plugins/start/vim-vue"]
+	path = vim/pack/plugins/start/vim-vue
+	url = https://github.com/posva/vim-vue.git
+[submodule "vim/pack/plugins/start/vim-jsx"]
+	path = vim/pack/plugins/start/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
