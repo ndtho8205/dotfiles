@@ -87,9 +87,6 @@ TODO:
 
 TODO: \* [x] vim-javascript
 
-* [x] vim-jsx
-* [x] vim-vue
-
 * [ ] Config vim
 * [ ] Install plugins
   * [x] ayu-vim
@@ -111,9 +108,9 @@ TODO: \* [x] vim-javascript
   * [x] lightline-ale
   * [x] nerdtree
   * [x] vim-gitbranch
-  * [ ] vim-javascript
-  * [ ] vim-jsx
-  * [ ] vim-vue
+  * [x] vim-javascript
+  * [x] vim-jsx
+  * [x] vim-vue
   * ... (???)
 * [x] Update `install.sh`
 * [ ] Test
