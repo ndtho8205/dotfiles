@@ -6,7 +6,7 @@ let g:ale_sign_column_always = 1
 
 "" what text should be used for signs
 let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
+let g:ale_sign_warning = '!' 
 
 "" disable particular linters
 " let g:ale_linters = {
