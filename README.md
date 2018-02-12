@@ -79,13 +79,16 @@ TODO:
   * ... (???)
 * [ ] Config plugin(s)
   * [ ] prezto
-* [ ] Update `install.sh`
+* [x] Update `install.sh`
 * [ ] Test
 * [ ] Write docs
 
 ## vim Configurations
 
-TODO:
+TODO: \* [x] vim-javascript
+
+* [x] vim-jsx
+* [x] vim-vue
 
 * [ ] Config vim
 * [ ] Install plugins
@@ -96,6 +99,9 @@ TODO:
   * [x] lightline-ale
   * [x] nerdtree
   * [x] vim-gitbranch
+  * [x] vim-javascript
+  * [x] vim-jsx
+  * [x] vim-vue
   * ... (???)
 * [ ] Config plugins
   * [x] ayu-vim
@@ -103,10 +109,13 @@ TODO:
   * [x] lightline.vim
   * [x] ale
   * [x] lightline-ale
-  * [ ] nerdtree
+  * [x] nerdtree
   * [x] vim-gitbranch
+  * [ ] vim-javascript
+  * [ ] vim-jsx
+  * [ ] vim-vue
   * ... (???)
-* [ ] Update `install.sh`
+* [x] Update `install.sh`
 * [ ] Test
 * [ ] Write docs
 

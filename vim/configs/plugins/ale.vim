@@ -15,9 +15,9 @@ let g:ale_sign_warning = '⚠'
 " \}
 
 "" :ALEFix will try and fix code.
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\}
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['eslint']
+let g:ale_fixers['vue'] = ['eslint']
 
 "" fix files automatically on save.
 let g:ale_fix_on_save = 1

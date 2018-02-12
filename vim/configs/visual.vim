@@ -9,6 +9,15 @@ set ruler
 "" show line number
 set number
 
+"" set relativenumber
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
 set mousemodel=popup
 
 "" don't redraw while executing macros (good performance config)

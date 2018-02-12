@@ -17,3 +17,6 @@ let g:indentLine_setColors = 0
 " let g:indentLine_conceallevel = 2
 "" keep your setting:
 " let g:indentLine_concealcursor = 0
+
+" disable indentLine in json, fix error double quote not showing
+autocmd Filetype json let g:indentLine_enabled = 0
