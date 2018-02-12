@@ -124,5 +124,5 @@ TODO:
 * [ ] Install plugin(s)
 * [ ] Config plugin(s)
 * [ ] Test
-* [ ] Update `install.sh`
+* [x] Update `install.sh`
 * [ ] Write docs
