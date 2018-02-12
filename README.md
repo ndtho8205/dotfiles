@@ -78,14 +78,14 @@ TODO:
   * [x] prezto
   * ... (???)
 * [ ] Config plugin(s)
-  * [ ] prezto
+  * [x] prezto
 * [x] Update `install.sh`
 * [ ] Test
 * [ ] Write docs
 
 ## vim Configurations
 
-TODO: \* [x] vim-javascript
+TODO:
 
 * [ ] Config vim
 * [ ] Install plugins

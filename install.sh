@@ -154,7 +154,6 @@ install_dotfiles () {
 
 # setup_gitconfig
 install_dotfiles
-unset FILES_TO_SYMLINK
 
 echo ''
 echo '  All installed!'
