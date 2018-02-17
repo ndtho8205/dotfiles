@@ -1,0 +1,41 @@
+export DOTFILES_DIR="${HOME}/.dotfiles"
+
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# load custom executable functions
+for function in ${DOTFILES_DIR}/zsh/functions/*
+do
+  source "${function}"
+done
+
+load_configs() {
+  _dir="$1"
+
+  if [ -d "$_dir" ]
+  then
+
+    for config in "$_dir"/**/*.zsh
+    do
+      [ -e "${config}" ] || continue
+      source "${config}"
+    done
+
+  fi
+}
+
+load_configs "${DOTFILES_DIR}/zsh/configs"
+
+# Local config
+# [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# aliases
+# [[ -f ~/.aliases.local ]] && source ~/.aliases.local
+
+# # tilix
+# if ! type "tilix" > /dev/null; then
+#   if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+#     source /etc/profile.d/vte.sh
+#   fi
+# fi
