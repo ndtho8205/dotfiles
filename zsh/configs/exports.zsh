@@ -16,12 +16,6 @@ if [ -d "/opt/android-ndk" ]; then
   export PATH=$PATH:$ANDROID_NDK
 fi
 
-# python
-if [ -d "$HOME/.pyenv" ]; then
-  export PYENV_ROOT=$HOME/.pyenv
-  export PATH=$PYENV_ROOT/bin:$PATH
-fi
-
 # go
 if [ -d "/opt/go" ]; then
   export GOPATH=$HOME/gocode
