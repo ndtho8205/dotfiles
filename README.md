@@ -82,7 +82,7 @@ TODO:
 * [ ] Config plugin(s)
   * [x] prezto
 * [x] Update `install.sh`
-* [ ] Test
+* [x] Test
 * [ ] Write docs
 
 ## vim Configurations
@@ -115,7 +115,7 @@ TODO:
   * [x] vim-vue
   * ... (???)
 * [x] Update `install.sh`
-* [ ] Test
+* [x] Test
 * [ ] Write docs
 
 ## tmux
@@ -125,6 +125,6 @@ TODO:
 * [ ] Config tmux
 * [ ] Install plugin(s)
 * [ ] Config plugin(s)
-* [ ] Test
+* [x] Test
 * [x] Update `install.sh`
 * [ ] Write docs
