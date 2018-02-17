@@ -58,8 +58,9 @@ tmux -V
 ## Install
 
 ```shell
-git clone --recursive https://github.com/ndtho8205/dotfiles.git
+git clone https://github.com/ndtho8205/dotfiles.git
 cd dotfiles
+git submodule update --init --recursive
 ./install.sh
 ```
 
