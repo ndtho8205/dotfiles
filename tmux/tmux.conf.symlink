@@ -1,6 +1,0 @@
-source ${DOTFILES_DIR}/tmux/configs/general.conf
-source ${DOTFILES_DIR}/tmux/configs/display.conf
-source ${DOTFILES_DIR}/tmux/configs/navigation.conf
-source ${DOTFILES_DIR}/tmux/configs/theme.conf
-
-if '[ -f ~/.tmux.conf.local ]' 'source ~/.tmux.conf.local'
