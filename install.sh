@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-# Refs: holman/dotfiles's install script.
 
 export DOTFILES_DIR="$(cd "$(dirname "$0")"; pwd -P)"
-
-echo "$DOTFILES_DIR"
 
 set -e
 echo ''
@@ -11,7 +8,7 @@ echo ''
 if test -t 1
 then
   ncolors=$(which tput > /dev/null && tput colors)
-  if test -n "$ncolors" && test "$ncolors" -ge 8
+  if test -n "$ncolors" && test $ncolors -ge 8
   then
     termcols=$(tput cols)
     bold="$(tput bold)"
@@ -45,6 +42,28 @@ fail () {
   printf "\r\033[2K  [${red}FAIL${normal}] $1\n"
   echo ''
   exit
+}
+
+setup_gitconfig () {
+  if ! [ -f git/gitconfig.local.symlink ]
+  then
+    info 'setup gitconfig'
+
+    git_credential='cache'
+    if [ "$(uname -s)" == "Darwin" ]
+    then
+      git_credential='osxkeychain'
+    fi
+
+    ask ' - What is your github author name?'
+    read -e git_authorname
+    ask ' - What is your github author email?'
+    read -e git_authoremail
+
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
+
+    success 'gitconfig'
+  fi
 }
 
 make_link () {
@@ -117,14 +136,11 @@ make_link () {
 }
 
 install_dotfiles () {
-  info 'Installing dotfiles'
+  info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  if ! [[ ( -f "$HOME/.dotfiles" || -d "$HOME/.dotfiles" ) && ( "$DOTFILES_DIR" == "$HOME/.dotfiles" ) ]]
-  then
-    make_link "$DOTFILES_DIR" "$HOME/.dotfiles"
-  fi
+  make_link $DOTFILES_DIR $HOME/.dotfiles
 
   for src in $(find -H "$DOTFILES_DIR" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
@@ -132,10 +148,11 @@ install_dotfiles () {
     make_link "$src" "$dst"
   done
 
-  make_link "$DOTFILES_DIR/zsh/prezto" "$HOME/.zprezto"
-  make_link "$DOTFILES_DIR/vim" "$HOME/.vim"
+  make_link $DOTFILES_DIR/zsh/prezto $HOME/.zprezto
+  make_link $DOTFILES_DIR/vim $HOME/.vim
 }
 
+# setup_gitconfig
 install_dotfiles
 
 echo ''
