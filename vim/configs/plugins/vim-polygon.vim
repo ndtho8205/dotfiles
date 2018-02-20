@@ -20,7 +20,7 @@ let g:jsx_ext_required = 0
 "" vue
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" fix syntax highlighting stops working
-autocmd FileType vue syntax sync fromstart
+" autocmd FileType vue syntax sync fromstart
 
 "" vim-go
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
