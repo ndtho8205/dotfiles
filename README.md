@@ -1,5 +1,7 @@
 # dotfiles
 
+## Screenshot
+
 ![screenshot](screenshot.png)
 
 ## Requirements
@@ -64,8 +66,6 @@ git submodule update --init --recursive
 ./install.sh
 ```
 
-## Screenshot
-
 ## zsh Configurations
 
 TODO:
@@ -99,9 +99,7 @@ TODO:
   * [x] lightline-ale
   * [x] nerdtree
   * [x] vim-gitbranch
-  * [x] vim-javascript
-  * [x] vim-jsx
-  * [x] vim-vue
+  * [x] vim-polygot
   * ... (???)
 * [ ] Config plugins
   * [x] ayu-vim
@@ -111,9 +109,7 @@ TODO:
   * [x] lightline-ale
   * [x] nerdtree
   * [x] vim-gitbranch
-  * [x] vim-javascript
-  * [x] vim-jsx
-  * [x] vim-vue
+  * [x] vim-polygot (for python, javascript, jsx, vue)
   * ... (???)
 * [x] Update `install.sh`
 * [x] Test

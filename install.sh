@@ -8,7 +8,7 @@ echo ''
 if test -t 1
 then
   ncolors=$(which tput > /dev/null && tput colors)
-  if test -n "$ncolors" && test $ncolors -ge 8
+  if test -n "$ncolors" && test "$ncolors" -ge 8
   then
     termcols=$(tput cols)
     bold="$(tput bold)"
