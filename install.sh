@@ -44,28 +44,6 @@ fail () {
   exit
 }
 
-setup_gitconfig () {
-  if ! [ -f git/gitconfig.local.symlink ]
-  then
-    info 'setup gitconfig'
-
-    git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
-    then
-      git_credential='osxkeychain'
-    fi
-
-    ask ' - What is your github author name?'
-    read -e git_authorname
-    ask ' - What is your github author email?'
-    read -e git_authoremail
-
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
-
-    success 'gitconfig'
-  fi
-}
-
 make_link () {
   local src=$1 dst=$2
 
@@ -136,11 +114,14 @@ make_link () {
 }
 
 install_dotfiles () {
-  info 'installing dotfiles'
+  info 'Installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  make_link $DOTFILES_DIR $HOME/.dotfiles
+  if [[ ! ( -f "$HOME/.dotfiles" || -d "$HOME/.dotfiles" ) || ( "$DOTFILES_DIR" != "$HOME/.dotfiles" ) ]]
+  then
+    make_link "$DOTFILES_DIR" "$HOME/.dotfiles"
+  fi
 
   for src in $(find -H "$DOTFILES_DIR" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
@@ -148,11 +129,10 @@ install_dotfiles () {
     make_link "$src" "$dst"
   done
 
-  make_link $DOTFILES_DIR/zsh/prezto $HOME/.zprezto
-  make_link $DOTFILES_DIR/vim $HOME/.vim
+  make_link "$DOTFILES_DIR/zsh/prezto" "$HOME/.zprezto"
+  make_link "$DOTFILES_DIR/vim" "$HOME/.vim"
 }
 
-# setup_gitconfig
 install_dotfiles
 
 echo ''
