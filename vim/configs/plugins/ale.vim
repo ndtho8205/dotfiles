@@ -24,8 +24,8 @@ let g:ale_fixers['python'] = ['autopep8', 'yapf']
 let g:ale_fix_on_save = 1
 
 "" navigate beween errors quickly
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-a> <Plug>(ale_previous_wrap)
+nmap <silent> <C-d> <Plug>(ale_next_wrap)
 
 
 "" show errors or warnings in statusline

@@ -1,6 +1,29 @@
+"" javascript
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" syntax highlighting for JSDocs
+let g:javascript_plugin_jsdoc = 1
+
+"" syntax hightlighting for Flow
+let g:javascript_plugin_flow = 1
+
+"" code folding for javascript
+augroup javascript_folding
+  au!
+  au FileType javascript setlocal foldmethod=syntax
+augroup END
+
+"" jsx
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" enable for .js extension
+let g:jsx_ext_required = 0
+
+"" vue
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" fix syntax highlighting stops working
+" autocmd FileType vue syntax sync fromstart
+
 "" vim-go
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 "" map
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
