@@ -100,6 +100,9 @@ TODO:
   * [x] nerdtree
   * [x] vim-gitbranch
   * [x] vim-polygot
+  * [x] emmet-vim
+  * [x] vim-surround
+  * [x] vim-multiple-cursors
   * ... (???)
 * [ ] Config plugins
   * [x] ayu-vim
@@ -110,6 +113,9 @@ TODO:
   * [x] nerdtree
   * [x] vim-gitbranch
   * [x] vim-polygot (for python, javascript, jsx, vue)
+  * [ ] emmet-vim
+  * [ ] vim-surround
+  * [ ] vim-multiple-cursors
   * ... (???)
 * [x] Update `install.sh`
 * [x] Test

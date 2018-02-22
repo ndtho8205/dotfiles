@@ -1,17 +1,17 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Visual Settings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
 "" show the cursor position all the time
 set ruler
 
+"" highlight current line
+set cursorline
+
+"" vusual autocomplete for command menu
+set wildmenu
+
+"" line number
 "" show line number
 set number
-
 "" set relativenumber
 set number relativenumber
-
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
