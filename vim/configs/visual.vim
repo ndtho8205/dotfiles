@@ -5,7 +5,7 @@ set ruler
 set cursorline
 
 "" vusual autocomplete for command menu
-set wildmode=list:longest
+set wildmode=longest:full,full
 set wildmenu
 "" wildignore
 set wildignore=*.o,*.obj,*.pyc,*~
