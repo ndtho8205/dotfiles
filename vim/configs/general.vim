@@ -24,6 +24,9 @@ set hidden
 "" turn on syntax highlighting
 syntax on
 
+"" copy to and from system clipboard
+set clipboard=unnamed
+
 "" enable hidden buffers
 set hidden
 

@@ -5,7 +5,17 @@ set ruler
 set cursorline
 
 "" vusual autocomplete for command menu
+set wildmode=list:longest
 set wildmenu
+"" wildignore
+set wildignore=*.o,*.obj,*.pyc,*~
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/**
+set wildignore+=vendor/**
+set wildignore+=*.gem
+set wildignore+=*.png,*.jpg,*.gif
 
 "" line number
 "" show line number
@@ -18,6 +28,12 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
+"" wrapping
+"" get word wrapping that doesn't a word in half
+set wrap linebreak nolist
+"" soft wrapping of lines in HTML
+set breakindent
+
 set mousemodel=popup
 
 "" don't redraw while executing macros (good performance config)
@@ -25,6 +41,7 @@ set lazyredraw
 
 "" show matching brackets
 set showmatch
+"" how many thenths of a second to blink when matching brackets
 set mat=2
 
 "" extra margin to the left_alt_sep
