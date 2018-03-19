@@ -18,7 +18,7 @@ let g:ale_sign_warning = '!'
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['eslint']
 let g:ale_fixers['vue'] = ['eslint']
-let g:ale_fixers['python'] = ['autopep8', 'yapf']
+let g:ale_fixers['python'] = ['yapf']
 
 "" fix files automatically on save.
 let g:ale_fix_on_save = 1
