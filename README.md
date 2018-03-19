@@ -103,6 +103,7 @@ TODO:
   * [x] emmet-vim
   * [x] vim-surround
   * [x] vim-multiple-cursors
+  * [x] completor
   * ... (???)
 * [ ] Config plugins
   * [x] ayu-vim
@@ -116,6 +117,7 @@ TODO:
   * [ ] emmet-vim
   * [ ] vim-surround
   * [ ] vim-multiple-cursors
+  * [ ] completor
   * ... (???)
 * [x] Update `install.sh`
 * [x] Test
