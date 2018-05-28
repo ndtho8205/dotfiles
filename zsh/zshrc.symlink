@@ -39,3 +39,7 @@ load_configs "${DOTFILES_DIR}/zsh/configs"
 #     source /etc/profile.d/vte.sh
 #   fi
 # fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/ndtho/.sdkman"
+[[ -s "/home/ndtho/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ndtho/.sdkman/bin/sdkman-init.sh"
