@@ -48,7 +48,13 @@ alias docker-start='sudo systemctl start docker'
 alias docker-stop='sudo systemctl stop docker'
 alias docker-restart='sudo systemctl restart docker'
 alias docker-status='sudo systemctl status docker'
-alias docker-stop-container='sudo docker stop $(sudo docker ps -q)'
+
+alias docker-del-all-images='docker rmi $(docker images -q)'
+
+alias docker-kill-all='docker kill $(sudo docker ps -q)'
+alias docker-clean-container='printf "\n>>> Deleting stopped containers\n\n" && docker rm $(docker ps -a -q)'
+alias docker-clean-images='printf "\n>>> Deleting untagged images\n\n" && docker rmi $(docker images -q -f dangling=true)'
+alias docker-clean='dockercleanc || true && dockercleani'
 
 # pip
 alias pip-update='pip freeze --local | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 sudo -H pip install -U'
