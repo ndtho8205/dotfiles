@@ -43,3 +43,10 @@ load_configs "${DOTFILES_DIR}/zsh/configs"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/ndtho/.sdkman"
 [[ -s "/home/ndtho/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ndtho/.sdkman/bin/sdkman-init.sh"
+
+# pyenv
+if pyenv commands | command grep -q virtualenv-init; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
