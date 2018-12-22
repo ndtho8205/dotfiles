@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DOTFILES_DIR="$(cd "$(dirname "$0")"; pwd -P)"
+export DOTFILES="$(cd "$(dirname "$0")"; pwd -P)"
 
 set -e
 echo ''
@@ -118,19 +118,18 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  if [[ ! ( -f "$HOME/.dotfiles" || -d "$HOME/.dotfiles" ) || ( "$DOTFILES_DIR" != "$HOME/.dotfiles" ) ]]
+  if [[ ! ( -f "$HOME/.dotfiles" || -d "$HOME/.dotfiles" ) || ( "$DOTFILES" != "$HOME/.dotfiles" ) ]]
   then
-    make_link "$DOTFILES_DIR" "$HOME/.dotfiles"
+    make_link "$DOTFILES" "$HOME/.dotfiles"
   fi
 
-  for src in $(find -H "$DOTFILES_DIR" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+  for src in $(find -H "$DOTFILES" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
     dst="$HOME/.$(basename "${src%.*}")"
     make_link "$src" "$dst"
   done
 
-  make_link "$DOTFILES_DIR/zsh/prezto" "$HOME/.zprezto"
-  make_link "$DOTFILES_DIR/vim" "$HOME/.vim"
+  make_link "$DOTFILES/vim" "$HOME/.vim"
 }
 
 install_dotfiles
