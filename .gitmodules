@@ -37,3 +37,6 @@
 [submodule "vim/pack/plugins/start/completor.vim"]
 	path = vim/pack/plugins/start/completor.vim
 	url = https://github.com/maralla/completor.vim.git
+[submodule "zsh/plugins/z/external"]
+	path = zsh/plugins/z/external
+	url = https://github.com/rupa/z.git

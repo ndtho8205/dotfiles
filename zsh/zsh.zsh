@@ -20,23 +20,22 @@ fi
 fpath=($ZSH/functions $fpath)
 autoload -U compaudit compinit
 
-load_configs() {
+# load config files
+load_zsh_files() {
   _dir="$1"
+  _pattern="$2"
 
   if [ -d "$_dir" ]; then
-    for config in "$_dir"/**/*.zsh; do
+    for config in "$_dir"/**/*"${_pattern}"; do
       [ -e "${config}" ] || continue
       source "${config}"
     done
   fi
 }
 
-load_configs "${ZSH}/configs"
-load_configs "${ZSH_CUSTOM}"
+load_zsh_files "${ZSH}/configs" ".zsh"
+load_zsh_files "${ZSH_CUSTOM}" ".zsh"
 
-
-
-
-#initialize Z (https://github.com/rupa/z)
-. /home/ndtho8205/Documents/ProgramFiles/z/z.sh
-
+# load plugins
+load_zsh_files "${ZSH}/plugins" ".plugin.zsh"
+load_zsh_files "${ZSH_CUSTOM}/plugins" ".plugin.zsh"
