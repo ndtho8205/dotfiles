@@ -1,7 +1,6 @@
-custom/
+custom/*
 !custom/custom.zsh
 
-cache/
-!cache/.gitkeep
-log/
-!cache/.gitkeep
+cache/*
+log/*
+!*.gitkeep
