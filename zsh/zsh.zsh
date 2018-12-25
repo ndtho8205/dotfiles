@@ -16,10 +16,6 @@ if [[ -s "${ZSH}/prezto/init.zsh" ]]; then
   source "${ZSH}/prezto/init.zsh"
 fi
 
-# add function path and load all functions
-fpath=($ZSH/functions $fpath)
-autoload -U compaudit compinit
-
 # load config files
 load_zsh_files() {
   _dir="$1"
@@ -33,6 +29,7 @@ load_zsh_files() {
   fi
 }
 
+load_zsh_files "${ZSH}/functions" ".zsh"
 load_zsh_files "${ZSH}/configs" ".zsh"
 load_zsh_files "${ZSH_CUSTOM}" ".zsh"
 
