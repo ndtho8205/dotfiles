@@ -19,6 +19,7 @@ let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['eslint']
 let g:ale_fixers['vue'] = ['eslint']
 let g:ale_fixers['python'] = ['yapf']
+let g:ale_fixers['go']=['gofmt', 'goimports']
 
 "" fix files automatically on save.
 let g:ale_fix_on_save = 1
