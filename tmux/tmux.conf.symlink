@@ -1,7 +1,7 @@
-source ${DOTFILES_DIR}/tmux/configs/general.conf
-source ${DOTFILES_DIR}/tmux/configs/display.conf
-source ${DOTFILES_DIR}/tmux/configs/navigation.conf
-source ${DOTFILES_DIR}/tmux/configs/scroll.conf
-source ${DOTFILES_DIR}/tmux/configs/theme.conf
+source ${DOTFILES}/tmux/configs/general.conf
+source ${DOTFILES}/tmux/configs/display.conf
+source ${DOTFILES}/tmux/configs/navigation.conf
+source ${DOTFILES}/tmux/configs/scroll.conf
+source ${DOTFILES}/tmux/configs/theme.conf
 
 if '[ -f ~/.tmux.conf.local ]' 'source ~/.tmux.conf.local'
