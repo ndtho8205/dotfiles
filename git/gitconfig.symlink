@@ -1,0 +1,50 @@
+[color]
+    ui = true
+    diff = auto
+    status = auto
+    branch = auto
+
+[color "branch"]
+    current = white reverse
+    local = white
+    remote = yellow
+
+[color "diff"]
+    meta = magenta
+    frag = magenta bold
+    old = red bold
+    new = yellow bold
+
+[color "status"]
+    added = green
+    changed = yellow
+    untracked = red
+
+[commit]
+    template = ~/.gitmessage
+
+[core]
+    editor = vim
+    autocrlf = input
+    compression = 9
+    filemode = false
+
+[diff]
+    mnemonicprefix = true
+
+[merge]
+    log = true
+    ff = false
+
+[push]
+    followTags = true
+    default = simple
+
+[status]
+    submoduleSummary = false
+
+[alias]
+    plog = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
+[user]
+	name = Tho Nguyen Duc
+	email = ndtho8205@gmail.com
