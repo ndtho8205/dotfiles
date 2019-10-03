@@ -32,7 +32,7 @@ if [ -d "$HOME/.rbenv" ]; then
 fi
 
 # npm
-if [ -x "npm" ] || [ -f "$HOME/.npm-global/bin/npm" ]; then
+if type "npm" > /dev/null; then
   export NPM_GLOBAL=${HOME}/.npm-global
   export NODE_PATH=$NPM_GLOBAL/lib/node_modules
   export PATH=$NPM_GLOBAL/bin:$PATH
