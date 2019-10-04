@@ -2,9 +2,13 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\~$', '\.swp', '\.git', 'node_modules', 'venv']
+let NERDTreeIgnore=['\.DS_Store', '\~$', '\.swp', '\.git', '\node_modules', '\venv', '\__pycache__']
+
+"" make nerdtree prettier
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
+"" automatically delete buffer of the file that just deleted
 let NERDTreeAutoDeleteBuffer = 1
 
 map <leader>s :NERDTree<CR>
