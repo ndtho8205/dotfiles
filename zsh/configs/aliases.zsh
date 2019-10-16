@@ -9,7 +9,6 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 
 # ubuntu
-alias cat='pygmentize -O style=native -f console256 -g'
 alias mkdir='mkdir -p'
 alias ai='sudo apt install'
 alias au='sudo apt update'
@@ -22,6 +21,13 @@ alias v='$VISUAL'
 alias ez='$EDITOR ~/.zshrc'
 alias ev='$EDITOR ~/.vimrc'
 alias x+='chmod +x'
+
+# cat
+if type "bat" > /dev/null; then
+  alias cat='bat --theme="OneHalfDark" --style="numbers,changes,header,grid" --italic-text=always'
+elif type "pygmentize" > dev/null; then
+  alias cat='pygmentize -O style=native -f console256 -g'
+fi
 
 # bundler
 if type "bundle" > /dev/null; then
