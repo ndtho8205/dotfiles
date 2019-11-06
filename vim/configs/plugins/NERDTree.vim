@@ -2,7 +2,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\~$', '\.swp', '\.git', '\node_modules', '\venv', '\__pycache__']
+let NERDTreeIgnore=['\.DS_Store', '\~$', '\.swp', '\.git', '\node_modules', '\venv', '__pycache__']
 
 "" make nerdtree prettier
 let NERDTreeMinimalUI = 1
