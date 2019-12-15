@@ -34,7 +34,7 @@
 
 [merge]
     log = true
-    ff = false
+    ff = true
 
 [push]
     followTags = true
