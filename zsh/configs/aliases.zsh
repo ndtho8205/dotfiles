@@ -1,12 +1,16 @@
 # aliases
 
 # cd
-alias c='cd'
+
+alias cd='cdls'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
+
+# mkdir and cd to it
+alias mcd='mkdcd'
 
 # ubuntu
 alias mkdir='mkdir -p'
@@ -21,6 +25,7 @@ alias v='$VISUAL'
 alias ez='$EDITOR ~/.zshrc'
 alias ev='$EDITOR ~/.vimrc'
 alias x+='chmod +x'
+alias rz='source ~/.zshrc'
 
 # cat
 if type "bat" > /dev/null; then

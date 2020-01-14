@@ -4,9 +4,6 @@
 [submodule "vim/pack/plugins/start/lightline.vim"]
 	path = vim/pack/plugins/start/lightline.vim
 	url = https://github.com/itchyny/lightline.vim.git
-[submodule "vim/pack/plugins/start/ayu-vim"]
-	path = vim/pack/plugins/start/ayu-vim
-	url = https://github.com/ayu-theme/ayu-vim.git
 [submodule "vim/pack/plugins/start/vim-gitbranch"]
 	path = vim/pack/plugins/start/vim-gitbranch
 	url = https://github.com/itchyny/vim-gitbranch.git
@@ -40,3 +37,6 @@
 [submodule "zsh/plugins/z/external"]
 	path = zsh/plugins/z/external
 	url = https://github.com/rupa/z.git
+[submodule "vim/pack/plugins/start/papercolor-theme"]
+	path = vim/pack/plugins/start/papercolor-theme
+	url = https://github.com/NLKNguyen/papercolor-theme.git
