@@ -1,4 +1,5 @@
-let vimconfigs = '~/.vim/configs'
+"" load settings from files
+let vimconfigs = '~/.vim/configs/common'
 let vimplugins = '~/.vim/configs/plugins'
 
 for fpath in split(globpath(vimconfigs, '*.vim'), '\n')

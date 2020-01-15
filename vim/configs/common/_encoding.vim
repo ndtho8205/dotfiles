@@ -4,7 +4,6 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set bomb
 set binary
-set ttyfast
 
 "" use Unix as the standard file type
 set fileformats=unix,dos,mac

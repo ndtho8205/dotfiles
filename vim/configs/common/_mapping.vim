@@ -6,8 +6,18 @@ let g:mapleader = ","
 inore jk <ESC>
 inore kj <ESC>
 
+"" enable folding with the spacebar
+nnoremap <space> za
+
+"" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+"" toggle tabs and trailing space visiable
+set listchars=tab:>-,trail:·,eol:$
+nmap <silent> <leader>vt :set nolist!<CR>
+
 "" reload vimrc bindings
-nnoremap <leader>sv :source ~/.vimrc<CR>
+nnoremap <leader>rv :source ~/.vimrc<CR>
 
 "" visual mode pressing * or # searches for the current selection
 vnoremap <silent> * :call VisualSelection('f')<CR>

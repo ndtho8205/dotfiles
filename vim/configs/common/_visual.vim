@@ -1,12 +1,22 @@
+"" enable true colors support
+set termguicolors
+
+"" display incomplete commands
+set showcmd
+
 "" show the cursor position all the time
 set ruler
 
 "" highlight current line
 set cursorline
 
-"" vusual autocomplete for command menu
+"" shorten many interruptive prompts
+set shortmess=atI
+
+"" visual autocomplete for command menu
 set wildmode=longest:full,full
 set wildmenu
+
 "" wildignore
 set wildignore=*.o,*.obj,*.pyc,*~
 set wildignore+=*vim/backups*
@@ -17,9 +27,9 @@ set wildignore+=vendor/**
 set wildignore+=*.gem
 set wildignore+=*.png,*.jpg,*.gif
 
-"" line number
 "" show line number
 set number
+
 "" set relativenumber
 set number relativenumber
 augroup numbertoggle
@@ -28,9 +38,9 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-"" wrapping
 "" get word wrapping that doesn't a word in half
 set wrap linebreak nolist
+
 "" soft wrapping of lines in HTML
 set breakindent
 
@@ -41,6 +51,8 @@ set lazyredraw
 
 "" show matching brackets
 set showmatch
+set matchtime=0
+
 "" how many thenths of a second to blink when matching brackets
 set mat=2
 
@@ -65,6 +77,3 @@ if exists('$TMUX')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-
-"" enable true colors support
-set termguicolors

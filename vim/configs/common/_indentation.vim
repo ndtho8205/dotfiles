@@ -1,6 +1,3 @@
-"" enable filetype plugins
-filetype plugin indent on
-
 "" tabs
 set autoindent
 set smartindent

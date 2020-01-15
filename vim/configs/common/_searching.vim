@@ -9,6 +9,3 @@ set ignorecase
 
 "" ...unless we type a capital
 set smartcase
-
-"" turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>

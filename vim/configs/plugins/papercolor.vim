@@ -1,8 +1,5 @@
-"" 
+""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"" enable true colors support
-set termguicolors
 
 "" theme options
 let g:PaperColor_Theme_Options = {
