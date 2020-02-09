@@ -1,18 +1,11 @@
-"" tabs
+"" indentation
 set autoindent
 set smartindent
-set smarttab
-set shiftwidth=2
-"" number of spaces in tab when editing
-set softtabstop=2
-"" number of visual spaces per TAB
-set tabstop=2
-"" tabs are spaces
-set expandtab
 
-"" display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
+"" tabs
+set smarttab            " only insert tab in front of a line
+set shiftwidth=2        " number of spaces to use for ech indent step
+set tabstop=2           " number of visual spaces per tab
+set softtabstop=2       " number of spaces in tab when editing
+set expandtab           " use spaces instead of tabs
 
-"" auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>

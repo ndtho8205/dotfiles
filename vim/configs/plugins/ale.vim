@@ -14,6 +14,11 @@ let g:ale_sign_warning = '!'
 " \   'python': ['pycodestyle'],
 " \}
 
+"" enable linters for Go
+let g:ale_linters = {
+\  'go': ['golangci-lint', 'gofmt']
+\}
+
 "" :ALEFix will try and fix code.
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['eslint']

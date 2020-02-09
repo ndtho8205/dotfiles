@@ -6,5 +6,3 @@ nnoremap k gk
 nnoremap B ^
 nnoremap E $
 
-"" highlight last inserted text
-nnoremap gV `[v`]
