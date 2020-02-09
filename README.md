@@ -16,7 +16,20 @@ chsh -s $(which zsh)
 
 ### vim
 
-Install VIM 8.
+* Install VIM 8.
+
+```shell
+sudo add-apt-repository ppa:jonathonf/vim
+
+# you may want to install vim-gtk3 for more features
+sudo apt install vim
+```
+
+* Check version of vim
+
+```shell
+vim --version
+```
 
 ### tmux
 
@@ -66,70 +79,11 @@ git submodule update --init --recursive
 ./install.sh
 ```
 
-## zsh Configurations
+## TODO
 
-TODO:
-
-* [ ] Config zsh
-  * [x] aliases
-  * [x] completion
-  * [x] exports
-  * [x] history
-  * [x] keybindings
-  * ... (???)
-* [ ] Install plugin(s)
-  * [x] prezto
-  * ... (???)
-* [ ] Config plugin(s)
-  * [x] prezto
-* [x] Update `install.sh`
-* [x] Test
-* [ ] Write docs
-
-## vim Configurations
-
-TODO:
-
-* [ ] Config vim
-* [ ] Install plugins
-  * [x] ayu-vim
-  * [x] indentLine
-  * [x] lightline.vim
-  * [x] ale
-  * [x] lightline-ale
-  * [x] nerdtree
-  * [x] vim-gitbranch
-  * [x] vim-polygot
-  * [x] emmet-vim
-  * [x] vim-surround
-  * [x] vim-multiple-cursors
-  * [x] completor
-  * ... (???)
-* [ ] Config plugins
-  * [x] ayu-vim
-  * [x] indentLine
-  * [x] lightline.vim
-  * [x] ale
-  * [x] lightline-ale
-  * [x] nerdtree
-  * [x] vim-gitbranch
-  * [x] vim-polygot (for python, javascript, jsx, vue)
-  * [ ] emmet-vim
-  * [ ] vim-surround
-  * [ ] vim-multiple-cursors
-  * [ ] completor
-  * ... (???)
-* [x] Update `install.sh`
-* [x] Test
-* [ ] Write docs
-
-## tmux
-
-TODO:
-
+* [ ] Refactor vim configs
+  * [x] common
+  * [ ] plugins
+  * [ ] filetypes (python, golang, shellscript, javascript, vue, rust, kotlin, java, markdown)
+* [ ] Refactor zsh configs
 * [ ] Config tmux
-* [ ] Install plugin(s)
-* [ ] Config plugin(s)
-* [x] Test
-* [x] Update `install.sh`
-* [ ] Write docs
