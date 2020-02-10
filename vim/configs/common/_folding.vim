@@ -1,3 +1,6 @@
+"" make folds visible in the sidebar
+set foldcolumn=1
+
 "" fold based on syntax
 set foldmethod=syntax
 

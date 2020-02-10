@@ -1,3 +1,8 @@
+"" enable true colors support
+if (has("termguicolors"))
+  set termguicolors
+endif
+
 """"""""""""""""""""
 "" editor
 """"""""""""""""""""

@@ -40,3 +40,6 @@
 [submodule "vim/pack/plugins/start/papercolor-theme"]
 	path = vim/pack/plugins/start/papercolor-theme
 	url = https://github.com/NLKNguyen/papercolor-theme.git
+[submodule "vim/pack/plugins/start/auto-pairs"]
+	path = vim/pack/plugins/start/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs.git
