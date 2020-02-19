@@ -7,6 +7,9 @@ endif
 "" editor
 """"""""""""""""""""
 
+"" turn on syntax highlighting
+syntax on
+
 "" show the cursor position all the time
 set ruler
 
