@@ -9,4 +9,3 @@ set sidescroll=1
 
 "" keep a number of columns to the left and right of the cursor if nowrap
 set sidescrolloff=15
-

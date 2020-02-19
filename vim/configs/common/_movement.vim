@@ -5,4 +5,3 @@ nnoremap k gk
 "" move to beginning/end of line
 nnoremap B ^
 nnoremap E $
-

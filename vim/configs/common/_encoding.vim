@@ -5,4 +5,3 @@ set fileencodings=utf-8
 
 "" use unix as the standard <EOL> formats
 set fileformats=unix,dos,mac
-

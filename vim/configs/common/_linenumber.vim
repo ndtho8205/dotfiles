@@ -10,4 +10,3 @@ augroup ToggleLineNumber
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * set norelativenumber
 augroup END
-

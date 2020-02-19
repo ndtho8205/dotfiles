@@ -5,4 +5,3 @@ endif
 
 "" make the mouse work like with Windows
 set mousemodel=popup
-

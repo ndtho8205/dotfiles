@@ -6,7 +6,7 @@ let g:ale_sign_column_always = 1
 
 "" what text should be used for signs
 let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '!' 
+let g:ale_sign_warning = '!'
 
 "" change the format of echo messages
 let g:ale_echo_msg_error_str = 'E'
@@ -20,7 +20,7 @@ let g:ale_linters = {
 
 "" :ALEFix will try and fix code.
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\  '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'javascript':['eslint'],
 \  'vue':['eslint'],
 \  'python':['black', 'yapf'],
@@ -28,6 +28,5 @@ let g:ale_fixers = {
 \}
 
 "" navigate beween errors quickly
-nnoremap <silent> <C-a> <Plug>(ale_previous_wrap)
-nnoremap <silent> <C-d> <Plug>(ale_next_wrap)
-
+nmap <silent> <C-a> <Plug>(ale_previous_wrap)
+nmap <silent> <C-d> <Plug>(ale_next_wrap)

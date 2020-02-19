@@ -12,4 +12,3 @@ set smartcase
 
 "" map keys for turning off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
-

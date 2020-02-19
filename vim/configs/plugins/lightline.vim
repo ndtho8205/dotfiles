@@ -1,64 +1,79 @@
-"" lightline
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set laststatus=2
+"" don't show mode information in the last line
 set noshowmode
-if !has('gui_running')
-  set t_Co=256
-endif
 
 let g:lightline = {
-      \ 'active': {
-      \   'left': [
-      \               [ 'mode', 'paste' ],
-      \               [ 'gitbranch', 'filename', 'readonly', 'modified' ]
-      \           ],
-      \   'right': [
-      \               [ 'lineinfo' ],
-      \               [ 'percent' ],
-      \               [ 'fileformat', 'filetype'],
-      \               [ 'linter_errors', 'linter_warnings', 'linter_ok' ]
-      \            ],
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name',
-      \   'filename': 'LightlineFilename',
-      \   'fileformat': 'LightlineFileformat',
-      \ },
-      \ 'separator':      {'left': "\ue0b0", 'right': "\ue0b2"},
-      \ 'subseparator':   {'left': "\ue0b1", 'right': "\ue0b3"}
-      \ }
+\  'active': {
+\    'left': [
+\      ['mode', 'paste'],
+\      ['gitbranch', 'filename']
+\    ],
+\    'right': [
+\      ['lineinfo', 'percent'],
+\      ['fileformat', 'fileencoding', 'filetype'],
+\      ['linter_errors', 'linter_warnings', 'linter_ok']
+\    ],
+\  },
+\  'inactive': {
+\    'left': [
+\      ['mode'],
+\      ['filename'],
+\    ],
+\    'right': [
+\      ['lineinfo', 'percent'],
+\      ['filetype'],
+\    ],
+\  },
+\  'component_function': {
+\    'gitbranch': 'LightlineGitbranch',
+\    'filename': 'LightlineFilename',
+\    'fileformat': 'LightlineFileformat',
+\    'fileencoding': 'LightlineFileencoding',
+\    'filetype': 'LightlineFiletype',
+\  },
+\  'separator': {'left': "\ue0b0", 'right': "\ue0b2",},
+\  'subseparator': {'left': "\ue0b1", 'right': "|",}
+\}
+
+function! LightlineGitbranch()
+  let gitbranch = gitbranch#name()
+  return strlen(gitbranch) ? ' ' . gitbranch : ''
+endfunction
 
 function! LightlineFilename()
   let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let readonly = &readonly && &filetype !=# 'help' ? ' ' : ''
   let modified = &modified ? ' +' : ''
-  return filename . modified
+  return filename . readonly . modified
 endfunction
 
 function! LightlineFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? &fileencoding : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? &filetype : ''
+endfunction
 
 "" lightline-ale
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" register the components
 let g:lightline.component_expand = {
-      \  'linter_warnings': 'lightline#ale#warnings',
-      \  'linter_errors': 'lightline#ale#errors',
-      \  'linter_ok': 'lightline#ale#ok',
-      \ }
+\  'linter_warnings': 'lightline#ale#warnings',
+\  'linter_errors': 'lightline#ale#errors',
+\  'linter_ok': 'lightline#ale#ok',
+\}
 
 "" set color to the components
 let g:lightline.component_type = {
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \     'linter_ok': 'left',
-      \ }
+\  'linter_warnings': 'warning',
+\  'linter_errors': 'error',
+\  'linter_ok': 'right',
+\}
 
 "" using icons as indicators
 let g:lightline#ale#indicator_warnings = "⚠"
 let g:lightline#ale#indicator_errors = "✖"
 let g:lightline#ale#indicator_ok = "⬥"
-
-

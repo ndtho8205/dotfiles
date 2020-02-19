@@ -7,4 +7,3 @@ inoremap kj <ESC>
 
 "" map for quickly reload .vimrc
 nnoremap <leader>rv :source ~/.vimrc<CR>
-

@@ -12,4 +12,3 @@ set nofoldenable
 
 "" open/close folding with spacebar
 nnoremap <space> za
-

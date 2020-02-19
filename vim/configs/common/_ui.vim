@@ -46,11 +46,14 @@ set linebreak
 set breakindent
 
 "" put a string at the wrapped lines
-set showbreak=↪\ 
+set showbreak=↪\
 
 """"""""""""""""""""
 "" command
 """"""""""""""""""""
+
+"" show status bar
+set laststatus=2
 
 "" display incomplete commands
 set showcmd
@@ -68,4 +71,3 @@ set wildignore+=*sass-cache*
 
 "" shorten many interruptive prompts
 set shortmess=atI
-

@@ -6,4 +6,3 @@ autocmd FileType python setlocal shiftwidth=4 textwidth=120 tabstop=8 softtabsto
 " autocmd FileType javascript set formatprg=prettier\ --stdin
 " autocmd BufWritePre *.js :normal gggqG
 " autocmd BufWritePre *.js exe "normal! gggqG\<C-o>\<C-o>"
-

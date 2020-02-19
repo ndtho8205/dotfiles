@@ -8,4 +8,3 @@ set shiftwidth=2        " number of spaces to use for ech indent step
 set tabstop=2           " number of visual spaces per tab
 set softtabstop=2       " number of spaces in tab when editing
 set expandtab           " use spaces instead of tabs
-
