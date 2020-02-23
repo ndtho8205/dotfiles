@@ -15,7 +15,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 "" enable linters for Go
 let g:ale_linters = {
-\  'go': ['gofmt', 'golint', 'go vet', 'golangci-lint'],
+\  'go': ['gofmt', 'golangci-lint', 'govet'],
 \}
 
 "" :ALEFix will try and fix code.
@@ -28,5 +28,5 @@ let g:ale_fixers = {
 \}
 
 "" navigate beween errors quickly
-nmap <silent> <C-a> <Plug>(ale_previous_wrap)
-nmap <silent> <C-d> <Plug>(ale_next_wrap)
+nmap <silent> <leader>l <Plug>(ale_previous_wrap)
+nmap <silent> <leader>p <Plug>(ale_next_wrap)

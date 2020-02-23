@@ -1,0 +1,46 @@
+# automatically run command with inotifywait
+
+if test -t 1; then
+  ncolors=$(which tput > /dev/null && tput colors)
+  if test -n "$ncolors" && test "$ncolors" -ge 8; then
+    standout="$(tput smso)"
+    normal="$(tput sgr0)"
+    green="$(tput setaf 2)"
+    blue="$(tput setaf 4)"
+  fi
+fi
+
+info() {
+  printf "${standout}${blue} INFO ${normal} ${blue}$1${normal}\n"
+}
+
+success() {
+  printf "${standout}${green} DONE ${normal} ${green}$1${normal}\n"
+}
+
+clrscr() {
+  tput reset
+}
+
+# function fwatch() {
+
+command="'$*'"
+
+clrscr
+info "watching dir(s): *.*"
+
+while inotifywait --quiet --exclude .swp -e modify -r .; do
+  clrscr
+
+  info "running command: "$command""
+  echo
+
+  $@
+
+  echo
+  success "command was run successfully at $(date)"
+  info "watching dir(s): *.*"
+
+done;
+
+# }
