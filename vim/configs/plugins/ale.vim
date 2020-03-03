@@ -5,8 +5,8 @@ let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
 
 "" what text should be used for signs
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '!'
+let g:ale_sign_error = "✖"
+let g:ale_sign_warning = "⚠"
 
 "" change the format of echo messages
 let g:ale_echo_msg_error_str = 'E'

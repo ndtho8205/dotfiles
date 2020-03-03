@@ -11,4 +11,4 @@ set foldnestmax=3
 set nofoldenable
 
 "" open/close folding with spacebar
-nnoremap <space> za
+" nnoremap <space> za

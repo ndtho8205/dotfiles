@@ -1,5 +1,5 @@
 "" highlight last inserted text
-nnoremap gV `[v`]
+" nnoremap gV `[v`]
 
 "" auto indent pasted text
 nnoremap p p=`]<C-o>

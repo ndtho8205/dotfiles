@@ -8,11 +8,15 @@ let g:indentLine_faster = 1
 let g:indentLine_first_char = '▏'
 let g:indentLine_char = '▏'
 
+"" set terminal indent line color
+let g:indentLine_color_term = 235
+let g:indentLine_color_gui = '#262626'
+
 "" show first indent level
 let g:indentLine_showFirstIndentLevel = 1
 
 "" use colorscheme
-let g:indentLine_setColors = 0
+"let g:indentLine_setColors = 0
 
 "" fix conceal settings
 let g:indentLine_concealcursor = ''

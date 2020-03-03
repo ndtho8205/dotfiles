@@ -2,15 +2,29 @@
 set noshowmode
 
 let g:lightline = {
+\  'colorscheme': 'powerline',
+\  'mode_map': {
+\    'n': 'N',
+\    'i': 'I',
+\    'R': 'R',
+\    'v': 'V',
+\    'V': 'VL',
+\    '\<C-v>': 'VB',
+\    'c': 'CMD',
+\    's': 'S',
+\    'S': 'SL',
+\    '\<C-s>': 'SB',
+\    't': 'TERM',
+\  },
 \  'active': {
 \    'left': [
 \      ['mode', 'paste'],
-\      ['gitbranch', 'filename']
+\      ['gitbranch', 'filename'],
 \    ],
 \    'right': [
 \      ['lineinfo', 'percent'],
 \      ['fileformat', 'fileencoding', 'filetype'],
-\      ['linter_errors', 'linter_warnings', 'linter_ok']
+\      ['linter_errors', 'linter_warnings', 'linter_ok'],
 \    ],
 \  },
 \  'inactive': {
@@ -24,6 +38,7 @@ let g:lightline = {
 \    ],
 \  },
 \  'component_function': {
+\    'mode': 'LightlineMode',
 \    'gitbranch': 'LightlineGitbranch',
 \    'filename': 'LightlineFilename',
 \    'fileformat': 'LightlineFileformat',
@@ -34,6 +49,13 @@ let g:lightline = {
 \  'subseparator': {'left': "\ue0b1", 'right': "|",}
 \}
 
+function! LightlineMode()
+  let filename = expand('%:t')
+  return filename =~# '^__Tagbar__' ? 'Tagbar' :
+    \ filename =~# 'NERD_tree' ? 'NERDTree' :
+    \ lightline#mode()
+endfunction
+
 function! LightlineGitbranch()
   let gitbranch = gitbranch#name()
   return strlen(gitbranch) ? ' ' . gitbranch : ''
@@ -43,7 +65,10 @@ function! LightlineFilename()
   let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
   let readonly = &readonly && &filetype !=# 'help' ? ' ' : ''
   let modified = &modified ? ' +' : ''
-  return filename . readonly . modified
+
+  let filename = filename =~# '^__Tagbar__\|NERD_tree' ? '' :
+    \ filename . readonly . modified
+  return filename
 endfunction
 
 function! LightlineFileformat()

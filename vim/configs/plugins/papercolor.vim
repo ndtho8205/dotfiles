@@ -10,7 +10,7 @@ let g:PaperColor_Theme_Options = {
 \    'default.dark': {
 \      'allow_bold': 1,
 \      'allow_italic': 1,
-\    }
+\    },
 \  },
 \  'language': {
 \    'python': { 'highlight_builtins': 1, },

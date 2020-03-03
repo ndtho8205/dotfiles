@@ -32,28 +32,28 @@ au FocusGained,BufEnter * checktime     " when changing buffers
 """"""""""""""""""""
 
 "" open/close tabpage
-nnoremap tn :tabnew<cr>
-nnoremap tc :tabclose<cr>
-nnoremap to :tabonly<cr>
+" nnoremap tn :tabnew<cr>
+" nnoremap tc :tabclose<cr>
+" nnoremap to :tabonly<cr>
 
 "" navigate between tabpages
-nnoremap H :tabnext<cr>
-nnoremap L :tabprev<cr>
-nnoremap th :tabnext<cr>
-nnoremap tl :tabprev<cr>
-nnoremap tj  :tabfirst<CR>
-nnoremap tk  :tablast<CR>
+" nnoremap H :tabnext<cr>
+" nnoremap L :tabprev<cr>
+" nnoremap th :tabnext<cr>
+" nnoremap tl :tabprev<cr>
+" nnoremap tj  :tabfirst<CR>
+" nnoremap tk  :tablast<CR>
 
 "" move a tabpage
-nnoremap tm  :tabmove<Space>
+" nnoremap tm  :tabmove<Space>
 
 "" go to the n-th tabpage
-nnoremap <leader>1 1gt
-nnoremap <leader>2 2gt
-nnoremap <leader>3 3gt
-nnoremap <leader>4 4gt
-nnoremap <leader>5 5gt
-nnoremap <leader>6 6gt
-nnoremap <leader>7 7gt
-nnoremap <leader>8 8gt
-nnoremap <leader>9 9gt
+" nnoremap <leader>1 1gt
+" nnoremap <leader>2 2gt
+" nnoremap <leader>3 3gt
+" nnoremap <leader>4 4gt
+" nnoremap <leader>5 5gt
+" nnoremap <leader>6 6gt
+" nnoremap <leader>7 7gt
+" nnoremap <leader>8 8gt
+" nnoremap <leader>9 9gt
