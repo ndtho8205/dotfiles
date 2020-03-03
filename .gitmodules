@@ -22,10 +22,6 @@
 	path = vim/pack/plugins/start/lightline-ale
 	url = https://github.com/maximbaz/lightline-ale.git
 	ignore = dirty
-[submodule "vim/pack/plugins/start/nerdtree"]
-	path = vim/pack/plugins/start/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
-	ignore = dirty
 [submodule "vim/pack/plugins/start/indentLine"]
 	path = vim/pack/plugins/start/indentLine
 	url = https://github.com/Yggdroot/indentLine.git

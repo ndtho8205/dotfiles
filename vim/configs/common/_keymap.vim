@@ -7,3 +7,6 @@ inoremap kj <ESC>
 
 "" map for quickly reload .vimrc
 nnoremap <leader>rv :source ~/.vimrc<CR>
+
+"" map for quickly edit a file
+nnoremap <leader>e :e **/*
