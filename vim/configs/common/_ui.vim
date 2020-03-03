@@ -13,6 +13,9 @@ syntax on
 "" show the cursor position all the time
 set ruler
 
+"" change vertical separator
+set fillchars+=vert:│
+
 "" show matching brackets
 set showmatch
 set matchtime=2         " tenths of a second to blink on matching brackets
