@@ -68,9 +68,10 @@ set wildmode=longest:full,full
 "" wildignore
 set wildignore+=*.o,*.obj,*.pyc,*~,*.so,*.swp,*.zip
 set wildignore+=*.gem,*.png,*.jpg,*.gif
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-set wildignore+=*/tmp/*,*vim/backups*,vendor/**
-set wildignore+=*sass-cache*
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store/*
+set wildignore+=*/tmp/*,*/vim/backups*,*/vendor/*
+set wildignore+=*/node_modules/*,*/venv/*,*/__pycache__/*
+set wildignore+=*/sass-cache/*
 
 "" shorten many interruptive prompts
 set shortmess=atI
