@@ -13,7 +13,7 @@ let g:indentLine_color_term = 235
 let g:indentLine_color_gui = '#262626'
 
 "" show first indent level
-let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_showFirstIndentLevel = 0
 
 "" use colorscheme
 "let g:indentLine_setColors = 0
