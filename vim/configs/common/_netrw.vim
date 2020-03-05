@@ -19,12 +19,38 @@ let g:netrw_dirhistmax = 0
 "" hide files and folders
 let g:netrw_list_hide = &wildignore
 
-"" kill buffers creatred by netrw
-autocmd FileType netrw setl bufhidden=delete
+"" set netrw buffer
+let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
 
-"" open automatically when vim starts up with no specified files
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Vexplore | endif
+"" close netrw
+nnoremap <leader>t :call <sid>CloseAllNetrwBuffers()<cr>
 
-" close vim if the only buffer left open is netrw
-autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | q | endif
+function! s:CloseAllNetrwBuffers()
+  for i in range(1, bufnr('$'))
+    if getbufvar(i, '&filetype') == "netrw"
+      silent exe 'bdelete! ' . i
+    endif
+  endfor
+endfunction
+
+"" setup netrw buffer
+augroup AutoSetupNetrwBuffer
+  autocmd!
+
+  autocmd FileType netrw call s:SetupNetrw()
+
+  "" open automatically when vim starts up with no specified files
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Vexplore | endif
+
+  "" close vim if the only buffer left open is netrw
+  autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | q | endif
+augroup END
+
+function! s:SetupNetrw()
+  "" delete netrw buffer when it was hidden
+  setlocal bufhidden=delete
+
+  "" remove <c-l> mapping
+  nmap <buffer> <nowait> <Nop> <Plug>NetrwRefresh
+endfunction

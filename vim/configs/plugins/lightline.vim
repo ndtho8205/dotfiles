@@ -53,6 +53,7 @@ function! LightlineMode()
   let filename = expand('%:t')
   return filename =~# '^__Tagbar__' ? 'Tagbar' :
     \ filename =~# 'NERD_tree' ? 'NERDTree' :
+    \ filename =~# 'NetrwTreeListing' ? 'Netrw' :
     \ lightline#mode()
 endfunction
 
@@ -66,7 +67,7 @@ function! LightlineFilename()
   let readonly = &readonly && &filetype !=# 'help' ? ' ' : ''
   let modified = &modified ? ' +' : ''
 
-  let filename = filename =~# '^__Tagbar__\|NERD_tree' ? '' :
+  let filename = filename =~# '^__Tagbar__\|NERD_tree\|NetrwTreeListing' ? '' :
     \ filename . readonly . modified
   return filename
 endfunction

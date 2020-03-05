@@ -1,6 +1,24 @@
-autocmd FileType go setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+augroup AutoSetupFiletypes
+  autocmd!
+  autocmd FileType go call s:SetupGo()
+  autocmd FileType python call s:SetupPython()
+augroup END
 
-autocmd FileType python setlocal shiftwidth=4 textwidth=120 tabstop=8 softtabstop=4 expandtab colorcolumn=120
+function! s:SetupGo()
+  setlocal expandtab
+  setlocal shiftwidth=4
+  setlocal tabstop=4
+  setlocal softtabstop=4
+endfunction
+
+function! s:SetupPython()
+  setlocal shiftwidth=4
+  setlocal tabstop=8
+  setlocal softtabstop=4
+  setlocal expandtab
+  setlocal textwidth=120
+  setlocal colorcolumn=120
+endfunction
 
 "" Javascript
 " autocmd FileType javascript set formatprg=prettier\ --stdin
