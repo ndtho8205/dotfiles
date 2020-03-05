@@ -23,7 +23,7 @@ let g:netrw_list_hide = &wildignore
 let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
 
 "" close netrw
-nnoremap <leader>xt :call <sid>CloseAllNetrwBuffers()<cr>
+nnoremap <leader>xn :call <sid>CloseAllNetrwBuffers()<cr>
 
 function! s:CloseAllNetrwBuffers()
   for i in range(1, bufnr('$'))
@@ -52,5 +52,5 @@ function! s:SetupNetrw()
   setlocal bufhidden=delete
 
   "" remove <c-l> mapping
-  nmap <buffer> <nowait> <Nop> <Plug>NetrwRefresh
+  nnoremap <buffer> <C-l> <C-w>l<CR>
 endfunction
