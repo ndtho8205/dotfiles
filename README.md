@@ -83,7 +83,10 @@ git submodule update --init --recursive
 
 * [ ] Refactor vim configs
   * [x] common
-  * [ ] plugins
+  * [x] plugins (auto-pairs, indentLine, lightline, papercolor)
+  * [ ] ale (it does not catch warnings (govet) and errors (golangci-lint) due to incorrect regex
+      patterns)
+  * [ ] coc.nvim (coc-python provides too much features that exceeds my needs)
   * [ ] filetypes (python, golang, shellscript, javascript, vue, rust, kotlin, java, markdown)
 * [ ] Refactor zsh configs
 * [ ] Config tmux
