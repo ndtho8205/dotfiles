@@ -23,7 +23,7 @@ let g:netrw_list_hide = &wildignore
 let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
 
 "" close netrw
-nnoremap <leader>t :call <sid>CloseAllNetrwBuffers()<cr>
+nnoremap <leader>xt :call <sid>CloseAllNetrwBuffers()<cr>
 
 function! s:CloseAllNetrwBuffers()
   for i in range(1, bufnr('$'))

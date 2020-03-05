@@ -29,7 +29,7 @@ alias rz='source ~/.zshrc'
 
 # cat
 if type "bat" > /dev/null; then
-  alias cat='bat --theme="OneHalfDark" --style="numbers,changes,header,grid" --italic-text=always'
+  alias cat='bat --style="numbers,changes,header,grid" --italic-text=always'
 elif type "pygmentize" > dev/null; then
   alias cat='pygmentize -O style=native -f console256 -g'
 fi
@@ -76,7 +76,7 @@ if type "docker" > /dev/null; then
   alias dockerclean='dockercleanc || true && dockercleani'
 
   alias dockly-clean='docker container kill dockly || true && docker rm dockly'
-  alias dockly-pull='docker pull lirantal/dockly' 
+  alias dockly-pull='docker pull lirantal/dockly'
   alias dockly-run='docker run -it --name dockly -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly'
   alias dockly='dockly-clean || true && dockly-pull || true && dockly-run'
 fi

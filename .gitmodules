@@ -43,3 +43,11 @@
 	url = https://github.com/neoclide/coc.nvim.git
   branch = release
   ignore = dirty
+[submodule "vim/pack/plugins/start/fzf.vim"]
+	path = vim/pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
+  ignore = dirty
+[submodule "vim/pack/plugins/start/fzf"]
+	path = vim/pack/plugins/start/fzf
+	url = https://github.com/junegunn/fzf.git
+  ignore = dirty

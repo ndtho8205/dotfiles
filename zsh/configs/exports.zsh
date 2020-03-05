@@ -38,3 +38,9 @@ if type "npm" > /dev/null; then
   export PATH=$NPM_GLOBAL/bin:$PATH
   export NPM_CONFIG_PREFIX=$NPM_GLOBAL
 fi
+
+if type "bat" > /dev/null; then
+  export BAT_THEME="OneHalfDark"
+fi
+
+export FZF_DEFAULT_OPTS="-m --no-mouse --height 40% --layout=reverse --border --info=inline --preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --bind='F2:toggle-preview'"
