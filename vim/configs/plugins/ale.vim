@@ -15,7 +15,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 "" enable linters for Go
 let g:ale_linters = {
-\  'go': ['gofmt', 'golangci-lint', 'govet'],
+\  'go': ['gofmt', 'golangci-lint', 'gobuild'],
 \}
 
 "" :ALEFix will try and fix code.
