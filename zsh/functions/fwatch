@@ -22,14 +22,7 @@ clrscr() {
   tput reset
 }
 
-# function fwatch() {
-
-command="'$*'"
-
-clrscr
-info "watching dir(s): *.*"
-
-while inotifywait --quiet --exclude .swp -e modify -r .; do
+execute() {
   clrscr
 
   info "running command: "$command""
@@ -39,6 +32,18 @@ while inotifywait --quiet --exclude .swp -e modify -r .; do
 
   echo
   success "command was run successfully at $(date)"
+}
+
+# function fwatch() {
+
+command="'$*'"
+
+execute $@ # first execute
+
+while inotifywait --quiet --exclude .swp -e modify -r .; do
+
+  execute $@
+
   info "watching dir(s): *.*"
 
 done;
