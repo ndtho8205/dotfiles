@@ -3,6 +3,7 @@
     diff = auto
     status = auto
     branch = auto
+    editor = vim
 
 [color "branch"]
     current = white reverse
@@ -31,10 +32,12 @@
 
 [diff]
     mnemonicprefix = true
+    tool = vimdiff
 
 [merge]
     log = true
     ff = true
+    tool = vimdiff
 
 [push]
     followTags = true
@@ -45,6 +48,7 @@
 
 [alias]
     plog = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
+    
 [user]
-	name = Tho Nguyen Duc
-	email = ndtho8205@gmail.com
+    name = Tho Nguyen Duc
+    email = ndtho8205@gmail.com
