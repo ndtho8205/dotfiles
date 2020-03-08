@@ -23,9 +23,12 @@ set hidden
 
 "" reload files changed outside vim
 set autoread
-au CursorHold,CursorHoldI * checktime   " when cursor stays still for 4 secs
-au FocusGained,BufEnter * checktime     " when changing buffers
-" au FocusGained,BufEnter * :silent! !  " silently, no confirmation
+augroup AutoReloadBuffer
+  autocmd!
+  autocmd CursorHold,CursorHoldI * checktime   " when cursor stays still for 4 secs
+  autocmd FocusGained,BufEnter * checktime     " when changing buffers
+  " au FocusGained,BufEnter * :silent! !  " silently, no confirmation
+augroup END
 
 """"""""""""""""""""
 "" tabpage
