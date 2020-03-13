@@ -16,15 +16,18 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 "" enable linters for Go
 let g:ale_linters = {
 \  'go': ['gofmt', 'golangci-lint', 'gobuild'],
+\  'rust': ['rls'],
 \}
+let g:ale_rust_rls_toolchain = 'stable'
 
 "" :ALEFix will try and fix code.
 let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'javascript':['eslint'],
 \  'vue':['eslint'],
-\  'python':['black', 'yapf'],
+\  'python':['black'],
 \  'go':['gofmt', 'goimports'],
+\  'rust': ['rustfmt'],
 \}
 
 "" navigate beween errors quickly

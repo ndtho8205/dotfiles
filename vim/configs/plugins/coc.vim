@@ -5,20 +5,21 @@ set updatetime=300
 set shortmess +=c
 
 let g:coc_global_extensions = [
-      \  'coc-snippets',
-      \  'coc-go',
-      \  'coc-tsserver',
-      \  'coc-eslint',
-      \  'coc-prettier',
-      \  'coc-css',
-      \  'coc-json',
-      \]
+\  'coc-snippets',
+\  'coc-go',
+\  'coc-rls',
+\  'coc-tsserver',
+\  'coc-eslint',
+\  'coc-prettier',
+\  'coc-css',
+\  'coc-json',
+\]
 
 "" use <tab> for trigger completion and navigate to the next complete item
 inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>CheckBackSpace() ? "\<Tab>" :
-      \ coc#refresh()
+\  pumvisible() ? "\<C-n>" :
+\  <SID>CheckBackSpace() ? "\<Tab>" :
+\  coc#refresh()
 
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 

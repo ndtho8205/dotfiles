@@ -84,9 +84,11 @@ git submodule update --init --recursive
 * [ ] Refactor vim configs
   * [x] common
   * [x] plugins (auto-pairs, indentLine, lightline, papercolor)
-  * [ ] ale (it does not catch warnings (govet) and errors (golangci-lint) due to incorrect regex
-      patterns)
-  * [ ] coc.nvim (coc-python provides too much features that exceeds my needs)
-  * [ ] filetypes (python, golang, shellscript, javascript, vue, rust, kotlin, java, markdown)
+  * [x] golang
+  * [ ] plugins(ale, coc.nvim, fzf.vim)
+  * [ ] rust: ale and coc-rust cannot lint the files other than `main.rs`
+      due to a `rls` issue related to cargo project structures
+  * [ ] python: coc-python provides too much features that exceeds my needs
+  * [ ] filetypes (shellscript, javascript, vue, java, markdown, kotlin)
 * [ ] Refactor zsh configs
 * [ ] Config tmux

@@ -22,7 +22,6 @@ set matchtime=2         " tenths of a second to blink on matching brackets
 
 "" highlight column after 'textwidth'
 set colorcolumn=+1
-highlight ColorColumn ctermbg=235 guibg=#242424
 
 "" don't redraw while executing macros (good performance config)
 set lazyredraw

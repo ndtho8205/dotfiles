@@ -4,6 +4,8 @@ set background=dark
 "" set colorscheme
 colorscheme PaperColor
 
+highlight ColorColumn ctermbg=235 guibg=#242424
+
 "" theme options
 let g:PaperColor_Theme_Options = {
 \  'theme': {
