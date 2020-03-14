@@ -16,7 +16,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 "" enable linters for Go
 let g:ale_linters = {
 \  'go': ['gofmt', 'golangci-lint', 'gobuild'],
-\  'rust': ['rls'],
+\  'rust': ['cargo', 'rls', 'rustc'],
 \}
 let g:ale_rust_rls_toolchain = 'stable'
 
