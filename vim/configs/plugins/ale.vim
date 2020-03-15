@@ -13,11 +13,13 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-"" enable linters for Go
+"" enable linters
 let g:ale_linters = {
 \  'go': ['gofmt', 'golangci-lint', 'gobuild'],
 \  'rust': ['cargo', 'rls', 'rustc'],
 \}
+
+"" linters for Rust
 let g:ale_rust_rls_toolchain = 'stable'
 
 "" :ALEFix will try and fix code.
