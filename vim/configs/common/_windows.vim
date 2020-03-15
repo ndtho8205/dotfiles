@@ -35,13 +35,13 @@ augroup END
 """"""""""""""""""""
 
 "" open/close tabpage
-" nnoremap tn :tabnew<cr>
-" nnoremap tc :tabclose<cr>
-" nnoremap to :tabonly<cr>
+nnoremap tn :tabnew<cr>
+nnoremap tc :tabclose<cr>
+nnoremap to :tabonly<cr>
 
 "" navigate between tabpages
-" nnoremap H :tabnext<cr>
-" nnoremap L :tabprev<cr>
+nnoremap ]t :tabnext<cr>
+nnoremap [t :tabprev<cr>
 " nnoremap th :tabnext<cr>
 " nnoremap tl :tabprev<cr>
 " nnoremap tj  :tabfirst<CR>

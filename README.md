@@ -87,7 +87,7 @@ git submodule update --init --recursive
   * [x] golang
   * [x] rust
   * [ ] python: coc-python provides too much features that exceeds my needs
-  * [ ] plugins (ale, coc.nvim, fzf.vim)
+  * [ ] plugins (ale, coc.nvim)
   * [ ] filetypes (shellscript, javascript, vue, markdown, kotlin)
 * [ ] Refactor zsh configs
 * [ ] Config tmux

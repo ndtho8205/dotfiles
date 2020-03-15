@@ -33,5 +33,5 @@ let g:ale_fixers = {
 \}
 
 "" navigate beween errors quickly
-nmap <silent> <leader>l <Plug>(ale_previous_wrap)
-nmap <silent> <leader>p <Plug>(ale_next_wrap)
+nmap <silent> [a <Plug>(ale_previous_wrap)
+nmap <silent> ]a <Plug>(ale_next_wrap)
