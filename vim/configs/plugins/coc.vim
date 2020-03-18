@@ -9,8 +9,6 @@ let g:coc_global_extensions = [
 \  'coc-go',
 \  'coc-rls',
 \  'coc-tsserver',
-\  'coc-eslint',
-\  'coc-prettier',
 \  'coc-css',
 \  'coc-json',
 \]

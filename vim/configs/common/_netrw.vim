@@ -17,7 +17,7 @@ let g:netrw_altv = 1
 let g:netrw_dirhistmax = 0
 
 "" hide files and folders
-let g:netrw_list_hide = &wildignore
+let g:netrw_list_hide = netrw_gitignore#Hide() . ',\(^\|\s\s\)\zs\.\S\+'
 
 "" set netrw buffer
 let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
