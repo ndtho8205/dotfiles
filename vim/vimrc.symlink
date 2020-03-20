@@ -1,1 +1,1 @@
-so ~/.dotfiles/vim/configs.vim
+source $HOME/.dotfiles/vim/init.vim

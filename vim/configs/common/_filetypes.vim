@@ -12,12 +12,10 @@ function! s:SetupGo()
 endfunction
 
 function! s:SetupPython()
-  setlocal shiftwidth=4
-  setlocal tabstop=8
-  setlocal softtabstop=4
   setlocal expandtab
-  setlocal textwidth=120
-  setlocal colorcolumn=120
+  setlocal shiftwidth=4
+  setlocal tabstop=4
+  setlocal softtabstop=4
 endfunction
 
 "" Javascript

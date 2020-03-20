@@ -3,6 +3,7 @@ let mapleader=','
 
 "" map for quickly switch to CMD mode
 nnoremap ; :
+nnoremap : ;
 
 "" map for avoid pressing ESC key
 inoremap jk <ESC>
