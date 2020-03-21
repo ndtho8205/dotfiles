@@ -2,7 +2,7 @@
 set noshowmode
 
 let g:lightline = {
-\  'colorscheme': 'powerline',
+\  'colorscheme': 'powerlineish',
 \  'mode_map': {
 \    'n': 'N',
 \    'i': 'I',
@@ -43,7 +43,7 @@ let g:lightline = {
 \    'fileencoding': 'LightlineFileencoding',
 \    'filetype': 'LightlineFiletype',
 \  },
-\  'separator': {'left': "\ue0b0", 'right': "\ue0b2",},
+\  'separator': {'left': "\ue0b0", 'right': ""},
 \  'subseparator': {'left': "\ue0b1", 'right': "|",}
 \}
 
