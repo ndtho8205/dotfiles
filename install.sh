@@ -130,6 +130,9 @@ install_dotfiles () {
   done
 
   make_link "$DOTFILES/vim" "$HOME/.vim"
+  make_link "$DOTFILES/bspwm" "$HOME/.config/bspwm"
+  make_link "$DOTFILES/sxhkd" "$HOME/.config/sxhkd"
+  make_link "$DOTFILES/alacritty" "$HOME/.config/alacritty"
 }
 
 install_dotfiles

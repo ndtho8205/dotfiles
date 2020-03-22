@@ -30,8 +30,8 @@ alias rz='source ~/.zshrc'
 # cat
 if type "bat" > /dev/null; then
   alias cat='bat --style="numbers,changes,header,grid" --italic-text=always'
-elif type "pygmentize" > dev/null; then
   alias cat='pygmentize -O style=native -f console256 -g'
+elif type "pygmentize" > /dev/null; then
 fi
 
 # bundler
