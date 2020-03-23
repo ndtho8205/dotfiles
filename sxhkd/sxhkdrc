@@ -19,13 +19,13 @@ super + Escape
 
 # screen/window/selection shot
 @Print
-  maim -u ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+  ~/.config/sxhkd/screenshot screen
 
 ctrl + @Print
-  maim -u -i $(xdotool getactivewindow) ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+  ~/.config/sxhkd/screenshot window
 
 shift + @Print
-  maim -u -s ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+  ~/.config/sxhkd/screenshot selection
 
 # music controls
 
