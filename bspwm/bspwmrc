@@ -12,7 +12,7 @@ killall feh
 
 # autostart
 # xss-lock -l -- betterlockscreen --lock dimblur &
-feh --recursive --randomize --bg-fill ~/Pictures/wallpapers/
+feh --recursive --randomize --bg-fill "$HOME/Pictures/wallpapers/" &
 dunst &
 sxhkd &
 # xsetroot -cursor_name left_ptr &
