@@ -11,4 +11,4 @@ elif [[ $mode == "selection" ]]; then
   maim -u -s "$filename"
 fi
 
-dunstify "Screenshot saved"
+notify-send "Screenshot saved"
