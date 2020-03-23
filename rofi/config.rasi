@@ -1,11 +1,16 @@
 configuration {
-  matching: "normal";
-/*	modi: "window,run,ssh";*/
-/*	width: 50;*/
-/*	lines: 15;*/
+	modi: "window,run,ssh";
+  lines: 5;
+  width: 50;
+  fullscreen: true;
+  bw: 2;
+  font: "JetBrainsMono Nerd Font 9";
+  separator-style: "solid";
+  hide-scrollbar: true;
+  theme: "nord";
+
+/*	show-match: true;*/
 /*	columns: 1;*/
-/*	font: "mono 12";*/
-/*	bw: 1;*/
 /*	location: 0;*/
 /*	padding: 5;*/
 /*	yoffset: 0;*/
@@ -41,9 +46,6 @@ configuration {
 /*	line-margin: 2;*/
 /*	line-padding: 1;*/
 /*	filter: ;*/
-/*	separator-style: "dash";*/
-/*	hide-scrollbar: false;*/
-/*	fullscreen: false;*/
 /*	fake-transparency: false;*/
 /*	dpi: -1;*/
 /*	threads: 0;*/
@@ -52,8 +54,6 @@ configuration {
 /*	fake-background: "screenshot";*/
 /*	window-format: "{w}    {c}   {t}";*/
 /*	click-to-exit: true;*/
-/*	show-match: true;*/
-/*	theme: ;*/
 /*	color-normal: ;*/
 /*	color-urgent: ;*/
 /*	color-active: ;*/
