@@ -24,10 +24,10 @@
 
 ### Text ###
 
-  font = JetBrains Mono 9
+  font = JetBrainsMono Nerd Font 9
   line_height = 3
   markup = full
-  format = "<b>%s</b>%b"
+  format = "<span foreground='#81a1c1'><big></big></span> <b>%s</b>%b"
 
   alignment = left
   vertical_alignment = center
@@ -64,25 +64,25 @@
   corner_radius = 0
 
 [shortcuts]
-close = ctrl+space
-close_all = ctrl+shift+space
-history = ctrl+grave
-context = ctrl+shift+period
+  close = ctrl+space
+  close_all = ctrl+shift+space
+  history = ctrl+grave
+  context = ctrl+shift+period
 
 [urgency_low]
-frame_color = "#3B7C87"
-foreground = "#3B7C87"
-background = "#191311"
-timeout = 4
+  frame_color = "#3B7C87"
+  foreground = "#3B7C87"
+  background = "#191311"
+  timeout = 4
 
 [urgency_normal]
-frame_color = "#5B8234"
-foreground = "#5B8234"
-background = "#191311"
-timeout = 6
+  frame_color = "#5B8234"
+  foreground = "#5B8234"
+  background = "#191311"
+  timeout = 6
 
 [urgency_critical]
-frame_color = "#B7472A"
-foreground = "#B7472A"
-background = "#191311"
-timeout = 8
+  frame_color = "#B7472A"
+  foreground = "#B7472A"
+  background = "#191311"
+  timeout = 8

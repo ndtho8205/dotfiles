@@ -1,23 +1,38 @@
-#
-# wm independent hotkeys
-#
+### System hotkeys ###
 
 # terminal emulator
 super + Return
-	alacritty
+	sh -c "$DE_TERM"
 
 # program launcher
-super + @space
-	rofi -show drun
+super + r
+  sh -c "$DE_LAUNCH"
+
+# power menu
+super + shift + p
+  ~/.config/sxhkd/power
 
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd; \
   dunstify "sxhkd config reloaded"
 
-#
-# bspwm hotkeys
-#
+# screen/window/selection shot
+@Print
+  maim -u ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+
+ctrl + @Print
+  maim -u -i $(xdotool getactivewindow) ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+
+shift + @Print
+  maim -u -s ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
+
+# music controls
+
+# backlight
+
+
+### BSPWM hotkeys ###
 
 # quit/restart bspwm
 super + alt + {q,r}
@@ -39,23 +54,6 @@ super + y
 super + g
 	bspc node -s biggest
 
-#
-# mouse
-#
-
-~button1
-  bspc pointer -g focus
-
-# move/resize window
-super + button{1-3}
-  bspc pointer -g {move,resize_side,resize_corner}
-super + !button{1-3}
-  bspc pointer -t %i %i super + @button{1-3}  bspc pointer -u
-
-#
-# state/flags
-#
-
 # set the window state
 super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
@@ -63,10 +61,6 @@ super + {t,shift + t,s,f}
 # set the node flags
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
-
-#
-# focus/swap
-#
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -133,13 +127,3 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
-
-#
-# screenshot
-#
-
-Print
-  maim ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
-
-shift + Print
-  maim -s ${HOME}/Pictures/"Screenshot $(date +"%Y-%m-%d %H:%M:%S").png"
