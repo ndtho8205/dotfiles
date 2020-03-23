@@ -7,14 +7,16 @@ export DE_BROWSE="google-chrome"
 
 # kill
 killall sxhkd
+killall picom
 killall dunst
 killall feh
 
 # autostart
 # xss-lock -l -- betterlockscreen --lock dimblur &
-feh --recursive --randomize --bg-fill "$HOME/Pictures/wallpapers/" &
-dunst &
 sxhkd &
+picom --experimental-backends &
+dunst &
+feh --recursive --randomize --bg-fill "$HOME/Pictures/wallpapers/" &
 # xsetroot -cursor_name left_ptr &
 
 # monitor
