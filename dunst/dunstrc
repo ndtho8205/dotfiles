@@ -1,7 +1,6 @@
 [global]
 
 ### Display ###
-
   monitor = 0
   follow = mouse
 
@@ -23,7 +22,6 @@
   idle_threshold = 120
 
 ### Text ###
-
   font = JetBrainsMono Nerd Font 9
   line_height = 3
   markup = full
@@ -42,19 +40,16 @@
   show_indicators = yes
 
 ### Icons ###
-
   icon_position = off
   min_icon_sixe = 0
   max_icon_size = 32
   icon_path = /usr/share/icons/Suru++/mimetypes/16/:/usr/share/icons/Suru++/status/32/:/usr/share/icons/Suru++/devices/16/:/usr/share/icons/Suru++/emblems/16/
 
 ### History ###
-
   sticky_history = yes
   history_length = 20
 
 ### Misc/Advanced ###
-
   dmenu = /usr/bin/dmenu -p dunst:
   browser = /usr/bin/firefox -new-tab
   always_run_script = true

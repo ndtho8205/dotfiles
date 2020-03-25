@@ -25,7 +25,7 @@ let g:ale_rust_rls_toolchain = 'stable'
 "" :ALEFix will try and fix code.
 let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
-\  'javascript':['eslint'],
+\  'javascript':['prettier-eslint', 'eslint'],
 \  'vue':['eslint'],
 \  'python':['black'],
 \  'go':['gofmt', 'goimports'],
