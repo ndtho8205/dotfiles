@@ -27,7 +27,7 @@ bspc config border_width         3
 bspc config window_gap           5
 
 # layout config
-bspc config automatic_scheme alternate
+bspc config automatic_scheme     alternate
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
@@ -37,6 +37,11 @@ bspc config focus_by_distance       true
 bspc config focus_follows_pointer   true
 bspc config click_to_focus          true
 bspc config pointer_follows_monitor true
+
+bspc config pointer_modifier        mod1
+bspc config pointer_action1         resize_side
+bspc config pointer_action1         resize_corner
+bspc config pointer_action3         move
 
 # color config
 bspc config normal_border_color  "#484848"
