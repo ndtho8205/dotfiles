@@ -17,6 +17,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters = {
 \  'go': ['gofmt', 'golangci-lint', 'gobuild'],
 \  'rust': ['cargo', 'rls', 'rustc'],
+\  'markdown': ['markdownlint'],
 \}
 
 "" linters for Rust
@@ -30,7 +31,11 @@ let g:ale_fixers = {
 \  'python':['black'],
 \  'go':['gofmt', 'goimports'],
 \  'rust': ['rustfmt'],
+\  'markdown': ['prettier'],
 \}
+
+"" config prettier on markdown
+let g:ale_javascript_prettier_options = '--prose-wrap always'
 
 "" navigate beween errors quickly
 nmap <silent> [a <Plug>(ale_previous_wrap)

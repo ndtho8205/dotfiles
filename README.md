@@ -10,84 +10,92 @@
 
 Set `zsh` as your login shell:
 
-```shell
+```sh
 chsh -s $(which zsh)
 ```
 
 ### vim
 
-* Install VIM 8.
+- Install VIM 8.
 
-```shell
-sudo add-apt-repository ppa:jonathonf/vim
+  ```sh
+  sudo add-apt-repository ppa:jonathonf/vim
 
-# you may want to install vim-gtk3 for more features
-sudo apt install vim
-```
+  # you may want to install vim-gtk3 for more features
+  sudo apt install vim
+  ```
 
-* Check version of vim
+- Check version of vim
 
-```shell
-vim --version
-```
+  ```sh
+  vim --version
+  ```
 
 ### tmux
 
 Steps to install Tmux from source
 
-* Remove existing tmux install
+- Remove existing tmux install
 
-```shell
-sudo apt remove -y --purge tmux
-```
+  ```sh
+  sudo apt remove -y --purge tmux
+  ```
 
-* Install build dependencies:
+- Install build dependencies:
 
-```shell
-sudo apt install -y automake build-essential cmake pkg-config
-sudo apt install -y exuberant-ctags libevent-dev libncurses5-dev
-```
+  ```sh
+  sudo apt install -y automake build-essential cmake pkg-config
+  sudo apt install -y exuberant-ctags libevent-dev libncurses5-dev
+  ```
 
-* Download from GitHub and cd to src dir
+- Download from GitHub and cd to src dir
 
-```shell
-git clone https://github.com/tmux/tmux.git
-cd tmux
-git checkout 2.6
-```
+  ```sh
+  git clone https://github.com/tmux/tmux.git
+  cd tmux
+  git checkout 2.6
+  ```
 
-* Configure, make, and make install
+- Configure, make, and make install
 
-```shell
-sh autogen.sh
-./configure && make -j"$(nproc)"
-sudo make install
-```
+  ```sh
+  sh autogen.sh
+  ./configure && make -j"$(nproc)"
+  sudo make install
+  ```
 
-* Check version of tmux
+- Check version of tmux
 
-```shell
-tmux -V
-```
+  ```sh
+  tmux -V
+  ```
 
 ## Install
 
-```shell
+```sh
 git clone https://github.com/ndtho8205/dotfiles.git
 cd dotfiles
 git submodule update --init --recursive
 ./install.sh
 ```
 
+## Notes
+
+- I don't use any vim markdown preview plugin. Instead, I map <kbd>F5</kbd> to
+  open Chrome on the editting buffer and use an extension
+  [simov/markdown-viewer](https://github.com/simov/markdown-viewer) to render it
+  (with `autoreload` enabled).
+
 ## TODO
 
-* [ ] Refactor vim configs
-  * [x] common
-  * [x] plugins (auto-pairs, indentLine, lightline, papercolor)
-  * [x] golang
-  * [x] rust
-  * [ ] python: coc-python provides too much features that exceeds my needs
-  * [ ] plugins (ale, coc.nvim, fzf.vim)
-  * [ ] filetypes (shellscript, javascript, vue, markdown, kotlin)
-* [ ] Refactor zsh configs
-* [ ] Config tmux
+- [ ] Refactor vim configs
+  - [x] common
+  - [x] plugins (auto-pairs, indentLine, lightline, papercolor)
+  - [x] golang
+  - [x] rust
+  - [x] markdown
+  - [ ] python: coc-python provides too much features that exceeds my needs
+  - [ ] plugins (ale, coc.nvim, fzf.vim)
+  - [ ] filetypes (shellscript, javascript, vue, kotlin)
+- [ ] Refactor zsh configs
+- [ ] Config tmux

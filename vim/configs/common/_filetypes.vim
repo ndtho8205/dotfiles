@@ -2,6 +2,7 @@ augroup AutoSetupFiletypes
   autocmd!
   autocmd FileType go call s:SetupGo()
   autocmd FileType python call s:SetupPython()
+  autocmd FileType markdown call s:SetupMarkdown()
 augroup END
 
 function! s:SetupGo()
@@ -16,6 +17,10 @@ function! s:SetupPython()
   setlocal shiftwidth=4
   setlocal tabstop=4
   setlocal softtabstop=4
+endfunction
+
+function! s:SetupMarkdown()
+  nnoremap <F5> :!google-chrome "file://%:p"<CR><CR>
 endfunction
 
 "" Javascript

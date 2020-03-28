@@ -24,3 +24,4 @@ let g:indentLine_conceallevel = 2
 
 "" exclude filetypes
 let g:indentLine_fileTypeExclude=['markdown', 'json']
+let g:indentLine_bufNameExclude = ['Netrw*']
