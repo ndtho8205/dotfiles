@@ -28,6 +28,14 @@ shift + @Print
   ~/.config/sxhkd/screenshot selection
 
 # music controls
+XF86AudioLowerVolume
+  amixer --quiet sset Master 3dB- unmute
+
+XF86AudioRaiseVolume
+  amixer --quiet sset Master 3dB+ unmute
+
+XF86AudioMute
+  amixer -q sset Master toggle
 
 # backlight
 
