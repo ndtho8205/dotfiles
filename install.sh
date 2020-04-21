@@ -1,57 +1,53 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+
 export DOTFILES="$(
   cd "$(dirname "$0")"
   pwd -P
 )"
 
-set -e
-echo ''
+ta_normal=''
+ta_standout=''
+fg_blue='' fg_red='' fg_green='' fg_yellow=''
 
-if test -t 1; then
-  ncolors=$(which tput >/dev/null && tput colors)
-  if test -n "$ncolors" && test "$ncolors" -ge 8; then
-    termcols=$(tput cols)
-    bold="$(tput bold)"
-    underline="$(tput smul)"
-    standout="$(tput smso)"
-    normal="$(tput sgr0)"
-    black="$(tput setaf 0)"
-    red="$(tput setaf 1)"
-    green="$(tput setaf 2)"
-    yellow="$(tput setaf 3)"
-    blue="$(tput setaf 4)"
-    magenta="$(tput setaf 5)"
-    cyan="$(tput setaf 6)"
-    white="$(tput setaf 7)"
-  fi
+ncolors=$(command -v tput >/dev/null && tput colors)
+if test -n "$ncolors" && test "$ncolors" -ge 8; then
+  ta_normal="$(tput sgr0)"
+  ta_standout="$(tput smso)"
+
+  fg_blue="$(tput setaf 4)"
+  fg_red="$(tput setaf 1)"
+  fg_green="$(tput setaf 2)"
+  fg_yellow="$(tput setaf 3)"
 fi
 
 info() {
-  printf "\r  [ ${blue}..${normal} ] $1\n"
-}
-
-ask() {
-  printf "\r  [ ${yellow}??${normal} ] $1\n"
+  printf "\r${ta_standout}${fg_blue} INFO ${ta_normal} %s\n" "$1"
 }
 
 success() {
-  printf "\r\033[2K  [ ${green}OK${normal} ] $1\n"
+  printf "\r${ta_standout}${fg_green} DONE ${ta_normal} %s\n" "$1"
 }
 
 fail() {
-  printf "\r\033[2K  [${red}FAIL${normal}] $1\n"
-  echo ''
-  exit
+  printf "\r${ta_standout}${fg_red} FAIL ${ta_normal} %s\n" "$1"
+}
+
+ask() {
+  printf "\n${ta_standout}${fg_yellow}  ??  ${ta_normal} %s\n" "$1"
 }
 
 make_link() {
   local src=$1 dst=$2
 
-  local overwrite= backup= skip=
-  local action=
+  local overwrite='' backup='' skip=''
+  local action=''
 
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
+  if [ -f "$dst" ] || [ -d "$dst" ] || [ -L "$dst" ]; then
 
     if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
       local currentSrc="$(readlink $dst)"
@@ -59,8 +55,9 @@ make_link() {
       if [ "$currentSrc" == "$src" ]; then
         skip=true
       else
-        ask "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
-        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+        ask \
+          "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+          [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 action
 
         case "$action" in
@@ -128,6 +125,9 @@ install_dotfiles() {
   done
 
   make_link "$DOTFILES/vim" "$HOME/.vim"
+}
+
+install_de() {
   make_link "$DOTFILES/bspwm" "$HOME/.config/bspwm"
   make_link "$DOTFILES/sxhkd" "$HOME/.config/sxhkd"
   make_link "$DOTFILES/alacritty" "$HOME/.config/alacritty"
