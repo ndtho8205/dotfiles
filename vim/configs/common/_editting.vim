@@ -1,3 +1,6 @@
+"" do not automatically wrap text on typing
+set formatoptions-=t
+
 "" highlight last inserted text
 " nnoremap gV `[v`]
 

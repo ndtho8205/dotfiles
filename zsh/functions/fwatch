@@ -1,7 +1,7 @@
 # automatically run command with inotifywait
 
 if test -t 1; then
-  ncolors=$(which tput > /dev/null && tput colors)
+  ncolors=$(command -v tput >/dev/null && tput colors)
   if test -n "$ncolors" && test "$ncolors" -ge 8; then
     standout="$(tput smso)"
     normal="$(tput sgr0)"
@@ -11,11 +11,11 @@ if test -t 1; then
 fi
 
 info() {
-  printf "${standout}${blue} INFO ${normal} ${blue}$1${normal}\n"
+  printf "${standout}${blue} INFO ${normal} ${blue}%s${normal}\n" "$1"
 }
 
 success() {
-  printf "${standout}${green} DONE ${normal} ${green}$1${normal}\n"
+  printf "${standout}${green} DONE ${normal} ${green}%s${normal}\n" "$1"
 }
 
 clrscr() {
@@ -23,9 +23,7 @@ clrscr() {
 }
 
 execute() {
-  clrscr
-
-  info "running command: "$command""
+  info "running command: ""$command"""
   echo
 
   $@
@@ -38,14 +36,24 @@ execute() {
 
 command="'$*'"
 
+clrscr
+
 execute $@ # first execute
+info "watching dir(s): *.*"
 
-while inotifywait --quiet --exclude .swp -e modify -r .; do
+# while inotifywait --quiet --exclude .swp -e modify -r .; do
+inotifywait --quiet --event close_write --monitor --recursive . |
+  while read directory events filename; do
+    if ! echo "$directory" | grep -Eq '^\.\/\.git' &&
+      ! git check-ignore --non-matching --verbose "${directory}/${filename}" >/dev/null 2>&1; then
 
-  execute $@
+      info "changed: ${normal}${directory}${filename}"
 
-  info "watching dir(s): *.*"
+      execute $@
 
-done;
+      info "watching dir(s): *.*\n\n"
+
+    fi
+  done
 
 # }

@@ -29,7 +29,7 @@ let g:ale_fixers = {
 \  'sh': ['shfmt'],
 \  'javascript':['prettier', 'eslint'],
 \  'vue':['prettier', 'eslint'],
-\  'python':['black'],
+\  'python':['black', 'isort'],
 \  'go':['gofmt', 'goimports'],
 \  'rust': ['rustfmt'],
 \  'markdown': ['prettier'],
