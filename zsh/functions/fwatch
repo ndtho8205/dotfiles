@@ -47,6 +47,8 @@ inotifywait --quiet --event close_write --monitor --recursive . |
     if ! echo "$directory" | grep -Eq '^\.\/\.git' &&
       ! git check-ignore --non-matching --verbose "${directory}/${filename}" >/dev/null 2>&1; then
 
+      clrscr
+
       info "changed: ${normal}${directory}${filename}"
 
       execute $@
