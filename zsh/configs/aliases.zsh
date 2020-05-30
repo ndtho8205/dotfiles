@@ -34,12 +34,6 @@ elif type "pygmentize" > /dev/null; then
   alias cat='pygmentize -O style=native -f console256 -g'
 fi
 
-# bundler
-if type "bundle" > /dev/null; then
-  alias be='bundle exec'
-  alias bej='bundle exec jekyll serve'
-fi
-
 # git
 alias glconfig='git config user.name "$GL_NAME" && git config user.email $GL_EMAIL'
 alias bbconfig='git config user.name "$BB_NAME" && git config user.email $BB_EMAIL'
@@ -80,10 +74,6 @@ if type "docker" > /dev/null; then
   alias dockly-run='docker run -it --name dockly -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly'
   alias dockly='dockly-clean || true && dockly-pull || true && dockly-run'
 fi
-
-# pip
-alias pip-update='pip freeze --local | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 sudo -H pip install -U'
-alias pip-check='pip check'
 
 # firebase
 if type "firebase" > /dev/null; then

@@ -25,18 +25,6 @@ load_zsh_files() {
   fi
 }
 
-load_zsh_functions() {
-  _dir="$1"
-  if [ -d "$_dir" ]; then
-    fpath=($1 $fpath)
-    autoload -Uz $fpath[1]/*(.:t)
-  fi
-}
-
-load_zsh_functions "${ZSH_CUSTOM}/functions"
-# TODO: compinit 2nd -> slow
-compinit
-
 # load prezto
 if [[ -s "${ZSH}/prezto/init.zsh" ]]; then
   source "${ZSH}/prezto/init.zsh"
@@ -46,10 +34,6 @@ fi
 load_zsh_files "${ZSH}/configs" ".zsh"
 load_zsh_files "${ZSH}/plugins" ".plugin.zsh"
 
-#FIXME: load custom completion script without call compinit twice
-load_zsh_functions "${ZSH}/functions"
-
 
 load_zsh_files "${ZSH_CUSTOM}" ".zsh"
 load_zsh_files "${ZSH_CUSTOM}/plugins" ".plugin.zsh"
-load_zsh_functions "${ZSH_CUSTOM}/functions"

@@ -6,6 +6,7 @@ export VISUAL='code'
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
 
+export PATH=$PATH:$DOTFILES/bin
 # android
 if [ -d "/opt/android-sdk" ]; then
   export ANDROID_HOME=/opt/android-sdk

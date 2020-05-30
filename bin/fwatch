@@ -1,4 +1,4 @@
-# automatically run command with inotifywait
+#!/usr/bin/env bash
 
 if test -t 1; then
   ncolors=$(command -v tput >/dev/null && tput colors)

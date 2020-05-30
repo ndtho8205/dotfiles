@@ -15,8 +15,8 @@ bindkey "^F" vi-cmd-mode
 #bindkey "^D"      delete-char                          # ctrl-d
 #bindkey "^F"      forward-char                         # ctrl-f
 #bindkey "^B"      backward-char                        # ctrl-b
-bindkey "^[[H"    beginning-of-line                    # Fix Home/End IntellIj
-bindkey "^[[F"    end-of-line
+#bindkey "^[[H"    beginning-of-line                    # Fix Home/End IntellIj
+#bindkey "^[[F"    end-of-line
 
 # zsh-autosuggestions
 #bindkey "^@"	  autosuggest-accept
