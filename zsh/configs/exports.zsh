@@ -6,7 +6,7 @@ export VISUAL='code'
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
 
-export PATH=$PATH:$DOTFILES/bin
+export PATH=$PATH:$DOTFILES/bin:$HOME/.local/bin
 # android
 if [ -d "/opt/android-sdk" ]; then
   export ANDROID_HOME=/opt/android-sdk
@@ -20,7 +20,7 @@ fi
 # go
 if [ -d "/opt/go" ]; then
   export GOPATH=$HOME/gocode
-  export GOROOT=/opt/go
+  export GOROOT=$HOME/ProgramFiles/go
   export GOBIN=$GOPATH/bin
   export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 fi
@@ -38,6 +38,11 @@ if type "npm" > /dev/null; then
   export NODE_PATH=$NPM_GLOBAL/lib/node_modules
   export PATH=$NPM_GLOBAL/bin:$PATH
   export NPM_CONFIG_PREFIX=$NPM_GLOBAL
+fi
+
+# poetry
+if [[ -s $HOME/.poetry ]]; then
+  export PATH=$HOME/.poetry/bin:$PATH
 fi
 
 if type "bat" > /dev/null; then
