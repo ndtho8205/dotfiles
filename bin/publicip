@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+# show public ip
+#
+# usage: publicip
+
+curl --compressed -s https://get.geojs.io/v1/ip
