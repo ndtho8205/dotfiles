@@ -7,6 +7,7 @@ export VISUAL='code'
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
 
 export PATH=$PATH:$DOTFILES/bin:$HOME/.local/bin
+
 # android
 if [ -d "/opt/android-sdk" ]; then
   export ANDROID_HOME=/opt/android-sdk
@@ -25,13 +26,6 @@ if [ -d "/opt/go" ]; then
   export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 fi
 
-# ruby
-if [ -d "$HOME/.rbenv" ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-  export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
-fi
-
 # npm
 if type "npm" > /dev/null; then
   export NPM_GLOBAL=${HOME}/.npm-global
@@ -45,8 +39,9 @@ if [[ -s $HOME/.poetry ]]; then
   export PATH=$HOME/.poetry/bin:$PATH
 fi
 
-if type "bat" > /dev/null; then
-  export BAT_THEME="OneHalfDark"
+# cargo
+if [[ -s $HOME/.cargo ]]; then
+  export PATH=$HOME/.cargo/bin:$PATH
 fi
 
 export FZF_DEFAULT_OPTS="-m --no-mouse --height 40% --layout=reverse --border --info=inline --preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --bind='F2:toggle-preview'"

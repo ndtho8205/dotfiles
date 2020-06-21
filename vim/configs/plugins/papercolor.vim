@@ -1,8 +1,6 @@
 "" [light, dark] version of theme
 set background=dark
 
-highlight ColorColumn ctermbg=235 guibg=#191919
-
 "" theme options
 let g:PaperColor_Theme_Options = {
 \  'theme': {
@@ -21,3 +19,8 @@ let g:PaperColor_Theme_Options = {
 
 "" set colorscheme
 colorscheme PaperColor
+
+"" customize highlight
+highlight ColorColumn guibg=#191919
+highlight Error guifg=Red guibg=NONE
+highlight Todo guibg=NONE

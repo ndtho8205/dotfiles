@@ -10,10 +10,10 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 
 # mkdir and cd to it
+alias mkdir='mkdir -p'
 alias mcd='mkdcd'
 
 # ubuntu
-alias mkdir='mkdir -p'
 alias ai='sudo apt install'
 alias au='sudo apt update'
 alias aug='sudo apt upgrade'
@@ -22,36 +22,12 @@ alias clean='sudo apt autoremove && sudo apt autoremove --purge && sudo apt clea
 # shortcuts
 alias e='$EDITOR'
 alias v='$VISUAL'
-alias ez='$EDITOR ~/.zshrc'
-alias ev='$EDITOR ~/.vimrc'
 alias x+='chmod +x'
 alias rz='source ~/.zshrc'
 
 # cat
 if type "bat" > /dev/null; then
-  alias cat='bat --style="numbers,changes,header,grid" --italic-text=always'
-elif type "pygmentize" > /dev/null; then
-  alias cat='pygmentize -O style=native -f console256 -g'
-fi
-
-# git
-alias glconfig='git config user.name "$GL_NAME" && git config user.email $GL_EMAIL'
-alias bbconfig='git config user.name "$BB_NAME" && git config user.email $BB_EMAIL'
-
-# mysql
-if type "mysql" > /dev/null; then
-  alias mysql-start='sudo systemctl start mysql.service'
-  alias mysql-stop='sudo systemctl stop mysql.service'
-  alias mysql-restart='sudo systemctl restart mysql.service'
-  alias mysql-status='sudo systemctl status mysql.service'
-fi
-
-# mongodb
-if type "mongod" > /dev/null; then
-  alias mongod-start='sudo service mongod start'
-  alias mongod-stop='sudo service mongod stop'
-  alias mongod-restart='sudo service mongod restart'
-  alias mongod-status='sudo service mongod status'
+  alias cat='bat'
 fi
 
 # docker
@@ -73,11 +49,6 @@ if type "docker" > /dev/null; then
   alias dockly-pull='docker pull lirantal/dockly'
   alias dockly-run='docker run -it --name dockly -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly'
   alias dockly='dockly-clean || true && dockly-pull || true && dockly-run'
-fi
-
-# firebase
-if type "firebase" > /dev/null; then
-  alias fb='firebase'
 fi
 
 # react-native
