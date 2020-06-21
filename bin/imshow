@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+
+#
+# Credit: https://github.com/ranger/ranger
+#
+
+import os
+import json
+import argparse
+import threading
+from subprocess import Popen, PIPE
+
+
+def main():
+    parser = _create_parser()
+    args = parser.parse_args()
+
+    start_x, start_y = 0, 1
+    height, width = os.popen("stty size", "r").read().split()
+
+    displayer = UeberzugImageDisplayer()
+    try:
+        os.system("clear")
+        displayer.draw(args.path, start_x, start_y, width, height)
+        input("Press <Enter> to exit...")
+    except KeyboardInterrupt:
+        pass
+    finally:
+        displayer.clear(start_x, start_y, width, height)
+        displayer.quit()
+
+
+def _create_parser():
+    parser = argparse.ArgumentParser(
+        prog="imshow", description="A simple tool to display image on terminal."
+    )
+    parser.add_argument("path", metavar="<path>", type=str, help="image path")
+
+    return parser
+
+
+class UeberzugImageDisplayer:
+    """Implementation of ImageDisplayer using ueberzug.
+    Ueberzug can display images in a Xorg session.
+    Does not work over ssh.
+    """
+
+    IMAGE_ID = "preview"
+    is_initialized = False
+    working_dir = os.environ.get("XDG_RUNTIME_DIR", os.path.expanduser("~") or None)
+
+    def __init__(self):
+        self.process = None
+
+    def initialize(self):
+        """start ueberzug"""
+        if (
+            self.is_initialized
+            and self.process.poll() is None
+            and not self.process.stdin.closed
+        ):
+            return
+
+        self.process = Popen(
+            ["ueberzug", "layer", "--silent"],
+            cwd=self.working_dir,
+            stdin=PIPE,
+            universal_newlines=True,
+        )
+        self.is_initialized = True
+
+    def _execute(self, **kwargs):
+        self.initialize()
+        self.process.stdin.write(json.dumps(kwargs) + "\n")
+        self.process.stdin.flush()
+
+    def draw(self, path, start_x, start_y, width, height):
+        self._execute(
+            action="add",
+            identifier=self.IMAGE_ID,
+            x=start_x,
+            y=start_y,
+            max_width=width,
+            max_height=height,
+            path=path,
+        )
+
+    def clear(self, start_x, start_y, width, height):
+        if self.process and not self.process.stdin.closed:
+            self._execute(action="remove", identifier=self.IMAGE_ID)
+
+    def quit(self):
+        if self.is_initialized and self.process.poll() is None:
+            timer_kill = threading.Timer(1, self.process.kill, [])
+            try:
+                self.process.terminate()
+                timer_kill.start()
+                self.process.communicate()
+            finally:
+                timer_kill.cancel()
+
+
+if __name__ == "__main__":
+    main()

@@ -43,5 +43,6 @@
     "snippet": "",
     "typeParameter": "",
     "default": ""
-  }
+  },
+  "python.jediEnabled": false
 }

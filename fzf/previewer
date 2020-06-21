@@ -1,0 +1,89 @@
+#!/bin/bash
+
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+
+main() {
+  local filepath="$1"
+  local filemime=$(file --mime "$filepath")
+
+  if [[ $filemime =~ image ]]; then
+    trap finalise EXIT
+
+    start_ueberzug
+    draw_preview "$filepath"
+  elif [[ $filemime =~ binary ]]; then
+    echo "$1 is a binary file"
+  else
+    (bat --plain --color=always "$filepath" || cat "$filepath") 2>/dev/null
+  fi
+}
+
+readonly BASH_BINARY="$(which bash)"
+declare -r -x DEFAULT_PREVIEW_POSITION="right"
+declare -r -x UEBERZUG_FIFO="$(mktemp --dry-run --suffix "fzf-$$-ueberzug")"
+declare -r -x PREVIEW_ID="preview"
+
+
+function start_ueberzug {
+    mkfifo "${UEBERZUG_FIFO}"
+    <"${UEBERZUG_FIFO}" \
+        ueberzug layer --parser bash --silent &
+    # prevent EOF
+    3>"${UEBERZUG_FIFO}" \
+        exec
+}
+
+
+function finalise {
+    3>&- \
+        exec
+    &>/dev/null \
+        rm "${UEBERZUG_FIFO}"
+    &>/dev/null \
+        kill "$(jobs -p)"
+}
+
+
+function calculate_position {
+    # TODO costs: creating processes > reading files
+    #      so.. maybe we should store the terminal size in a temporary file
+    #      on receiving SIGWINCH
+    #      (in this case we will also need to use perl or something else
+    #      as bash won't execute traps if a command is running)
+    < <(</dev/tty stty size) \
+        read -r TERMINAL_LINES TERMINAL_COLUMNS
+
+    case "${PREVIEW_POSITION:-${DEFAULT_PREVIEW_POSITION}}" in
+        left|up|top)
+            X=1
+            Y=1
+            ;;
+        right)
+            X=$((TERMINAL_COLUMNS - COLUMNS - 2))
+            Y=1
+            ;;
+        down|bottom)
+            X=1
+            Y=$((TERMINAL_LINES - LINES - 1))
+            ;;
+    esac
+}
+
+
+function draw_preview {
+    calculate_position
+
+    >"${UEBERZUG_FIFO}" declare -A -p cmd=( \
+        [action]=add [identifier]="${PREVIEW_ID}" \
+        [x]="${X}" [y]="${Y}" \
+        [width]="${COLUMNS}" [height]="${LINES}" \
+        [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+        [path]="${1}")
+        # add [synchronously_draw]=True if you want to see each change
+}
+
+
+main "$@"

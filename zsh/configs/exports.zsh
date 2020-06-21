@@ -34,6 +34,15 @@ if type "npm" > /dev/null; then
   export NPM_CONFIG_PREFIX=$NPM_GLOBAL
 fi
 
+# fzf
+if [[ ! "$PATH" == *$DOTFILES/vim/pack/plugins/start/fzf/bin* ]]; then
+  export FZF_PATH=$DOTFILES/vim/pack/plugins/start/fzf
+  export PATH=$PATH:$FZF_PATH/bin
+  [[ $- == *i* ]] && source "$FZF_PATH/shell/completion.zsh" 2> /dev/null
+  source "$FZF_PATH/shell/key-bindings.zsh"
+  source "$DOTFILES/fzf/config.zsh"
+fi
+
 # poetry
 if [[ -s $HOME/.poetry ]]; then
   export PATH=$HOME/.poetry/bin:$PATH
@@ -43,5 +52,3 @@ fi
 if [[ -s $HOME/.cargo ]]; then
   export PATH=$HOME/.cargo/bin:$PATH
 fi
-
-export FZF_DEFAULT_OPTS="-m --no-mouse --height 40% --layout=reverse --border --info=inline --preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --bind='F2:toggle-preview'"
