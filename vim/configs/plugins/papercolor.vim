@@ -21,6 +21,7 @@ let g:PaperColor_Theme_Options = {
 colorscheme PaperColor
 
 "" customize highlight
-highlight ColorColumn guibg=#191919
+highlight CursorLine guibg=#151A1E
+highlight ColorColumn guibg=#101010
 highlight Error guifg=Red guibg=NONE
 highlight Todo guibg=NONE
