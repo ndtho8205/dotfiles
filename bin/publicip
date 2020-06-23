@@ -1,7 +1,45 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-# show public ip
-#
-# usage: publicip
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
 
-curl --compressed -s https://get.geojs.io/v1/ip
+main() {
+  _parse_params "$@"
+
+  curl --compressed -s https://get.geojs.io/v1/ip
+}
+
+_print_usage() {
+  cat <<EOF
+usage: $(basename "$0") [OPTION]
+
+Show public ip.
+
+Options:
+  -h, --help     Show this help and exit
+EOF
+}
+
+_parse_params() {
+  local param
+
+  while [[ $# -gt 0 ]]; do
+    param="$1"
+    shift
+
+    case $param in
+    -h | --help)
+      _print_usage
+      exit 0
+      ;;
+    *)
+      echo "error: unrecognized arguments: $param"
+      exit 1
+      ;;
+    esac
+  done
+}
+
+main "$@"

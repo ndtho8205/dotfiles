@@ -17,6 +17,7 @@ def main():
 
     start_x, start_y = 0, 1
     height, width = os.popen("stty size", "r").read().split()
+    height = int(height) - 2
 
     displayer = UeberzugImageDisplayer()
     try:
@@ -32,7 +33,7 @@ def main():
 
 def _create_parser():
     parser = argparse.ArgumentParser(
-        prog="imshow", description="A simple tool to display image on terminal."
+        prog="imshow", description="Display image on terminal."
     )
     parser.add_argument("path", metavar="<path>", type=str, help="image path")
 
