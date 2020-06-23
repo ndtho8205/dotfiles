@@ -194,10 +194,7 @@ _install_cli_tools() {
   npm i -g markdownlint-cli prettier
 
   sudo apt install shellcheck
-
-  sudo apt install snapd
-  sudo systemctl start snapd
-  sudo snap install shfmt
+  GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
 
   go get github.com/jesseduffield/lazydocker
 }

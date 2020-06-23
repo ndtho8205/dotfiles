@@ -91,12 +91,10 @@ git submodule update --init --recursive
 - [ ] Refactor vim configs
   - [x] common
   - [x] plugins (auto-pairs, indentLine, lightline, papercolor)
-  - [x] shellscript
-  - [x] golang
+  - [x] shellscript, golang, markdown
   - [x] rust
-  - [x] markdown
   - [ ] python: coc-python provides too much features that exceeds my needs
   - [ ] plugins (ale, coc.nvim, fzf.vim)
-  - [ ] filetypes (javascript, vue, kotlin)
+  - [ ] filetypes (js, vue, css, jsx)
 - [ ] Refactor zsh configs
 - [ ] Config tmux

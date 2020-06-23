@@ -57,12 +57,12 @@ endfunction
 
 function! LightlineGitbranch()
   let gitbranch = gitbranch#name()
-  return strlen(gitbranch) ? ' ' . gitbranch : ''
+  return strlen(gitbranch) ? ' ' . gitbranch : ''
 endfunction
 
 function! LightlineFilename()
   let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
-  let readonly = &readonly && &filetype !=# 'help' ? ' ' : ''
+  let readonly = &readonly && &filetype !=# 'help' ? ' ' : ''
   let modified = &modified ? ' +' : ''
 
   let filename = filename =~# '^__Tagbar__\|NERD_tree\|NetrwTreeListing' ? '' :
@@ -98,6 +98,6 @@ let g:lightline.component_type = {
 \}
 
 "" using icons as indicators
-let g:lightline#ale#indicator_warnings = "⚠"
-let g:lightline#ale#indicator_errors = "✖"
-let g:lightline#ale#indicator_ok = "﫠"
+let g:lightline#ale#indicator_warnings = " "
+let g:lightline#ale#indicator_errors = " "
+let g:lightline#ale#indicator_ok = ""
