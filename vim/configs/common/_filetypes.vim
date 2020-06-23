@@ -22,8 +22,3 @@ endfunction
 function! s:SetupMarkdown()
   nnoremap <F5> :!google-chrome "file://%:p"<CR><CR>
 endfunction
-
-"" Javascript
-" autocmd FileType javascript set formatprg=prettier\ --stdin
-" autocmd BufWritePre *.js :normal gggqG
-" autocmd BufWritePre *.js exe "normal! gggqG\<C-o>\<C-o>"
