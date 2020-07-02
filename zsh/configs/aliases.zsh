@@ -3,11 +3,11 @@
 # cd
 
 alias cd='cdls'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
+alias -g ..='..'
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
 
 # mkdir and cd to it
 alias mkdir='mkdir -p'

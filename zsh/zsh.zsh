@@ -8,7 +8,7 @@ fi
 
 # set custom dir
 if [[ -z "$ZSH_CUSTOM" ]]; then
-    ZSH_CUSTOM="$ZSH/custom"
+  ZSH_CUSTOM="$ZSH/custom"
 fi
 
 
@@ -18,8 +18,8 @@ load_zsh_files() {
   _pattern="$2"
 
   if [ -d "$_dir" ]; then
-    for config in "$_dir"/**/*"${_pattern}"; do
-      [ -e "${config}" ] || continue
+    for config in "${_dir}"/**/*"${_pattern}"; do
+      [[ -s "${config}" ]] || continue
       source "${config}"
     done
   fi
@@ -33,7 +33,6 @@ fi
 # load zsh configs
 load_zsh_files "${ZSH}/configs" ".zsh"
 load_zsh_files "${ZSH}/plugins" ".plugin.zsh"
-
 
 load_zsh_files "${ZSH_CUSTOM}" ".zsh"
 load_zsh_files "${ZSH_CUSTOM}/plugins" ".plugin.zsh"

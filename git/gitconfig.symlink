@@ -1,54 +1,64 @@
 [color]
-    ui = true
-    diff = auto
-    status = auto
-    branch = auto
-    editor = vim
+  ui     = true
+  diff   = auto
+  status = auto
+  branch = auto
+  editor = vim
 
 [color "branch"]
-    current = white reverse
-    local = white
-    remote = yellow
+  current = white reverse
+  local   = white
+  remote  = yellow
 
 [color "diff"]
-    meta = magenta
-    frag = magenta bold
-    old = red bold
-    new = yellow bold
+  meta = magenta
+  frag = magenta bold
+  old  = red bold
+  new  = yellow bold
 
 [color "status"]
-    added = green
-    changed = yellow
-    untracked = red
+  added     = green
+  changed   = yellow
+  untracked = red
 
 [commit]
-    template = ~/.gitmessage
+  template = ~/.gitmessage
 
 [core]
-    editor = vim
-    autocrlf = input
-    compression = 9
-    filemode = false
+  editor      = vim
+  autocrlf    = input
+  compression = 9
+  filemode    = false
 
 [diff]
-    mnemonicprefix = true
-    tool = vimdiff
+  mnemonicprefix = true
+  tool           = vimdiff
 
 [merge]
-    log = true
-    ff = true
-    tool = vimdiff
+  log  = true
+  ff   = true
+  tool = vimdiff
 
 [push]
-    followTags = true
-    default = simple
+  followTags = true
+  default    = simple
 
 [status]
-    submoduleSummary = false
+  submoduleSummary = false
 
 [alias]
-    plog = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
-    
+  s    = status
+  a    = add
+  cm   = commit -m
+  pm   = push origin master
+  ck   = checkout
+  ckb  = checkout -b
+  l    = log --oneline --decorate --graph
+  la   = log --oneline --decorate --graph --all
+  ls   = log --oneline --decorate --graph --stat
+  lt   = log --graph --decorate --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lp   = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
+
 [user]
-    name = Tho Nguyen Duc
-    email = ndtho8205@gmail.com
+  name = Tho Nguyen Duc
+  email = ndtho8205@gmail.com

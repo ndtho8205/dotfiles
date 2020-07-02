@@ -208,4 +208,22 @@ _install_gui_tools() {
   :
 }
 
+##################################################
+## VPN Tools
+##################################################
+
+_install_vpn_tools() {
+  pyenv shell system
+
+  sudo apt install --no-install-recommends openvpn dialog python3-pip python3-setuptools
+  sudo pip3 install protonvpn-cli
+
+  echo "Please login to ProtonVPN account at 'https://account.protonvpn.com/account'"
+  echo "to get the OpenVPN credentials."
+  xdg-open "https://account.protonvpn.com/"
+  sudo protonvpn init
+
+  pyenv shell --unset
+}
+
 main "$@"
