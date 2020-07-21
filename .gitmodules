@@ -51,3 +51,6 @@
 	path = vim/pack/plugins/opt/papercolor-theme
 	url = https://github.com/NLKNguyen/papercolor-theme.git
 	ignore = dirty
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm

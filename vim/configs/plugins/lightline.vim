@@ -97,7 +97,7 @@ let g:lightline.component_type = {
 \  'linter_ok': 'right',
 \}
 
-"" using icons as indicators
+"" use icons as indicators
 let g:lightline#ale#indicator_warnings = " "
 let g:lightline#ale#indicator_errors = " "
 let g:lightline#ale#indicator_ok = ""

@@ -1,5 +1,6 @@
+
 "" reduce the delays
-set updatetime=300
+set updatetime=200
 
 "" don't give |ins-completion-menu| messages
 set shortmess +=c
@@ -27,9 +28,16 @@ function! s:CheckBackSpace() abort
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
+" use <cr> to confirm completion
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
 "" map for gotos
 nmap gd <Plug>(coc-definition)
-nmap gy <Plug>(coc-type-definition)
+nmap gt <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 
