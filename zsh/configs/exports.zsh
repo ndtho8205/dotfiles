@@ -19,7 +19,7 @@ if [ -d "/opt/android-ndk" ]; then
 fi
 
 # go
-if [ -d "/opt/go" ]; then
+if [ -d "$HOME/ProgramFiles/go" ]; then
   export GOPATH=$HOME/gocode
   export GOROOT=$HOME/ProgramFiles/go
   export GOBIN=$GOPATH/bin

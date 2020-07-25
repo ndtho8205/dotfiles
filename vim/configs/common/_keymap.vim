@@ -5,6 +5,9 @@ let mapleader=','
 nnoremap ; :
 nnoremap : ;
 
+"" map for quickly run shell command
+nnoremap ! :!
+
 "" map for avoid pressing ESC key
 inoremap jk <ESC>
 inoremap kj <ESC>

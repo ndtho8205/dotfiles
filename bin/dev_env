@@ -7,7 +7,6 @@ set -o pipefail
 
 main() {
   command=''
-
   _parse_params "$@"
 
   if [[ "$command" == "install" ]]; then
@@ -89,13 +88,16 @@ _list() {
 ## Golang
 ##################################################
 
-_install_go_env() {
-  local go_installation_dir="${1}/go"
-  local go_version="${2}"
+_setup_go_env() {
+  local go_installation_dir go_latest_version
 
-  wget -O go.tar.gz "https://dl.google.com/go/go${go_version}.linux-amd64.tar.gz"
+  go_installation_dir="${1}"
+  go_latest_version=$(wget --quiet --output-document=- 'https://golang.org/dl/?mode=json' | grep -oP '[0-9\.]+' | head -n 1)
+
+  wget --quiet --show-progress --output-document=go.tar.gz "https://dl.google.com/go/go${go_latest_version}.linux-amd64.tar.gz"
 
   tar -C "$go_installation_dir" -xzf go.tar.gz
+  rm -f go.tar.gz
 }
 
 ##################################################
@@ -103,16 +105,32 @@ _install_go_env() {
 ##################################################
 
 _install_rust_env() {
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  case $command in
+  install)
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ;;
+  update) ;;
+  uninstall) ;;
+  esac
 }
 
 ##################################################
 ## Node.js
 ##################################################
 
-_install_node_env() {
-  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-  sudo apt install -y nodejs
+_setup_node_env() {
+  case $command in
+  install)
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    sudo apt install -y nodejs
+    ;;
+  update)
+    echo "Run apt update"
+    ;;
+  uninstall)
+    sudo apt purge nodejs
+    ;;
+  esac
 }
 
 ##################################################
