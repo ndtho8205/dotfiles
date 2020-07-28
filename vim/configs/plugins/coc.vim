@@ -8,7 +8,7 @@ set shortmess +=c
 let g:coc_global_extensions = [
 \  'coc-snippets',
 \  'coc-go',
-\  'coc-rls',
+\  'coc-rust-analyzer',
 \  'coc-tsserver',
 \  'coc-vetur',
 \  'coc-css',
@@ -21,14 +21,17 @@ inoremap <silent><expr> <Tab>
 \  <SID>CheckBackSpace() ? "\<Tab>" :
 \  coc#refresh()
 
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:CheckBackSpace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-" use <cr> to confirm completion
+"" use <C-Space> to trigger completion
+inoremap <silent><expr> <C-@> coc#refresh()
+
+"" use <cr> to confirm completion
 if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
