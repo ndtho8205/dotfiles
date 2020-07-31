@@ -96,5 +96,7 @@ git submodule update --init --recursive
   - [ ] python: coc-python provides too much features that exceeds my needs
   - [ ] plugins (ale, coc.nvim, fzf.vim)
   - [ ] filetypes (js, vue, css, jsx)
-- [ ] Refactor zsh configs
 - [ ] Config tmux
+  - [x] common
+  - [ ] plugins
+- [ ] Refactor zsh configs
