@@ -5,17 +5,20 @@ set -o errtrace
 set -o nounset
 set -o pipefail
 
+INSTALLATION_DIR="$HOME/ProgramFiles"
+TEMP_DIR=$(mktemp --directory --quiet)
+PY3_VERSION="3.6.10"
+
+trap _clean EXIT
+
 main() {
   command=''
   _parse_params "$@"
 
-  if [[ "$command" == "install" ]]; then
-    _install
-  elif [[ "$command" == "update" ]]; then
-    _update
-  elif [[ "$command" == "list" ]]; then
-    _list
-  fi
+  _setup_go_env
+  _setup_rust_env
+  _setup_node_env
+  _setup_python_env
 }
 
 _print_usage() {
@@ -50,15 +53,12 @@ _parse_params() {
     case $param in
     install)
       command="install"
-      shift
       ;;
     update)
       command="update"
-      shift
       ;;
     list)
       command="list"
-      shift
       ;;
     -h | --help)
       _print_usage
@@ -72,94 +72,97 @@ _parse_params() {
   done
 }
 
-_install() {
-  :
-}
-
-_update() {
-  :
-}
-
-_list() {
-  :
+_clean() {
+  rm -rf "$TEMP_DIR"
 }
 
 ##################################################
-## Golang
+## Programming Languages Development Environments
 ##################################################
 
 _setup_go_env() {
-  local go_installation_dir go_latest_version
+  info "Setup Go development environment"
 
-  go_installation_dir="${1}"
+  local go_installation_dir go_latest_version go_filename
+
+  go_installation_dir="$INSTALLATION_DIR/go"
   go_latest_version=$(wget --quiet --output-document=- 'https://golang.org/dl/?mode=json' | grep -oP '[0-9\.]+' | head -n 1)
+  go_filename="go${go_latest_version}.linux-amd64.tar.gz"
 
-  wget --quiet --show-progress --output-document=go.tar.gz "https://dl.google.com/go/go${go_latest_version}.linux-amd64.tar.gz"
+  if [[ -d "$go_installation_dir" ]]; then
+    rm -r "$go_installation_dir"
+  else
+    mkdir "$go_installation_dir"
+  fi
 
-  tar -C "$go_installation_dir" -xzf go.tar.gz
-  rm -f go.tar.gz
+  wget \
+    --quiet \
+    --show-progress \
+    --output-document="$TEMP_DIR/$go_filename" \
+    "https://dl.google.com/go/$go_filename"
+
+  tar -xzf "$TEMP_DIR/$go_filename" -C "$INSTALLATION_DIR"
 }
 
-##################################################
-## Rust
-##################################################
+_setup_rust_env() {
+  info "Rust development environment"
 
-_install_rust_env() {
   case $command in
   install)
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     ;;
-  update) ;;
-  uninstall) ;;
+  update)
+    rustup update
+    ;;
   esac
 }
 
-##################################################
-## Node.js
-##################################################
-
 _setup_node_env() {
+  info "Node.js development environment"
+
   case $command in
   install)
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    sudo apt install -y nodejs
+    sudo apt-get install -y nodejs
     ;;
   update)
-    echo "Run apt update"
-    ;;
-  uninstall)
-    sudo apt purge nodejs
+    sudo apt-get update
+    sudo apt-get install --only-upgrade nodejs
     ;;
   esac
 }
 
-##################################################
-## Python
-##################################################
+_setup_python_env() {
+  info "Python development environment"
+  case $command in
+  install)
+    sudo apt install -y --no-install-recommends \
+      make build-essential libssl-dev zlib1g-dev libbz2-dev \
+      libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+      xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-_install_python_env() {
-  sudo apt install -y --no-install-recommends \
-    make build-essential libssl-dev zlib1g-dev libbz2-dev \
-    libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-    xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    curl https://pyenv.run | bash
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
 
-  curl https://pyenv.run | bash
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
+    pyenv install "$PY3_VERSION"
+    pyenv global "$PY3_VERSION" system
 
-  pyenv install 3.6.10
-  pyenv global 3.6.10 system
+    pip install --upgrade pip
 
-  pip install --upgrade pip
+    pip install pipx
 
-  pip install pipx
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
-  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-
-  pipx install black
-  pipx install flake8
-  pipx install pylint
+    pipx install black
+    pipx install flake8
+    pipx install pylint
+    ;;
+  update)
+    pipx upgrade-all
+    ;;
+  esac
 }
 
 ##################################################
@@ -243,5 +246,37 @@ _install_vpn_tools() {
 
   pyenv shell --unset
 }
+
+##################################################
+## Utility functions
+##################################################
+
+ta_normal='' ta_standout=''
+fg_blue='' fg_red='' fg_green=''
+
+ncolors=$(command -v tput >/dev/null && tput colors)
+if test -n "$ncolors" && test "$ncolors" -ge 8; then
+  ta_normal="$(tput sgr0)"
+  ta_standout="$(tput smso)"
+
+  fg_blue="$(tput setaf 4)"
+  fg_red="$(tput setaf 1)"
+  fg_green="$(tput setaf 2)"
+fi
+
+info() {
+  printf "\\n${ta_standout}${fg_blue} INFO ${ta_normal} ${fg_blue}%s${ta_normal}\\n" "$1"
+}
+
+success() {
+  printf "\\n${ta_standout}${fg_green} DONE ${ta_normal} ${fg_green}%s${ta_normal}\\n" "$1"
+}
+
+fail() {
+  printf "\\n${ta_standout}${fg_red} FAIL ${ta_normal} ${fg_red}%s${ta_normal}\\n" "$1"
+}
+
+##################################################
+##################################################
 
 main "$@"
