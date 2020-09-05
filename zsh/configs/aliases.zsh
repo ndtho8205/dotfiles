@@ -1,7 +1,6 @@
 # aliases
 
 # cd
-
 alias cd='cdls'
 alias -g ..='..'
 alias -g ...='../..'
@@ -13,17 +12,21 @@ alias -g ......='../../../../..'
 alias mkdir='mkdir -p'
 alias mcd='mkdcd'
 
-# ubuntu
-alias ai='sudo apt install'
-alias au='sudo apt update'
-alias aug='sudo apt upgrade'
-alias clean='sudo apt autoremove && sudo apt autoremove --purge && sudo apt clean && sudo apt autoclean'
+# debian
+if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+  alias ai='sudo apt install'
+  alias au='sudo apt update'
+  alias aug='sudo apt upgrade'
+  alias clean='sudo apt autoremove && sudo apt autoremove --purge && sudo apt clean && sudo apt autoclean'
+fi
 
 # shortcuts
 alias e='$EDITOR'
 alias v='$VISUAL'
 alias x+='chmod +x'
 alias rz='source ~/.zshrc'
+alias -g G=' | grep'
+alias -g L=' | less'
 
 # cat
 if type "bat" > /dev/null; then
