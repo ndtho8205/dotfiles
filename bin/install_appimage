@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+
+TEMP_DIR=$(mktemp --directory --quiet)
+
+trap _clean EXIT
+
+main() {
+  installation_dir='' download_link=''
+  _parse_params "$@"
+
+  _install_from_appimage "$installation_dir" "$download_link"
+}
+
+_print_usage() {
+  cat <<EOF
+usage: $(basename "$0") [OPTION] INSTALLAION_DIR DOWNLOAD_LINK
+
+Install a AppImage app.
+
+Options:
+  -h, --help     Show this help and exit
+EOF
+}
+
+_parse_params() {
+  if [[ $# -eq 0 ]]; then
+    echo "No arguments/options specified."
+    echo
+    _print_usage
+    exit 1
+  fi
+
+  local param
+
+  while [[ $# -gt 0 ]]; do
+    param="$1"
+    shift
+
+    case $param in
+    -h | --help)
+      _print_usage
+      exit 0
+      ;;
+    -*)
+      echo "error: unrecognized arguments: $param"
+      exit 1
+      ;;
+    *)
+      installation_dir=$param
+      download_link=$1
+      shift
+      ;;
+    esac
+  done
+}
+
+_clean() {
+  rm -rf "$TEMP_DIR"
+}
+
+_install_from_appimage() {
+  local installation_dir download_link
+  local filename desktop_filename
+
+  installation_dir=$1
+  download_link=$2
+
+  filename="$(basename "$installation_dir").AppImage"
+  desktop_filename="appimagekit-$(basename "$installation_dir").desktop"
+
+  cd "$TEMP_DIR"
+
+  wget \
+    --quiet \
+    --show-progress \
+    --output-document="$filename" \
+    "$download_link"
+  chmod +x "$filename"
+
+  local sample_desktop_file
+  sample_desktop_file="$(./"$filename" --appimage-extract "*.desktop" 2>&1)"
+  sed -i "s+AppRun+$installation_dir/$filename+g" "$sample_desktop_file"
+
+  mkdir -p "$installation_dir"
+  mkdir -p "$HOME/.local/share/applications"
+  rm -rf "${installation_dir:?}"/*
+
+  cp ./"$filename" "$installation_dir/$filename"
+  cp ./"$sample_desktop_file" "$HOME/.local/share/applications/$desktop_filename"
+}
+
+main "$@"

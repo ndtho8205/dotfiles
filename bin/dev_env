@@ -6,7 +6,7 @@ set -o nounset
 set -o pipefail
 
 INSTALLATION_DIR="$HOME/ProgramFiles"
-TEMP_DIR=$(mktemp --directory --quiet)
+TEMP_DIR="$(mktemp --directory --quiet)"
 
 VERSION_REGEX="(\\d+\\.)+\\d+"
 PY3_VERSION="3.6.10"
@@ -22,6 +22,9 @@ main() {
   _setup_node_env
   #_setup_python_env
   #_setup_gui_tools
+
+  _setup_pcloud
+  _setup_joplin
 }
 
 _print_usage() {
@@ -102,27 +105,16 @@ _setup_go_env() {
       head --lines=1
   )
 
+  if ! _check_status "Go" "$current_version" "$latest_version" "$(which go)"; then
+    return
+  fi
+
   local action_info
   case $command in
   install)
-    if [[ $current_version != "no version" ]]; then
-      env_info "Go is already installed." "$current_version" "$(which go)"
-      return
-    fi
-
     action_info="Installing Go ..."
     ;;
   update)
-    if [[ "$current_version" == "no version" ]]; then
-      echo "  Go is not installed."
-      return
-    fi
-
-    if [[ "$current_version" == "$latest_version" ]]; then
-      env_info "Go is up to date." "$current_version" "$(which go)"
-      return
-    fi
-
     action_info="Updating Go ..."
     ;;
   esac
@@ -133,7 +125,7 @@ _setup_go_env() {
   download_link="https://dl.google.com/go/go${latest_version}.linux-amd64.tar.gz"
 
   env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
-  _install_from_gz "$installation_dir" "$download_link"
+  install_gz "$installation_dir" "$download_link"
 }
 
 _setup_rust_env() {
@@ -185,12 +177,10 @@ _setup_node_env() {
 
     env_info "Installing Node.js ..." "" ""
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+    env_info "Run your package manager to install Node.js" "" ""
     ;;
   update)
-    env_info "Updating Node.js ..." "" ""
-    sudo apt-get -qq update
-    sudo apt-get install --only-upgrade nodejs
+    env_info "Run your package manager to update Node.js" "" ""
     ;;
   esac
 }
@@ -292,50 +282,81 @@ _install_cli_tools() {
 _setup_gui_tools() {
   info "Visual Studio Code (skipped)"
 
-  _setup_joplin
-
-  info "pCloud"
 }
 
-_setup_joplin() {
-  local installation_dir filename current_version latest_version appimage_version
+_setup_pcloud() {
+  info "pCloud"
 
-  installation_dir="$INSTALLATION_DIR/Joplin"
-  filename="Joplin.AppImage"
+  local installation_dir pcloud_info current_version latest_version
+
+  installation_dir="$INSTALLATION_DIR/pCloud"
+
   current_version="no version"
   if [[ -e "${installation_dir}/VERSION" ]]; then
     current_version=$(<"${installation_dir}/VERSION")
   fi
-  latest_version=$(curl -fsSL "https://api.github.com/repos/laurent22/joplin/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
 
-  info_with_version "Joplin" "$current_version" "$latest_version"
+  pcloud_info=$(wget --quiet --output-document=- "https://api.pcloud.com/getlastversion?os=ELECTRON")
 
-  if [[ "$current_version" == "$latest_version" ]]; then
-    return 0
+  latest_version=$(echo "$pcloud_info" | grep -Po '"version": ?"\K.*?(?=")')
+
+  if ! _check_status "pCloud" "$current_version" "$latest_version" "$installation_dir"; then
+    return
   fi
 
-  # clean
-  mkdir -p "$installation_dir"
-  cd "$installation_dir"
-  rm -rf ./*
+  local action_info
+  case $command in
+  install)
+    action_info="Installing pCloud ..."
+    ;;
+  update)
+    action_info="Updating pCloud ..."
+    ;;
+  esac
 
-  # download Joplin
-  wget \
-    --quiet \
-    --show-progress \
-    --output-document="./$filename" \
-    "https://github.com/laurent22/joplin/releases/download/v${latest_version}/Joplin-${latest_version}.AppImage"
-  chmod +x "./$filename"
+  local download_link
 
-  # create Desktop icon
-  (./Joplin.AppImage --appimage-extract joplin.desktop &>/dev/null)
-  appimage_version=$(grep "^X-AppImage-Version=" ./squashfs-root/joplin.desktop | head -n 1 | cut -d "=" -f 2)
-  rm -rf ./squashfs-root
-  rm -f ~/.local/share/applications/appimagekit-joplin.desktop
-  echo -e "[Desktop Entry]\nEncoding=UTF-8\nName=Joplin\nComment=Joplin for Desktop\nExec=${installation_dir}/${filename}\nIcon=joplin\nStartupWMClass=Joplin\nType=Application\nCategories=Office;\nX-AppImage-Version=${appimage_version}" >>~/.local/share/applications/appimagekit-joplin.desktop
+  download_link=$(echo "$pcloud_info" | grep --only-matching --perl-regexp '"update": "\K.*?(?=")' | sed -e 's+\\++g')
 
-  # record version
-  echo "$latest_version" >./VERSION
+  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
+  install_appimage "$installation_dir" "$download_link"
+  echo "$latest_version" >"$installation_dir/VERSION"
+}
+
+_setup_joplin() {
+  info "Joplin"
+
+  local installation_dir current_version latest_version
+
+  installation_dir="$INSTALLATION_DIR/Joplin"
+
+  current_version="no version"
+  if [[ -e "${installation_dir}/VERSION" ]]; then
+    current_version=$(<"${installation_dir}/VERSION")
+  fi
+
+  latest_version=$(curl -fsSL "https://api.github.com/repos/laurent22/joplin/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
+
+  if ! _check_status "Joplin" "$current_version" "$latest_version" "$installation_dir"; then
+    return
+  fi
+
+  local action_info
+  case $command in
+  install)
+    action_info="Installing Joplin..."
+    ;;
+  update)
+    action_info="Updating Joplin..."
+    ;;
+  esac
+
+  local download_link
+  download_link="https://github.com/laurent22/joplin/releases/download/v${latest_version}/Joplin-${latest_version}.AppImage"
+
+  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
+  install_appimage "$installation_dir" "$download_link"
+  echo "$latest_version" >"$installation_dir/VERSION"
 }
 
 ##################################################
@@ -400,25 +421,34 @@ fail() {
 ## Helpers
 ##################################################
 
-_install_from_gz() {
-  local installation_dir download_link temp_file
+_check_status() {
+  local name current_version latest_version installation_dir
 
-  installation_dir=$1
-  download_link=$2
-  temp_file=$(
-    mktemp --quiet --dry-run \
-      --tmpdir="$TEMP_DIR" --suffix="$$.tar.gz"
-  )
+  name=$1
+  current_version=$2
+  latest_version=$3
+  installation_dir=$4
 
-  wget \
-    --quiet \
-    --show-progress \
-    --output-document="$temp_file" \
-    "$download_link"
+  case $command in
+  install)
+    if [[ "$current_version" != "no version" ]]; then
+      env_info "$name is already installed." "$current_version" "$installation_dir"
+      return 1
+    fi
+    ;;
+  update)
+    if [[ "$current_version" == "no version" ]]; then
+      echo "  $name is not installed."
+      return 1
+    fi
 
-  mkdir -p "$installation_dir"
-  rm -rf "$installation_dir"/*
-  tar -xf "$temp_file" -C "$installation_dir" --strip=1
+    if [[ "$current_version" == "$latest_version" ]]; then
+      env_info "$name is up to date." "$current_version" "$installation_dir"
+      return 1
+    fi
+    ;;
+  esac
+  return 0
 }
 
 ##################################################

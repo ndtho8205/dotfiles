@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+
+TEMP_DIR=$(mktemp --directory --quiet)
+
+trap _clean EXIT
+
+main() {
+  installation_dir='' download_link=''
+  _parse_params "$@"
+
+  _install_from_gz "$installation_dir" "$download_link"
+}
+
+_print_usage() {
+  cat <<EOF
+usage: $(basename "$0") [OPTION] INSTALLAION_DIR DOWNLOAD_LINK
+
+Install a AppImage app.
+
+Options:
+  -h, --help     Show this help and exit
+EOF
+}
+
+_parse_params() {
+  if [[ $# -eq 0 ]]; then
+    echo "No arguments/options specified."
+    echo
+    _print_usage
+    exit 1
+  fi
+
+  local param
+
+  while [[ $# -gt 0 ]]; do
+    param="$1"
+    shift
+
+    case $param in
+    -h | --help)
+      _print_usage
+      exit 0
+      ;;
+    -*)
+      echo "error: unrecognized arguments: $param"
+      exit 1
+      ;;
+    *)
+      installation_dir=$param
+      download_link=$1
+      shift
+      ;;
+    esac
+  done
+}
+
+_clean() {
+  rm -rf "$TEMP_DIR"
+}
+
+_install_from_gz() {
+  local installation_dir download_link temp_file
+
+  installation_dir=$1
+  download_link=$2
+  temp_file=$(
+    mktemp --quiet --dry-run \
+      --tmpdir="$TEMP_DIR" --suffix="$$.tar.gz"
+  )
+
+  wget \
+    --quiet \
+    --show-progress \
+    --output-document="$temp_file" \
+    "$download_link"
+
+  mkdir -p "$installation_dir"
+  rm -rf "$installation_dir"/*
+  tar -xf "$temp_file" -C "$installation_dir" --strip=1
+}
+
+main "$@"
