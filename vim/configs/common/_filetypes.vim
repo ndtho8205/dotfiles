@@ -20,5 +20,5 @@ function! s:SetupPython()
 endfunction
 
 function! s:SetupMarkdown()
-  nnoremap <F5> :!google-chrome "file://%:p"<CR><CR>
+  nnoremap <F5> :!$DE_BROWSER "file://%:p"<CR><CR>
 endfunction

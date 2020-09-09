@@ -7,6 +7,8 @@ set -o pipefail
 
 INSTALLATION_DIR="$HOME/ProgramFiles"
 TEMP_DIR=$(mktemp --directory --quiet)
+
+VERSION_REGEX="(\\d+\\.)+\\d+"
 PY3_VERSION="3.6.10"
 
 trap _clean EXIT
@@ -18,7 +20,8 @@ main() {
   _setup_go_env
   _setup_rust_env
   _setup_node_env
-  _setup_python_env
+  #_setup_python_env
+  #_setup_gui_tools
 }
 
 _print_usage() {
@@ -81,37 +84,82 @@ _clean() {
 ##################################################
 
 _setup_go_env() {
-  info "Setup Go development environment"
+  info "Go development environment"
 
-  local go_installation_dir go_latest_version go_filename
+  local current_version latest_version
 
-  go_installation_dir="$INSTALLATION_DIR/go"
-  go_latest_version=$(wget --quiet --output-document=- 'https://golang.org/dl/?mode=json' | grep -oP '[0-9\.]+' | head -n 1)
-  go_filename="go${go_latest_version}.linux-amd64.tar.gz"
-
-  if [[ -d "$go_installation_dir" ]]; then
-    rm -r "$go_installation_dir"
-  else
-    mkdir "$go_installation_dir"
+  current_version="no version"
+  if type go >/dev/null 2>&1; then
+    current_version=$(
+      go version | grep --only-matching --perl-regexp $VERSION_REGEX
+    )
   fi
 
-  wget \
-    --quiet \
-    --show-progress \
-    --output-document="$TEMP_DIR/$go_filename" \
-    "https://dl.google.com/go/$go_filename"
+  latest_version=$(
+    wget --quiet \
+      --output-document=- 'https://golang.org/dl/?mode=json' |
+      grep --only-matching --perl-regexp $VERSION_REGEX |
+      head --lines=1
+  )
 
-  tar -xzf "$TEMP_DIR/$go_filename" -C "$INSTALLATION_DIR"
+  local action_info
+  case $command in
+  install)
+    if [[ $current_version != "no version" ]]; then
+      env_info "Go is already installed." "$current_version" "$(which go)"
+      return
+    fi
+
+    action_info="Installing Go ..."
+    ;;
+  update)
+    if [[ "$current_version" == "no version" ]]; then
+      echo "  Go is not installed."
+      return
+    fi
+
+    if [[ "$current_version" == "$latest_version" ]]; then
+      env_info "Go is up to date." "$current_version" "$(which go)"
+      return
+    fi
+
+    action_info="Updating Go ..."
+    ;;
+  esac
+
+  local installation_dir download_link
+
+  installation_dir="$INSTALLATION_DIR/go"
+  download_link="https://dl.google.com/go/go${latest_version}.linux-amd64.tar.gz"
+
+  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
+  _install_from_gz "$installation_dir" "$download_link"
 }
 
 _setup_rust_env() {
   info "Rust development environment"
 
+  local current_version
+
+  current_version="no version"
+  if type rustc >/dev/null 2>&1; then
+    current_version=$(
+      rustc --version | grep --only-matching --perl-regexp $VERSION_REGEX
+    )
+  fi
+
   case $command in
   install)
+    if [[ $current_version != "no version" ]]; then
+      env_info "Rust is already installed." "$current_version" "$(which rustc)"
+      return
+    fi
+
+    env_info "Installing Rust ..." "" ""
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     ;;
   update)
+    env_info "Updating Rust ..." "" ""
     rustup update
     ;;
   esac
@@ -120,13 +168,28 @@ _setup_rust_env() {
 _setup_node_env() {
   info "Node.js development environment"
 
+  local current_version
+  current_version="no version"
+  if type node >/dev/null 2>&1; then
+    current_version=$(
+      node --version | grep --only-matching --perl-regexp $VERSION_REGEX
+    )
+  fi
+
   case $command in
   install)
+    if [[ $current_version != "no version" ]]; then
+      env_info "Node.js is already installed." "$current_version" "$(which node)"
+      return
+    fi
+
+    env_info "Installing Node.js ..." "" ""
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     sudo apt-get install -y nodejs
     ;;
   update)
-    sudo apt-get update
+    env_info "Updating Node.js ..." "" ""
+    sudo apt-get -qq update
     sudo apt-get install --only-upgrade nodejs
     ;;
   esac
@@ -218,15 +281,61 @@ _install_cli_tools() {
   GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
 
   go get github.com/jesseduffield/lazydocker
+
+  # TODO: wagoodman/dive - exploring docker image
 }
 
 ##################################################
 ## GUI Tools
 ##################################################
 
-_install_gui_tools() {
-  #vscode
-  :
+_setup_gui_tools() {
+  info "Visual Studio Code (skipped)"
+
+  _setup_joplin
+
+  info "pCloud"
+}
+
+_setup_joplin() {
+  local installation_dir filename current_version latest_version appimage_version
+
+  installation_dir="$INSTALLATION_DIR/Joplin"
+  filename="Joplin.AppImage"
+  current_version="no version"
+  if [[ -e "${installation_dir}/VERSION" ]]; then
+    current_version=$(<"${installation_dir}/VERSION")
+  fi
+  latest_version=$(curl -fsSL "https://api.github.com/repos/laurent22/joplin/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
+
+  info_with_version "Joplin" "$current_version" "$latest_version"
+
+  if [[ "$current_version" == "$latest_version" ]]; then
+    return 0
+  fi
+
+  # clean
+  mkdir -p "$installation_dir"
+  cd "$installation_dir"
+  rm -rf ./*
+
+  # download Joplin
+  wget \
+    --quiet \
+    --show-progress \
+    --output-document="./$filename" \
+    "https://github.com/laurent22/joplin/releases/download/v${latest_version}/Joplin-${latest_version}.AppImage"
+  chmod +x "./$filename"
+
+  # create Desktop icon
+  (./Joplin.AppImage --appimage-extract joplin.desktop &>/dev/null)
+  appimage_version=$(grep "^X-AppImage-Version=" ./squashfs-root/joplin.desktop | head -n 1 | cut -d "=" -f 2)
+  rm -rf ./squashfs-root
+  rm -f ~/.local/share/applications/appimagekit-joplin.desktop
+  echo -e "[Desktop Entry]\nEncoding=UTF-8\nName=Joplin\nComment=Joplin for Desktop\nExec=${installation_dir}/${filename}\nIcon=joplin\nStartupWMClass=Joplin\nType=Application\nCategories=Office;\nX-AppImage-Version=${appimage_version}" >>~/.local/share/applications/appimagekit-joplin.desktop
+
+  # record version
+  echo "$latest_version" >./VERSION
 }
 
 ##################################################
@@ -268,12 +377,48 @@ info() {
   printf "\\n${ta_standout}${fg_blue} INFO ${ta_normal} ${fg_blue}%s${ta_normal}\\n" "$1"
 }
 
+env_info() {
+  echo "  $1"
+  [[ $2 != "" ]] && echo "    version: $2"
+  [[ $3 != "" ]] && echo "    location: $3"
+  echo ""
+}
+
+info_with_version() {
+  printf "\\n${ta_standout}${fg_blue} INFO ${ta_normal} ${fg_blue}%s${ta_normal} (%s -> %s)\\n" "$1" "$2" "$3"
+}
+
 success() {
   printf "\\n${ta_standout}${fg_green} DONE ${ta_normal} ${fg_green}%s${ta_normal}\\n" "$1"
 }
 
 fail() {
   printf "\\n${ta_standout}${fg_red} FAIL ${ta_normal} ${fg_red}%s${ta_normal}\\n" "$1"
+}
+
+##################################################
+## Helpers
+##################################################
+
+_install_from_gz() {
+  local installation_dir download_link temp_file
+
+  installation_dir=$1
+  download_link=$2
+  temp_file=$(
+    mktemp --quiet --dry-run \
+      --tmpdir="$TEMP_DIR" --suffix="$$.tar.gz"
+  )
+
+  wget \
+    --quiet \
+    --show-progress \
+    --output-document="$temp_file" \
+    "$download_link"
+
+  mkdir -p "$installation_dir"
+  rm -rf "$installation_dir"/*
+  tar -xf "$temp_file" -C "$installation_dir" --strip=1
 }
 
 ##################################################
