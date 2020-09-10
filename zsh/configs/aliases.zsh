@@ -18,6 +18,12 @@ if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
   alias au='sudo apt update'
   alias aug='sudo apt upgrade'
   alias clean='sudo apt autoremove && sudo apt autoremove --purge && sudo apt clean && sudo apt autoclean'
+else
+  alias ai='sudo pacman -S'
+  alias ar='sudo pacman -Rns'
+  alias au='sudo pacman -Syy'
+  alias aug='sudo pacman -Syu'
+  alias clean='sudo pacman -Qtdq | pacman -Rns -'
 fi
 
 # shortcuts
