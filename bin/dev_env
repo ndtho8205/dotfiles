@@ -20,11 +20,14 @@ main() {
   _setup_go_env
   _setup_rust_env
   _setup_node_env
-  #_setup_python_env
+  _setup_python_env
+
+  _setup_cli_tools
   #_setup_gui_tools
 
   _setup_pcloud
   _setup_joplin
+  _setup_vpn
 }
 
 _print_usage() {
@@ -161,38 +164,64 @@ _setup_node_env() {
   info "Node.js development environment"
 
   local current_version
+
   current_version="no version"
-  if type node >/dev/null 2>&1; then
+  if type nvm >/dev/null 2>&1; then
     current_version=$(
-      node --version | grep --only-matching --perl-regexp $VERSION_REGEX
+      nvm --version | grep --only-matching --perl-regexp $VERSION_REGEX
+    )
+  fi
+
+  local action_info
+  case $command in
+  install)
+    if [[ $current_version != "no version" ]]; then
+      env_info "nvm is already installed." "$current_version" "$HOME/.nvm"
+      return
+    fi
+    action_info="Installing"
+    ;;
+  update)
+    action_info="Updating"
+    ;;
+  esac
+
+  echo "  $action_info nvm ..."
+
+  # install/update nvm
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+  nvm install 'lts/*' --reinstall-packages-from=lts/*
+}
+
+_setup_python_env() {
+  info "Python development environment"
+
+  local current_version
+
+  current_version="no version"
+  if type pyenv >/dev/null 2>&1; then
+    current_version=$(
+      pyenv --version | grep --only-matching --perl-regexp $VERSION_REGEX
     )
   fi
 
   case $command in
   install)
     if [[ $current_version != "no version" ]]; then
-      env_info "Node.js is already installed." "$current_version" "$(which node)"
+      env_info "pyenv is already installed." "$current_version" "$HOME/.pyenv"
       return
     fi
 
-    env_info "Installing Node.js ..." "" ""
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    env_info "Run your package manager to install Node.js" "" ""
-    ;;
-  update)
-    env_info "Run your package manager to update Node.js" "" ""
-    ;;
-  esac
-}
-
-_setup_python_env() {
-  info "Python development environment"
-  case $command in
-  install)
-    sudo apt install -y --no-install-recommends \
-      make build-essential libssl-dev zlib1g-dev libbz2-dev \
-      libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-      xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+      sudo apt install -y --no-install-recommends \
+        make build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+        xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    fi
 
     curl https://pyenv.run | bash
     export PYENV_ROOT="$HOME/.pyenv"
@@ -213,6 +242,14 @@ _setup_python_env() {
     pipx install pylint
     ;;
   update)
+    cd $(pyenv root)
+    git pull
+
+    pip install --upgrade pip
+    pip install --upgrade pipx
+
+    poetry self update
+
     pipx upgrade-all
     ;;
   esac
@@ -255,23 +292,47 @@ _install_docker() {
 ## CLI Tools
 ##################################################
 
-_install_cli_tools() {
-  cargo install tealdeer
-  tldr --update
+_setup_cli_tools() {
+  info "CLI Tools"
 
-  cargo install --locked bat
+  case $command in
+  install)
+    echo "  Installing tealdeer ..."
+    cargo install tealdeer
+    tldr --update
 
-  cargo install watchexec
+    echo "  Installing bat ..."
+    cargo install --locked bat
 
-  bash -c "$DOTFILES/vim/pack/plugins/start/fzf/install --bin"
+    echo "  Installing watchexec ..."
+    cargo install watchexec
 
-  npm i -g markdownlint-cli prettier
+    echo "  Installing fzf ..."
+    bash -c "$DOTFILES/vim/pack/plugins/start/fzf/install --bin"
 
-  sudo apt install shellcheck
-  GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
+    echo "  Installing markdownlint-cli ..."
+    npm i -g markdownlint-cli
 
-  go get github.com/jesseduffield/lazydocker
+    echo "  Installing prettier ..."
+    npm i -g prettier
 
+    echo "  Installing shellcheck ..."
+
+    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+      sudo apt install shellcheck
+    else
+      yay -S shellcheck-bin
+    fi
+
+    echo "  Installing shfmt ..."
+    GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
+    ;;
+  update)
+    :
+    ;;
+  esac
+
+  #go get github.com/jesseduffield/lazydocker
   # TODO: wagoodman/dive - exploring docker image
 }
 
@@ -363,18 +424,27 @@ _setup_joplin() {
 ## VPN Tools
 ##################################################
 
-_install_vpn_tools() {
-  pyenv shell system
+_setup_vpn() {
+  info "ProtonVPN"
 
-  sudo apt install --no-install-recommends openvpn dialog python3-pip python3-setuptools
-  sudo pip3 install protonvpn-cli
+  case $command in
+  install)
+    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+      sudo apt install --no-install-recommends openvpn dialog
+    else
+      sudo pacman -S openvpn dialog
+    fi
 
-  echo "Please login to ProtonVPN account at 'https://account.protonvpn.com/account'"
-  echo "to get the OpenVPN credentials."
-  xdg-open "https://account.protonvpn.com/"
-  sudo protonvpn init
+    pipx install protonvpn-cli
 
-  pyenv shell --unset
+    echo "Please login to ProtonVPN account at 'https://account.protonvpn.com/account'"
+    echo "to get the OpenVPN credentials."
+    xdg-open "https://account.protonvpn.com/"
+
+    sudo protonvpn init
+    ;;
+  esac
+
 }
 
 ##################################################

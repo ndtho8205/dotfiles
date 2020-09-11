@@ -23,7 +23,7 @@ else
   alias ar='sudo pacman -Rns'
   alias au='sudo pacman -Syy'
   alias aug='sudo pacman -Syu'
-  alias clean='sudo pacman -Qtdq | pacman -Rns -'
+  alias clean='paccache -r && sudo pacman -Scc && pacman -Qtdq | pacman -Rns -'
 fi
 
 # shortcuts

@@ -26,14 +26,6 @@ if [ -d "$HOME/ProgramFiles/go" ]; then
   export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 fi
 
-# npm
-if type "npm" > /dev/null; then
-  export NPM_GLOBAL=${HOME}/.npm-global
-  export NODE_PATH=$NPM_GLOBAL/lib/node_modules
-  export PATH=$NPM_GLOBAL/bin:$PATH
-  export NPM_CONFIG_PREFIX=$NPM_GLOBAL
-fi
-
 # fzf
 if [[ ! "$PATH" == *$DOTFILES/vim/pack/plugins/start/fzf/bin* ]]; then
   export FZF_PATH=$DOTFILES/vim/pack/plugins/start/fzf

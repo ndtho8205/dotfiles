@@ -33,6 +33,7 @@ zstyle ':prezto:load' pmodule \
   'ssh' \
   'completion' \
   'git' \
+  'node' \
   'syntax-highlighting' \
   'history-substring-search' \
   'autosuggestions' \
