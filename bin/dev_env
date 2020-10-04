@@ -23,11 +23,12 @@ main() {
   _setup_python_env
 
   _setup_cli_tools
-  #_setup_gui_tools
+  _setup_gui_tools
 
   _setup_pcloud
-  _setup_joplin
-  _setup_vpn
+  _setup_obsidian
+  _setup_calibre
+  _setup_nordvpn
 }
 
 _print_usage() {
@@ -194,7 +195,9 @@ _setup_node_env() {
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-  nvm install 'lts/*' --reinstall-packages-from=lts/*
+  if [[ $command == 'install' ]]; then
+    nvm install 'lts/*'
+  fi
 }
 
 _setup_python_env() {
@@ -384,36 +387,36 @@ _setup_pcloud() {
   echo "$latest_version" >"$installation_dir/VERSION"
 }
 
-_setup_joplin() {
-  info "Joplin"
+_setup_obsidian() {
+  info "Obsidian"
 
   local installation_dir current_version latest_version
 
-  installation_dir="$INSTALLATION_DIR/Joplin"
+  installation_dir="$INSTALLATION_DIR/Obsidian"
 
   current_version="no version"
   if [[ -e "${installation_dir}/VERSION" ]]; then
     current_version=$(<"${installation_dir}/VERSION")
   fi
 
-  latest_version=$(curl -fsSL "https://api.github.com/repos/laurent22/joplin/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
+  latest_version=$(curl -fsSL "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
 
-  if ! _check_status "Joplin" "$current_version" "$latest_version" "$installation_dir"; then
+  if ! _check_status "Obsidian" "$current_version" "$latest_version" "$installation_dir"; then
     return
   fi
 
   local action_info
   case $command in
   install)
-    action_info="Installing Joplin..."
+    action_info="Installing Obsidian..."
     ;;
   update)
-    action_info="Updating Joplin..."
+    action_info="Updating Obsidian..."
     ;;
   esac
 
   local download_link
-  download_link="https://github.com/laurent22/joplin/releases/download/v${latest_version}/Joplin-${latest_version}.AppImage"
+  download_link="https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
 
   env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
   install_appimage "$installation_dir" "$download_link"
@@ -442,6 +445,40 @@ _setup_vpn() {
     xdg-open "https://account.protonvpn.com/"
 
     sudo protonvpn init
+    ;;
+  esac
+
+}
+
+_setup_calibre() {
+  info "Calibre"
+
+  wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir=~/ProgramFiles/calibre isolated=y
+
+}
+
+_setup_nordvpn() {
+  info "NordVPN"
+
+  case $command in
+  install)
+    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+      :
+    else
+      yay -S nordvpn-bin
+    fi
+
+    sudo systemctl enable nordvpn
+    sudo systemctl start nordvpn
+
+    nordvpn login
+    nordvpn set protocol TCP
+    nordvpn set autoconnect on Double_VPN
+    nordvpn set killswitch on
+    nordvpn set cybersec on
+    nordvpn set obfuscate on
+
+    nordvpn c -g Double_VPN
     ;;
   esac
 

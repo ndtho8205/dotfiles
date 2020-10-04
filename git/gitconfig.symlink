@@ -3,7 +3,6 @@
   diff   = auto
   status = auto
   branch = auto
-  editor = vim
 
 [color "branch"]
   current = white reverse
