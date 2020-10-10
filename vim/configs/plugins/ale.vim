@@ -4,9 +4,6 @@ let g:ale_fix_on_save = 1
 "" keep the sign gutter open at all times
 set signcolumn=number
 let g:ale_sign_column_always = 1
-highlight clear ALESignColumnWithErrors
-highlight clear ALESignColumnWithoutErrors
-
 
 "" what text should be used for signs
 let g:ale_sign_error = ""

@@ -11,7 +11,7 @@
     "javascriptreact",
     "typescript.tsx"
   ],
-  "diagnostic.enableMessage": "never",
+  "diagnostic.enableMessage": "always",
   "diagnostic.warningSign": "",
   "diagnostic.errorSign": "",
   "diagnostic.infoSign": "",

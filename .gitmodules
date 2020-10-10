@@ -57,3 +57,6 @@
 [submodule "vim/pack/plugins/opt/vim-colors-xcode"]
 	path = vim/pack/plugins/opt/vim-colors-xcode
 	url = https://github.com/arzg/vim-colors-xcode.git
+[submodule "vim/pack/plugins/start/vim-rust-syntax-ext"]
+	path = vim/pack/plugins/start/vim-rust-syntax-ext
+	url = https://github.com/arzg/vim-rust-syntax-ext.git
