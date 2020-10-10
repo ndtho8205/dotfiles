@@ -20,7 +20,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 "" enable linters
 let g:ale_linters = {
 \  'go': ['gofmt', 'golangci-lint', 'gobuild'],
-\  'rust': ['cargo', 'rls', 'rustc'],
+\  'rust': ['cargo', 'analyzer'],
 \  'markdown': ['markdownlint'],
 \}
 

@@ -5,7 +5,7 @@ set number
 set relativenumber
 
 "" set minimal width of the line number
-set numberwidth=3
+set numberwidth=4
 
 "" toggle between line number modes automatically
 augroup AutoToggleLineNumber

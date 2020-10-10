@@ -22,6 +22,9 @@ let g:netrw_list_hide = netrw_gitignore#Hide() . ',\(^\|\s\s\)\zs\.\S\+'
 "" set netrw buffer
 let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
 
+"" open netrw in a split vertical window
+nnoremap <leader>n :Lexplore<CR>
+
 "" close netrw
 nnoremap <leader>qn :call <sid>CloseAllNetrwBuffers()<cr>
 

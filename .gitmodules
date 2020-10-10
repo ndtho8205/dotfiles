@@ -54,3 +54,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "vim/pack/plugins/opt/vim-colors-xcode"]
+	path = vim/pack/plugins/opt/vim-colors-xcode
+	url = https://github.com/arzg/vim-colors-xcode.git

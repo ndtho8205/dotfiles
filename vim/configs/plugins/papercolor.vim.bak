@@ -18,7 +18,7 @@ let g:PaperColor_Theme_Options = {
 \}
 
 "" set colorscheme
-colorscheme PaperColor
+"colorscheme PaperColor
 
 "" customize highlight
 highlight CursorLine guibg=#151A1E
