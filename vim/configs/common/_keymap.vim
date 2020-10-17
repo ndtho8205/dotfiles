@@ -12,6 +12,11 @@ nnoremap ! :!
 inoremap jk <ESC>
 inoremap kj <ESC>
 
+"" map for quickly turning off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+"" open/close folding with spacebar
+nnoremap <space> za
 "" map for quickly reloading .vimrc
 nnoremap <leader>rv :source ~/.vimrc<CR>
 
@@ -33,7 +38,56 @@ nnoremap h b
 "" move to beginning/end of line
 nnoremap B ^
 nnoremap E $
+vnoremap B ^
+vnoremap E $
 
 "" move forward/backward in a line in insert mode
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
+
+"" indent code blocks
+vnoremap < <gv
+vnoremap > >gv
+
+""""""""""""""""""""
+"" splits
+""""""""""""""""""""
+
+"" navigate between splits easily
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+
+
+""""""""""""""""""""
+"" tabpage
+""""""""""""""""""""
+
+"" open/close tabpage
+nnoremap tn :tabnew<cr>
+nnoremap tc :tabclose<cr>
+nnoremap to :tabonly<cr>
+
+"" navigate between tabpages
+nnoremap ]t :tabnext<cr>
+nnoremap [t :tabprev<cr>
+" nnoremap th :tabnext<cr>
+" nnoremap tl :tabprev<cr>
+" nnoremap tj  :tabfirst<CR>
+" nnoremap tk  :tablast<CR>
+
+"" move a tabpage
+" nnoremap tm  :tabmove<Space>
+
+"" go to the n-th tabpage
+nnoremap <leader>1 1gt
+nnoremap <leader>2 2gt
+nnoremap <leader>3 3gt
+nnoremap <leader>4 4gt
+nnoremap <leader>5 5gt
+nnoremap <leader>6 6gt
+nnoremap <leader>7 7gt
+nnoremap <leader>8 8gt
+nnoremap <leader>9 9gt
+nnoremap <leader>0 :tablast<cr>

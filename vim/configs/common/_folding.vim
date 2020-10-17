@@ -9,6 +9,3 @@ set foldnestmax=2
 
 "" do not fold when opening files
 set nofoldenable
-
-"" open/close folding with spacebar
-nnoremap <space> za
