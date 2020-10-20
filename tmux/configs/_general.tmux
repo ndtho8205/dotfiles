@@ -8,6 +8,9 @@ set -sg escape-time 0
 set -g base-index 1
 setw -g pane-base-index 1
 
+# renumber windows if closed
+set -g renumber-windows on
+
 # enable activity alerts
 setw -g monitor-activity on
 set -g visual-activity on
