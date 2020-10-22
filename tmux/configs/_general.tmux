@@ -1,5 +1,5 @@
 # set the default $TERM to 256 color mode
-set -g default-terminal "screen-256color"
+set -g default-terminal "tmux-256color"
 
 # faster command sequences
 set -sg escape-time 0
