@@ -29,6 +29,7 @@ let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'sh': ['shfmt'],
 \  'javascript':['prettier', 'eslint'],
+\  'typescript':['prettier', 'eslint'],
 \  'vue':['prettier', 'eslint'],
 \  'python':['black', 'isort'],
 \  'go':['gofmt', 'goimports'],
