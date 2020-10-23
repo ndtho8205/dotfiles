@@ -49,7 +49,7 @@ set linebreak
 set breakindent
 
 "" put a string at the wrapped lines
-set showbreak=↪\
+let &showbreak='↪ '
 
 """"""""""""""""""""
 "" command
