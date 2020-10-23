@@ -70,3 +70,4 @@
 [submodule "vim/pack/plugins/start/tokyonight-vim"]
 	path = vim/pack/plugins/start/tokyonight-vim
 	url = https://github.com/ghifarit53/tokyonight-vim.git
+	ignore = dirty
