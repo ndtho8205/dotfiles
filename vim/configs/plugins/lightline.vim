@@ -1,8 +1,9 @@
 "" don't show mode information in the last line
 set noshowmode
 
+"\  'colorscheme': 'powerlineish',
 let g:lightline = {
-\  'colorscheme': 'powerlineish',
+\  'colorscheme': 'tokyonight',
 \  'mode_map': {
 \    'n': 'N',
 \    'i': 'I',
