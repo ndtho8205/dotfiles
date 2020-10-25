@@ -15,15 +15,16 @@ alias mcd='mkdcd'
 # debian
 if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
   alias ai='sudo apt install'
-  alias au='sudo apt update'
-  alias aug='sudo apt upgrade'
+  alias ar='sudo apt purge'
+  alias aug='sudo apt update && sudo apt upgrade'
   alias clean='sudo apt autoremove && sudo apt autoremove --purge && sudo apt clean && sudo apt autoclean'
 else
-  alias ai='sudo pacman -S'
+  alias ai='sudo pacman -Syu && sudo pacman -Sy'
   alias ar='sudo pacman -Rns'
-  alias au='sudo pacman -Syy'
-  alias aug='sudo pacman -Syu'
-  alias clean='paccache -r && sudo pacman -Scc && pacman -Qtdq | pacman -Rns -'
+  alias yi='yay -Syu && yay -Sy'
+  alias yr='yay -Rns'
+  alias aug='sudo pacman -Syu && yay -Syu'
+  alias clean='paccache -r && sudo pacman -Scc && sudo pacman -Rns $(pacman -Qtdq)'
 fi
 
 # shortcuts

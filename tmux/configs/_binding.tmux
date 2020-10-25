@@ -15,6 +15,10 @@ bind -n M-/ copy-mode
 
 bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
 bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+
+# kill session
+bind -n M-q confirm-before kill-session
+
 ####################
 # Pane
 ####################
