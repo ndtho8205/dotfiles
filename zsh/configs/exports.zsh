@@ -30,7 +30,7 @@ fi
 if [[ ! "$PATH" == *$DOTFILES/vim/pack/plugins/start/fzf/bin* ]]; then
   export FZF_PATH=$DOTFILES/vim/pack/plugins/start/fzf
   export PATH=$PATH:$FZF_PATH/bin
-  [[ $- == *i* ]] && source "$FZF_PATH/shell/completion.zsh" 2> /dev/null
+  source "$FZF_PATH/shell/completion.zsh" 2> /dev/null
   source "$FZF_PATH/shell/key-bindings.zsh"
   source "$DOTFILES/fzf/config.zsh"
 fi

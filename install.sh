@@ -124,6 +124,8 @@ install_dotfiles() {
     make_link "$src" "$dst"
   done
 
+  make_link "$DOTFILES/bat" "$HOME/.config/bat"
+
   make_link "$DOTFILES/vim" "$HOME/.vim"
   make_link "$DOTFILES/ssh/config" "$HOME/.ssh/config"
 }
