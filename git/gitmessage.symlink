@@ -1,13 +1,30 @@
-[Add/Fix/Remove/Update/Refactor/Document] [issue #id] [summary]
+<type>: [issue #id] <Action> <summary>
+#<---              Using a Maximum of 70 characters              --->#
 
+# Type can be:
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactoring production code)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    docs     (changes to documentation)
+#    test     (adding or refactoring tests; no production code change)
+#    chore    (updating grunt tasks etc; no production code change)
 
-Why is it necessary? (Bug fix, feature, improvements?)
--
+# Action can be:
+#    Add
+#    Fix
+#    Remove
+#    Update
+#    Refactor
+#    Document
 
-How does the change address the issue?
--
+# Why is this change necessary? (Bug fix, feature, improvements, etc.)
+# -
 
-What side effects does this change have?
--
+# How does the change address the issue?
+# -
 
-Include a link to the ticket, if any.
+# What side effects does this change have?
+# -
+
+# Issues: #id

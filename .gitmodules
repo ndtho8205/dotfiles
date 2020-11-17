@@ -71,3 +71,6 @@
 	path = vim/pack/plugins/start/tokyonight-vim
 	url = https://github.com/ghifarit53/tokyonight-vim.git
 	ignore = dirty
+[submodule "vim/pack/plugins/start/editorconfig-vim"]
+	path = vim/pack/plugins/start/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim.git
