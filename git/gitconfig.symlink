@@ -47,15 +47,14 @@
 
 [alias]
   s    = status
-  a    = add
+  a    = add .
   cm   = commit -m
   pm   = push origin master
   ck   = checkout
   ckb  = checkout -b
-  l    = log --oneline --decorate --graph
+  l    = log --graph --decorate --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
   la   = log --oneline --decorate --graph --all
   ls   = log --oneline --decorate --graph --stat
-  lt   = log --graph --decorate --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
   lp   = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
 
 [user]
