@@ -28,10 +28,12 @@ else
 fi
 
 # shortcuts
-alias e='$EDITOR'
-alias v='$VISUAL'
+alias vi='vim'
 alias x+='chmod +x'
 alias rz='source ~/.zshrc'
+alias p='ps aux | grep'
+alias k9='kill -9'
+alias ka='killall'
 alias -g G=' | grep'
 alias -g L=' | less'
 
@@ -42,23 +44,13 @@ fi
 
 # docker
 if type "docker" > /dev/null; then
-  alias docker-start='sudo systemctl start docker'
-  alias docker-stop='sudo systemctl stop docker'
-  alias docker-restart='sudo systemctl restart docker'
-  alias docker-status='sudo systemctl status docker'
+  alias dk='docker'
+  alias dkc='docker-compose'
 
-  alias docker-kill-all='docker kill $(docker ps -q)'
-  alias docker-clean-container='printf "\n>>> Deleting stopped containers\n\n" && docker rm $(docker ps -a -q)'
-  alias docker-del-all-images='docker rmi --force $(docker images -q)'
-  alias docker-clean-images='printf "\n>>> Deleting untagged images\n\n" && docker rmi $(docker images -q -f dangling=true)'
-  alias dockercleanc='docker-kill-all || true && docker-clean-container'
-  alias dockercleani='docker-del-all-images || true && docker-clean-images || true && docker-del-all-images'
-  alias dockerclean='dockercleanc || true && dockercleani'
-
-  alias dockly-clean='docker container kill dockly || true && docker rm dockly'
-  alias dockly-pull='docker pull lirantal/dockly'
-  alias dockly-run='docker run -it --name dockly -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly'
-  alias dockly='dockly-clean || true && dockly-pull || true && dockly-run'
+  alias dk-start='systemctl start docker'
+  alias dk-stop='systemctl stop docker'
+  alias dk-prune='docker system prune -af'
+  alias dk-clean='docker stop $(docker ps -qa) ; docker rm -f $(docker ps -qa) ; docker rmi -f $(docker images -qa) ; docker volume rm -f $(docker volume ls -q) ; docker network prune -f'
 fi
 
 # react-native
