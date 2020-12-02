@@ -28,6 +28,7 @@ let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fixers = {
 \  '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'sh': ['shfmt'],
+\  'json':['prettier'],
 \  'javascript':['prettier', 'eslint'],
 \  'typescript':['prettier', 'eslint'],
 \  'scss':['prettier', 'stylelint'],

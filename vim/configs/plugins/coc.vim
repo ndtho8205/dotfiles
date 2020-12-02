@@ -11,6 +11,7 @@ let g:coc_global_extensions = [
 \  'coc-rust-analyzer',
 \  'coc-tsserver',
 \  'coc-vetur',
+\  'coc-emmet',
 \  'coc-css',
 \  'coc-json',
 \]
@@ -45,7 +46,7 @@ nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 
 "" show documentation in preview window
-nnoremap <silent> K :call <SID>ShowDocumentation()<CR>
+nnoremap <silent> gk :call <SID>ShowDocumentation()<CR>
 
 function! s:ShowDocumentation()
   if (index(['vim','help'], &filetype) >= 0)

@@ -15,8 +15,17 @@ inoremap kj <ESC>
 "" map for quickly turning off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+"" map for center search result
+"nnoremap n nzz
+"nnoremap N Nzz
+"nnoremap * *zz
+"nnoremap # #zz
+"nnoremap g* g*zz
+"nnoremap g# g#zz
+
 "" open/close folding with spacebar
 nnoremap <space> za
+
 "" map for quickly reloading .vimrc
 nnoremap <leader>rv :source ~/.vimrc<CR>
 
