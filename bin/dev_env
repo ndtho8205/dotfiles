@@ -289,6 +289,12 @@ _install_docker() {
   sudo systemctl start docker
 
   pipx install docker-compose
+
+  if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
+    :
+  else
+    yay -S dive
+  fi
 }
 
 ##################################################
@@ -329,6 +335,10 @@ _setup_cli_tools() {
 
     echo "  Installing shfmt ..."
     GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
+
+    echo "  Installing ueberzug ..."
+    pipx install ueberzug
+
     ;;
   update)
     :
