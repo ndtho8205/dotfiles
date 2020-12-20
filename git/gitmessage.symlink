@@ -1,20 +1,25 @@
-<type>: [issue #id] <Action> <summary>
+<type>: [issue #id] [Action] <summary>
 #<---              Using a Maximum of 70 characters              --->#
 
 # Type can be:
-#    feat     (new feature)
-#    fix      (bug fix)
-#    refactor (refactoring production code)
-#    style    (formatting, missing semi colons, etc; no code change)
-#    docs     (changes to documentation)
-#    test     (adding or refactoring tests; no production code change)
-#    chore    (updating grunt tasks etc; no production code change)
+#    feat     - adding a new feature
+#    ui       - updating the UI or style files
+#    fix      - fixing a bug or issue
+#    hotfix   - critical hotfix
+#    refactor - refactoring, improving structure, code or comments
+#    docs     - updating docs or README
+#    perf     - improving performance
+#    security - fixing security issues
+#    cstyle   - updating the code styles
+#    test     - everything related to testing
+#    chore    - updating build tasks, package manager config, etc.
 
 # Action can be:
 #    Add
 #    Fix
 #    Remove
 #    Update
+#    Upgrade
 #    Refactor
 #    Document
 
