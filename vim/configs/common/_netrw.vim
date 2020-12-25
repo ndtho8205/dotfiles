@@ -7,9 +7,6 @@ let g:netrw_liststyle = 3
 "" set width to 20%
 let g:netrw_winsize = 20
 
-"" open files in a new vertical split
-let g:netrw_browse_split = 2
-
 "" split on the right
 let g:netrw_altv = 1
 
@@ -23,7 +20,7 @@ let g:netrw_list_hide = netrw_gitignore#Hide() . ',\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_bufsettings = 'nomodifiable nomodified nonumber norelativenumber nowrap readonly'
 
 "" open netrw in a split vertical window
-nnoremap <leader>n :Lexplore<CR>
+nnoremap <leader>n :Explore<CR>
 
 "" close netrw
 nnoremap <leader>qn :call <sid>CloseAllNetrwBuffers()<cr>
@@ -44,7 +41,7 @@ augroup AutoSetupNetrwBuffer
 
   "" open automatically when vim starts up with no specified files
   autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Lexplore | endif
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Explore | endif
 
   "" close vim if the only buffer left open is netrw
   autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | q | endif

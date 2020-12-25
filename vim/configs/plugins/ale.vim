@@ -32,6 +32,7 @@ let g:ale_fixers = {
 \  'javascript':['prettier', 'eslint'],
 \  'typescript':['prettier', 'eslint'],
 \  'scss':['prettier', 'stylelint'],
+\  'css':['prettier', 'stylelint'],
 \  'vue':['prettier', 'eslint'],
 \  'python':['black', 'isort'],
 \  'go':['gofmt', 'goimports'],
