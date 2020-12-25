@@ -58,5 +58,5 @@
   lp   = log --graph --pretty=format:'%C(bold blue)%h%Creset - %C(yellow)%d%Creset %s %C(cyan dim)(%cr)%Creset %n' --abbrev-commit --branches
 
 [user]
-  name = Tho Nguyen Duc
+  name = Tho Nguyen
   email = ndtho8205@gmail.com

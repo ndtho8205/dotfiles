@@ -74,3 +74,8 @@
 [submodule "vim/pack/plugins/start/editorconfig-vim"]
 	path = vim/pack/plugins/start/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
+	ignore = dirty
+[submodule "vim/pack/plugins/start/vim-wakatime"]
+	path = vim/pack/plugins/start/vim-wakatime
+	url = git://github.com/wakatime/vim-wakatime.git
+	ignore = dirty
