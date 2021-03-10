@@ -55,10 +55,6 @@
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 	ignore = dirty
-[submodule "vim/pack/plugins/opt/vim-colors-xcode"]
-	path = vim/pack/plugins/opt/vim-colors-xcode
-	url = https://github.com/arzg/vim-colors-xcode.git
-	ignore = dirty
 [submodule "vim/pack/plugins/start/vim-rust-syntax-ext"]
 	path = vim/pack/plugins/start/vim-rust-syntax-ext
 	url = https://github.com/arzg/vim-rust-syntax-ext.git
@@ -67,8 +63,8 @@
 	path = vim/pack/plugins/start/emmet-vim
 	url = https://github.com/mattn/emmet-vim.git
 	ignore = dirty
-[submodule "vim/pack/plugins/start/tokyonight-vim"]
-	path = vim/pack/plugins/start/tokyonight-vim
+[submodule "vim/pack/plugins/opt/tokyonight-vim"]
+	path = vim/pack/plugins/opt/tokyonight-vim
 	url = https://github.com/ghifarit53/tokyonight-vim.git
 	ignore = dirty
 [submodule "vim/pack/plugins/start/editorconfig-vim"]
@@ -77,5 +73,5 @@
 	ignore = dirty
 [submodule "vim/pack/plugins/start/vim-wakatime"]
 	path = vim/pack/plugins/start/vim-wakatime
-	url = git://github.com/wakatime/vim-wakatime.git
+	url = https://github.com/wakatime/vim-wakatime.git
 	ignore = dirty
