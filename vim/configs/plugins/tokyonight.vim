@@ -7,6 +7,8 @@ augroup tokyonight-vim
   autocmd tokyonight-vim ColorScheme * hi ALEErrorSign guibg=NONE
   autocmd tokyonight-vim ColorScheme * hi ALEWarningSign guibg=NONE
   autocmd tokyonight-vim ColorScheme * hi ALEInfoSign guibg=NONE
+
+  autocmd tokyonight-vim ColorScheme * hi Conceal guifg=#232433
 augroup END
 
 

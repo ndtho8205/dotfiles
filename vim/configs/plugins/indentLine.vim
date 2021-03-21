@@ -1,4 +1,4 @@
-"" enableindentLine by default
+"" enable indentLine by default
 let g:indentLine_enabled = 1
 
 "" better performance
@@ -8,6 +8,9 @@ let g:indentLine_faster = 1
 "" ▏ ┆ ⎸
 let g:indentLine_first_char = '▏'
 let g:indentLine_char = '▏'
+
+"" specify color
+let g:indentLine_setColors = 0
 
 "" show first indent level
 let g:indentLine_showFirstIndentLevel = 1
