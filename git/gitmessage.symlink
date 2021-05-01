@@ -1,5 +1,6 @@
 <type>: [issue #id] [Action] <summary>
 #<---              Using a Maximum of 70 characters              --->#
+# Read it as: If applied, this commit will <commit message here>.
 
 # Type can be:
 #    feat     - adding a new feature
