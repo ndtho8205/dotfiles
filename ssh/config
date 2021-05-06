@@ -1,11 +1,12 @@
 # GitHub (default)
-  Host gh
+Host gh
   HostName github.com
   User git
   IdentityFile ~/.ssh/id_rsa_github
 
 # GitLab (secondary)
-  Host gl
+Host gl
   HostName gitlab.com
   User git
   IdentityFile ~/.ssh/id_rsa_gitlab
+  UpdateHostKeys no
