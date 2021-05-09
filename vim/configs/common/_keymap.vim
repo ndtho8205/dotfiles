@@ -100,3 +100,9 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 nnoremap <leader>0 :tablast<cr>
+
+""""""""""""""""""""
+"" external commands
+""""""""""""""""""""
+
+nnoremap <F11> :!!<cr>
