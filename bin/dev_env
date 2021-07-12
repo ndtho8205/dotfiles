@@ -9,7 +9,8 @@ INSTALLATION_DIR="$HOME/ProgramFiles"
 TEMP_DIR="$(mktemp --directory --quiet)"
 
 VERSION_REGEX="(\\d+\\.)+\\d+"
-PY3_VERSION="3.6.10"
+PY3_VERSION="3.7.10"
+NODE_VERSION="14.7.3"
 
 trap _clean EXIT
 
@@ -167,9 +168,9 @@ _setup_node_env() {
   local current_version
 
   current_version="no version"
-  if type nvm >/dev/null 2>&1; then
+  if type nodenv >/dev/null 2>&1; then
     current_version=$(
-      nvm --version | grep --only-matching --perl-regexp $VERSION_REGEX
+      nodenv --version | grep --only-matching --perl-regexp $VERSION_REGEX
     )
   fi
 
@@ -177,27 +178,34 @@ _setup_node_env() {
   case $command in
   install)
     if [[ $current_version != "no version" ]]; then
-      env_info "nvm is already installed." "$current_version" "$HOME/.nvm"
+      env_info "nodenv is already installed." "$current_version" "$HOME/.nodenv"
       return
     fi
-    action_info="Installing"
+
+    env_info "Installing nodenv ..." "" ""
+
+    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
+    cd ~/.nodenv && src/configure && make -C src
+
+    ~/.nodenv/bin/nodenv init
+
+    mkdir -p "$(nodenv root)"/plugins
+    git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
+    git clone https://github.com/nodenv/nodenv-update.git "$(nodenv root)"/plugins/nodenv-update
+
+    curl -fsSL https://github.com/nodenv/nodenv-installer/raw/master/bin/nodenv-doctor | bash
+
+    env_info "Installing node ..." "$NODE_VERSION" ""
+    nodenv install "$NODE_VERSION"
+
+    pyenv global "$NODE_VERSION" system
     ;;
   update)
     action_info="Updating"
+
+    nodenv update
     ;;
   esac
-
-  echo "  $action_info nvm ..."
-
-  # install/update nvm
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-  if [[ $command == 'install' ]]; then
-    nvm install 'lts/*'
-  fi
 }
 
 _setup_python_env() {
