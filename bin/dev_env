@@ -5,31 +5,40 @@ set -o errtrace
 set -o nounset
 set -o pipefail
 
-INSTALLATION_DIR="$HOME/ProgramFiles"
-TEMP_DIR="$(mktemp --directory --quiet)"
+trap _cleanup SIGINT SIGTERM ERR EXIT
 
-VERSION_REGEX="(\\d+\\.)+\\d+"
-PY3_VERSION="3.7.10"
-NODE_VERSION="14.7.3"
+readonly TEMP_DIR="$(mktemp --directory --quiet)"
+readonly INSTALLATION_DIR="$HOME/ProgramFiles"
 
-trap _clean EXIT
+readonly VERSION_REGEX="(\\d+\\.)+\\d+"
+readonly PY3_VERSION="3.7.10"
+readonly NODE_VERSION="14.17.3"
+
+readonly PY_PKGS=("black" "flake8" "pylint")
+readonly NODE_PKGS=("markdownlint-cli:markdownlint" "prettier")
+readonly RUST_PKGS=("cargo-edit" "bat" "tealdeer:tldr" "watchexec-cli:watchexec")
 
 main() {
-  command=''
+  subcommand=
+
+  _setup_colors
   _parse_params "$@"
 
-  _setup_go_env
-  _setup_rust_env
-  _setup_node_env
   _setup_python_env
+  _setup_node_env
+  _setup_rust_env
+  _setup_docker
 
-  _setup_cli_tools
-  _setup_gui_tools
-
-  _setup_pcloud
-  _setup_obsidian
-  _setup_calibre
-  _setup_nordvpn
+  if  [[ "$subcommand" == "install" ]]; then
+    echo
+    echo
+    _warn "$(cat <<EOF
+You need to restart your current shell
+to reload your PATH environment variable.
+EOF
+)"
+    echo
+  fi
 }
 
 _print_usage() {
@@ -38,10 +47,11 @@ usage: $(basename "$0") [OPTION] {install,update,list}
 
 Install and update personal development environment.
 
-Commands:
-  install        Install development environment
-  update         Update all packages
-  list           List installed packages
+Subcommands:
+  i, install     Install development environment
+  u, update      Update all packages
+  l, list        List installed packages
+
 Options:
   -h, --help     Show this help and exit
 EOF
@@ -49,10 +59,8 @@ EOF
 
 _parse_params() {
   if [[ $# -eq 0 ]]; then
-    echo "No command/option specified."
-    echo
     _print_usage
-    exit 1
+    exit 0
   fi
 
   local param
@@ -62,28 +70,30 @@ _parse_params() {
     shift
 
     case $param in
-    install)
-      command="install"
-      ;;
-    update)
-      command="update"
-      ;;
-    list)
-      command="list"
-      ;;
-    -h | --help)
-      _print_usage
-      exit 0
-      ;;
-    *)
-      echo "error: unrecognized arguments: $param"
-      exit 1
-      ;;
+      i|install)
+        subcommand="install"
+        ;;
+      u|update)
+        subcommand="update"
+        ;;
+      list)
+        subcommand="list"
+        ;;
+      -h | --help)
+        _print_usage
+        exit 0
+        ;;
+      -?*)
+        _die "unrecognized option: $param"
+        ;;
+      *)
+        _die "unrecognized subcommand: $param"
+        ;;
     esac
   done
 }
 
-_clean() {
+_cleanup() {
   rm -rf "$TEMP_DIR"
 }
 
@@ -91,492 +101,377 @@ _clean() {
 ## Programming Languages Development Environments
 ##################################################
 
-_setup_go_env() {
-  info "Go development environment"
+_setup_python_env() {
+  _info ">> Python development environment"
 
-  local current_version latest_version
+  local pyenv_installed_version="$(_get_command_version 'pyenv')"
+  local pipx_installed_version="$(_get_command_version "pipx")"
+  local poetry_installed_version="$(_get_command_version "poetry")"
 
-  current_version="no version"
-  if type go >/dev/null 2>&1; then
-    current_version=$(
-      go version | grep --only-matching --perl-regexp $VERSION_REGEX
-    )
-  fi
+  case $subcommand in
+    install)
+      # pyenv
+      if [[ -n $pyenv_installed_version ]]; then
+        _log ">>   pyenv ($pyenv_installed_version) was already installed"
+        _print_command_info "pyenv"
+        _print_command_info "python"
+        _print_command_info "pip"
+      else
+        _log ">>   Installing pyenv build dependencies..."
+        case "$(_get_distro)" in
+          ubuntu|debian)
+            sudo apt install -y --no-install-recommends \
+              make build-essential libssl-dev zlib1g-dev libbz2-dev \
+              libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+              xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+            ;;
+          manjaro|arch)
+            sudo pacman -Sy base-devel openssl zlib xz
+            ;;
+        esac
 
-  latest_version=$(
-    wget --quiet \
-      --output-document=- 'https://golang.org/dl/?mode=json' |
-      grep --only-matching --perl-regexp $VERSION_REGEX |
-      head --lines=1
-  )
+        _log ">>   Installing pyenv..."
+        curl https://pyenv.run | bash
+        export PATH="$HOME/.pyenv/bin:$PATH"
+        eval "$(pyenv init --path)"
+        _print_command_info "pyenv"
 
-  if ! _check_status "Go" "$current_version" "$latest_version" "$(which go)"; then
-    return
-  fi
+        _log ">>   Installing python ($PY3_VERSION) using pyenv..."
+        pyenv install "$PY3_VERSION"
+        pyenv global "$PY3_VERSION" system
+        pip install --upgrade pip
+        _print_command_info "python"
+        _print_command_info "pip"
+      fi
 
-  local action_info
-  case $command in
-  install)
-    action_info="Installing Go ..."
-    ;;
-  update)
-    action_info="Updating Go ..."
-    ;;
-  esac
+      # pipx
+      if [[ -n $pipx_installed_version ]]; then
+        _log ">>   pipx ($pipx_installed_version) was already installed"
+      else
+        _log ">>   Installing pipx..."
+        pip install pipx
+        pipx --version
+        _print_command_info "pipx"
+      fi
 
-  local installation_dir download_link
+      # poetry
+      if [[ -n $poetry_installed_version ]]; then
+        _log ">>   poetry ($poetry_installed_version) was already installed"
+      else
+        _log ">>   Installing poetry..."
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+        _print_command_info "poetry"
+      fi
 
-  installation_dir="$INSTALLATION_DIR/go"
-  download_link="https://dl.google.com/go/go${latest_version}.linux-amd64.tar.gz"
+      # python packages
+      for pkg_name in "${PY_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
-  install_gz "$installation_dir" "$download_link"
-}
+        if [[ -n $pkg_installed_version ]]; then
+          _log ">>   $pkg_name ($pkg_installed_version) was already installed"
+        else
+          _log ">>   Installing $pkg_name using pipx..."
+          pipx install "$pkg_name"
+          _print_command_info "$pkg_name"
+        fi
+      done
+      ;;
+    update)
+      _log ">>   Updating pyenv from $pyenv_installed_version..."
+      pyenv update
+      pip install --upgrade pip
+      _print_command_info "pyenv"
+      _print_command_info "python"
+      _print_command_info "pip"
 
-_setup_rust_env() {
-  info "Rust development environment"
+      _log ">>   Updating pipx from $pipx_installed_version..."
+      pip install --upgrade pipx
+      _print_command_info "pipx"
 
-  local current_version
+      _log ">>   Updating poetry $poetry_installed_version..."
+      poetry self update
+      _print_command_info "poetry"
 
-  current_version="no version"
-  if type rustc >/dev/null 2>&1; then
-    current_version=$(
-      rustc --version | grep --only-matching --perl-regexp $VERSION_REGEX
-    )
-  fi
+      for pkg_name in "${PY_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-  case $command in
-  install)
-    if [[ $current_version != "no version" ]]; then
-      env_info "Rust is already installed." "$current_version" "$(which rustc)"
-      return
-    fi
-
-    env_info "Installing Rust ..." "" ""
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    ;;
-  update)
-    env_info "Updating Rust ..." "" ""
-    rustup update
-    ;;
+        _log ">>   Updating $pkg_name from $pkg_installed_version using pipx..."
+        pipx upgrade "$pkg_name"
+        _print_command_info "$pkg_name"
+      done
+      ;;
   esac
 }
 
 _setup_node_env() {
-  info "Node.js development environment"
+  _info ">> Node.js development environment"
 
-  local current_version
+  local nodenv_installed_version="$(_get_command_version 'nodenv')"
 
-  current_version="no version"
-  if type nodenv >/dev/null 2>&1; then
-    current_version=$(
-      nodenv --version | grep --only-matching --perl-regexp $VERSION_REGEX
-    )
-  fi
+  case $subcommand in
+    install)
+      # nodenv
+      if [[ -n $nodenv_installed_version ]]; then
+        _log ">>   nodenv ($nodenv_installed_version) was already installed"
+        _print_command_info "nodenv"
+        _print_command_info "node"
+        _print_command_info "npm"
+      else
+        _log ">>   Installing nodenv..."
+        git clone https://github.com/nodenv/nodenv.git "$HOME/.nodenv"
+        cd "$HOME/.nodenv" && src/configure && make -C src
+        export PATH="$HOME/.nodenv/bin:$PATH"
+        eval "$(nodenv init -)"
+        mkdir -p "$(nodenv root)"/plugins
+        git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
+        git clone https://github.com/nodenv/nodenv-update.git "$(nodenv root)"/plugins/nodenv-update
+        git -C "$(nodenv root)"/plugins/node-build pull
+        _print_command_info "nodenv"
 
-  local action_info
-  case $command in
-  install)
-    if [[ $current_version != "no version" ]]; then
-      env_info "nodenv is already installed." "$current_version" "$HOME/.nodenv"
-      return
-    fi
+        _log ">>   Installing node ($NODE_VERSION) using nodenv..."
+        nodenv install "$NODE_VERSION"
+        nodenv global "$NODE_VERSION" system
+        npm install -g npm
+        _print_command_info "node"
+        _print_command_info "npm"
+      fi
 
-    env_info "Installing nodenv ..." "" ""
+      # node packages
+      for pkg_name in "${NODE_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-    cd ~/.nodenv && src/configure && make -C src
+        if [[ -n $pkg_installed_version ]]; then
+          _log ">>   $pkg_name ($pkg_installed_version) was already installed"
+        else
+          _log ">>   Installing $pkg_name using npm..."
+          npm install -g "$pkg_name"
+          _print_command_info "$pkg_name"
+        fi
+      done
+      ;;
+    update)
+      _log ">>   Updating nodenv from $nodenv_installed_version..."
+      nodenv update
+      npm install -g npm
+      _print_command_info "nodenv"
+      _print_command_info "node"
+      _print_command_info "npm"
 
-    ~/.nodenv/bin/nodenv init
+      for pkg_name in "${NODE_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-    mkdir -p "$(nodenv root)"/plugins
-    git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
-    git clone https://github.com/nodenv/nodenv-update.git "$(nodenv root)"/plugins/nodenv-update
-
-    curl -fsSL https://github.com/nodenv/nodenv-installer/raw/master/bin/nodenv-doctor | bash
-
-    env_info "Installing node ..." "$NODE_VERSION" ""
-    nodenv install "$NODE_VERSION"
-
-    pyenv global "$NODE_VERSION" system
-    ;;
-  update)
-    action_info="Updating"
-
-    nodenv update
-    ;;
+        _log ">>   Updating $pkg_name from $pkg_installed_version using npm..."
+        npm install -g "$pkg_name"
+        _print_command_info "$pkg_name"
+      done
+      ;;
   esac
 }
 
-_setup_python_env() {
-  info "Python development environment"
+_setup_rust_env() {
+  _info ">> Rust development environment"
 
-  local current_version
+  local rustup_installed_version="$(_get_command_version 'rustup')"
 
-  current_version="no version"
-  if type pyenv >/dev/null 2>&1; then
-    current_version=$(
-      pyenv --version | grep --only-matching --perl-regexp $VERSION_REGEX
-    )
-  fi
+  case $subcommand in
+    install)
+      # cargo
+      if [[ -n $rustup_installed_version ]]; then
+        _log ">>   rustup ($rustup_installed_version) was already installed"
+      else
+        _log ">>   Installing rustup..."
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+        export PATH="$HOME/.cargo/bin:$PATH"
+      fi
+      _print_command_info "rustup"
+      _print_command_info "cargo"
+      _print_command_info "rustc"
 
-  case $command in
-  install)
-    if [[ $current_version != "no version" ]]; then
-      env_info "pyenv is already installed." "$current_version" "$HOME/.pyenv"
-      return
-    fi
+      # rust packages
+      for pkg_name in "${RUST_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
-      sudo apt install -y --no-install-recommends \
-        make build-essential libssl-dev zlib1g-dev libbz2-dev \
-        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-        xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-    fi
+        if [[ -n $pkg_installed_version ]]; then
+          _log ">>   $pkg_name ($pkg_installed_version) was already installed"
+        else
+          _log ">>   Installing $pkg_name using cargo..."
+          cargo install "$pkg_name"
+          _print_command_info "$pkg_name"
+        fi
+      done
+      ;;
+    update)
+      _log ">>   Updating rustup from $rustup_installed_version..."
+      rustup update
+      _print_command_info "rustup"
+      _print_command_info "cargo"
+      _print_command_info "rustc"
 
-    curl https://pyenv.run | bash
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
+      for pkg_name in "${RUST_PKGS[@]}"; do
+        local pkg_installed_version="$(_get_command_version "$pkg_name")"
 
-    pyenv install "$PY3_VERSION"
-    pyenv global "$PY3_VERSION" system
-
-    pip install --upgrade pip
-
-    pip install pipx
-
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-
-    pipx install black
-    pipx install flake8
-    pipx install pylint
-    ;;
-  update)
-    cd $(pyenv root)
-    git pull
-
-    pip install --upgrade pip
-    pip install --upgrade pipx
-
-    poetry self update
-
-    pipx upgrade-all
-    ;;
+        _log ">>   Updating $pkg_name from $pkg_installed_version using npm..."
+        cargo install "$pkg_name"
+        _print_command_info "$pkg_name"
+      done
+      ;;
   esac
 }
-
 ##################################################
 ## Docker
 ##################################################
 
-_install_docker() {
-  sudo apt purge docker docker-engine docker.io containerd runc
+_setup_docker() {
+  _info ">> Docker"
 
-  sudo apt install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
+  local docker_installed_version="$(_get_command_version 'docker')"
+  local docker_compose_installed_version="$(_get_command_version 'docker-compose')"
 
-  curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+  case $subcommand in
+    install)
+      # docker
+      if [[ -n $docker_installed_version ]]; then
+        _log ">>   docker ($docker_installed_version) was already installed"
+        _print_command_info "docker"
+      else
+        _log ">>   Installing docker dependencies..."
+        case "$(_get_distro)" in
+          ubuntu|debian)
+            curl -fsSL https://get.docker.com | bash
 
-  sudo add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/debian \
-    $(lsb_release -cs) \
-    stable"
+            sudo groupadd docker
+            sudo usermod -aG docker "$USER"
+            newgrp docker
 
-  sudo apt-get update
-  sudo apt-get install docker-ce docker-ce-cli containerd.io
+            sudo systemctl start --now docker
+            ;;
+          manjaro|arch)
+            pacman -Sy docker
+            ;;
+        esac
+        _print_command_info "docker"
+      fi
 
-  sudo groupadd docker
-  sudo usermod -aG docker "$USER"
-  newgrp docker
+      # docker-compose
+      if [[ -n $docker_compose_installed_version ]]; then
+        _log ">>   docker-compose ($docker_compose_installed_version) was already installed"
+        _print_command_info "docker-compose"
+      else
+        _log ">>   Installing docker-compose..."
+        pipx install docker-compose
+        _print_command_info "docker-compose"
+      fi
+      ;;
+    update)
+      _log ">>   docker ($docker_installed_version) can be update by using system package manager"
+      _print_command_info "docker"
 
-  sudo systemctl start docker
-
-  pipx install docker-compose
-
-  if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
-    :
-  else
-    yay -S dive
-  fi
+      _log ">>   Updating docker-compose from $docker_compose_installed_version..."
+      pipx upgrade docker-compose
+      _print_command_info "docker-compose"
+      ;;
+  esac
 }
 
 ##################################################
-## CLI Tools
+## Helper functions
 ##################################################
 
-_setup_cli_tools() {
-  info "CLI Tools"
+_print_command_info() {
+  local cmd="$(echo "$1" | cut -f 2 -d ':')"
+  local installed_version="$(_get_command_version "$cmd")"
 
-  case $command in
-  install)
-    echo "  Installing tealdeer ..."
-    cargo install tealdeer
-    tldr --update
+  _cprint ">>      $cmd ($installed_version)" "$fg_yellow"
+}
 
-    echo "  Installing bat ..."
-    cargo install --locked bat
+_get_command_version() {
+  local cmd="$(echo "$1" | cut -f 2 -d ':')"
 
-    echo "  Installing watchexec ..."
-    cargo install watchexec
+  local version=""
+  local try_args=("--version" "-version" "version")
 
-    echo "  Installing fzf ..."
-    bash -c "$DOTFILES/vim/pack/plugins/start/fzf/install --bin"
+  for arg in "${try_args[@]}"; do
+    version=$("$cmd" "$arg" 2>/dev/null || true)
+    version=$(_parse_pkg_version "${version:-}")
 
-    echo "  Installing markdownlint-cli ..."
-    npm i -g markdownlint-cli
-
-    echo "  Installing prettier ..."
-    npm i -g prettier
-
-    echo "  Installing shellcheck ..."
-
-    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
-      sudo apt install shellcheck
-    else
-      yay -S shellcheck-bin
+    if [[ -n "$version" ]]; then
+      break
     fi
+  done
 
-    echo "  Installing shfmt ..."
-    GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
-
-    echo "  Installing ueberzug ..."
-    pipx install ueberzug
-
-    ;;
-  update)
-    :
-    ;;
-  esac
-
-  #go get github.com/jesseduffield/lazydocker
-  # TODO: wagoodman/dive - exploring docker image
+  echo "$version"
 }
 
-##################################################
-## GUI Tools
-##################################################
-
-_setup_gui_tools() {
-  info "Visual Studio Code (skipped)"
-
+_parse_pkg_version() {
+  local version=$(echo "$1" | grep --max-count 1 --only-matching --perl-regexp $VERSION_REGEX || [[ $? == 1 ]])
+  echo "$version" | head -n1
 }
 
-_setup_pcloud() {
-  info "pCloud"
+_is_command_exists() {
+  local cmd="$(echo "$1" | cufg -f 2 -d ':')"
 
-  local installation_dir pcloud_info current_version latest_version
-
-  installation_dir="$INSTALLATION_DIR/pCloud"
-
-  current_version="no version"
-  if [[ -e "${installation_dir}/VERSION" ]]; then
-    current_version=$(<"${installation_dir}/VERSION")
+  if command -v "$cmd" >/dev/null 2>&1; then
+    return 0
   fi
 
-  pcloud_info=$(wget --quiet --output-document=- "https://api.pcloud.com/getlastversion?os=ELECTRON")
-
-  latest_version=$(echo "$pcloud_info" | grep -Po '"version": ?"\K.*?(?=")')
-
-  if ! _check_status "pCloud" "$current_version" "$latest_version" "$installation_dir"; then
-    return
-  fi
-
-  local action_info
-  case $command in
-  install)
-    action_info="Installing pCloud ..."
-    ;;
-  update)
-    action_info="Updating pCloud ..."
-    ;;
-  esac
-
-  local download_link
-
-  download_link=$(echo "$pcloud_info" | grep --only-matching --perl-regexp '"update": "\K.*?(?=")' | sed -e 's+\\++g')
-
-  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
-  install_appimage "$installation_dir" "$download_link"
-  echo "$latest_version" >"$installation_dir/VERSION"
+  return 1
 }
 
-_setup_obsidian() {
-  info "Obsidian"
-
-  local installation_dir current_version latest_version
-
-  installation_dir="$INSTALLATION_DIR/Obsidian"
-
-  current_version="no version"
-  if [[ -e "${installation_dir}/VERSION" ]]; then
-    current_version=$(<"${installation_dir}/VERSION")
-  fi
-
-  latest_version=$(curl -fsSL "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest" | grep -Po '"tag_name": ?"v\K.*?(?=")')
-
-  if ! _check_status "Obsidian" "$current_version" "$latest_version" "$installation_dir"; then
-    return
-  fi
-
-  local action_info
-  case $command in
-  install)
-    action_info="Installing Obsidian..."
-    ;;
-  update)
-    action_info="Updating Obsidian..."
-    ;;
-  esac
-
-  local download_link
-  download_link="https://github.com/obsidianmd/obsidian-releases/releases/download/v${latest_version}/Obsidian-${latest_version}.AppImage"
-
-  env_info "$action_info" "$current_version -> $latest_version" "$installation_dir"
-  install_appimage "$installation_dir" "$download_link"
-  echo "$latest_version" >"$installation_dir/VERSION"
-}
-
-##################################################
-## VPN Tools
-##################################################
-
-_setup_vpn() {
-  info "ProtonVPN"
-
-  case $command in
-  install)
-    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
-      sudo apt install --no-install-recommends openvpn dialog
-    else
-      sudo pacman -S openvpn dialog
-    fi
-
-    pipx install protonvpn-cli
-
-    echo "Please login to ProtonVPN account at 'https://account.protonvpn.com/account'"
-    echo "to get the OpenVPN credentials."
-    xdg-open "https://account.protonvpn.com/"
-
-    sudo protonvpn init
-    ;;
-  esac
-
-}
-
-_setup_calibre() {
-  info "Calibre"
-
-  wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir=~/ProgramFiles/calibre isolated=y
-
-}
-
-_setup_nordvpn() {
-  info "NordVPN"
-
-  case $command in
-  install)
-    if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
-      :
-    else
-      yay -S nordvpn-bin
-    fi
-
-    sudo systemctl enable nordvpn
-    sudo systemctl start nordvpn
-
-    nordvpn login
-    nordvpn set protocol TCP
-    nordvpn set autoconnect on Double_VPN
-    nordvpn set killswitch on
-    nordvpn set cybersec on
-    nordvpn set obfuscate on
-
-    nordvpn c -g Double_VPN
-    ;;
-  esac
-
+_get_distro() {
+  grep "ID=" /etc/os-release | head -n1 | cut -f 2 -d '='
 }
 
 ##################################################
 ## Utility functions
 ##################################################
 
-ta_normal='' ta_standout=''
-fg_blue='' fg_red='' fg_green=''
+_setup_colors() {
+  ta_normal='' ta_standout=''
+  fg_blue='' fg_cyan='' fg_red='' fg_green='' fg_yellow=''
 
-ncolors=$(command -v tput >/dev/null && tput colors)
-if test -n "$ncolors" && test "$ncolors" -ge 8; then
-  ta_normal="$(tput sgr0)"
-  ta_standout="$(tput smso)"
+  ncolors=$(command -v tput >/dev/null && tput colors)
+  if test -n "$ncolors" && test "$ncolors" -ge 8; then
+    ta_normal="$(tput sgr0)"
+    ta_standout="$(tput smso)"
 
-  fg_blue="$(tput setaf 4)"
-  fg_red="$(tput setaf 1)"
-  fg_green="$(tput setaf 2)"
-fi
-
-info() {
-  printf "\\n${ta_standout}${fg_blue} INFO ${ta_normal} ${fg_blue}%s${ta_normal}\\n" "$1"
+    fg_blue="$(tput setaf 4)"
+    fg_cyan="$(tput setaf 6)"
+    fg_red="$(tput setaf 1)"
+    fg_green="$(tput setaf 2)"
+    fg_yellow="$(tput setaf 3)"
+  fi
 }
 
-env_info() {
-  echo "  $1"
-  [[ $2 != "" ]] && echo "    version: $2"
-  [[ $3 != "" ]] && echo "    location: $3"
-  echo ""
+_cprint() {
+  local message="$1"
+  local fa_color="${2:-}"
+
+  printf "${fa_color}%s${ta_normal}\\n" "$message"
 }
 
-info_with_version() {
-  printf "\\n${ta_standout}${fg_blue} INFO ${ta_normal} ${fg_blue}%s${ta_normal} (%s -> %s)\\n" "$1" "$2" "$3"
+_log() {
+  _cprint "$1" "$fg_cyan"
 }
 
-success() {
-  printf "\\n${ta_standout}${fg_green} DONE ${ta_normal} ${fg_green}%s${ta_normal}\\n" "$1"
+_info() {
+  _cprint "$1" "$fg_blue"
 }
 
-fail() {
-  printf "\\n${ta_standout}${fg_red} FAIL ${ta_normal} ${fg_red}%s${ta_normal}\\n" "$1"
+_warn() {
+  _cprint "warning: $1" "$fg_yellow"
 }
 
-##################################################
-## Helpers
-##################################################
+_error() {
+  _cprint "error: $1" "$fg_red"
+}
 
-_check_status() {
-  local name current_version latest_version installation_dir
-
-  name=$1
-  current_version=$2
-  latest_version=$3
-  installation_dir=$4
-
-  case $command in
-  install)
-    if [[ "$current_version" != "no version" ]]; then
-      env_info "$name is already installed." "$current_version" "$installation_dir"
-      return 1
-    fi
-    ;;
-  update)
-    if [[ "$current_version" == "no version" ]]; then
-      echo "  $name is not installed."
-      return 1
-    fi
-
-    if [[ "$current_version" == "$latest_version" ]]; then
-      env_info "$name is up to date." "$current_version" "$installation_dir"
-      return 1
-    fi
-    ;;
-  esac
-  return 0
+_die() {
+  _error "$1"
+  exit 1
 }
 
 ##################################################
+## Main
 ##################################################
 
 main "$@"
