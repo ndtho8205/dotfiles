@@ -35,11 +35,6 @@ if [[ ! "$PATH" == *$DOTFILES/vim/pack/plugins/start/fzf/bin* ]]; then
   source "$DOTFILES/fzf/config.zsh"
 fi
 
-# poetry
-if [[ -s $HOME/.poetry ]]; then
-  export PATH=$HOME/.poetry/bin:$PATH
-fi
-
 # cargo
 if [[ -s $HOME/.cargo ]]; then
   export PATH=$HOME/.cargo/bin:$PATH
